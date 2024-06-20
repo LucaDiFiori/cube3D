@@ -14,3 +14,5 @@
 - Youtube
   - [Make Your Own Raycaster Part 1](https://www.youtube.com/watch?v=gYRrGTC7GtA&ab_channel=3DSage)
   - [Make Your Own Raycaster Part 2](https://www.youtube.com/watch?v=PC1RaETIx3Y&ab_channel=3DSage)
+  - [Super Fast Ray Casting in Tiled Worlds using DDA](https://www.youtube.com/watch?v=NbSee-XM7WA&ab_channel=javidx9)
+  - [wolfenstain 3d's map renderer](https://www.youtube.com/watch?v=eOCQfxRQ2pY&t=299s&ab_channel=MattGodbolt)
