@@ -8,7 +8,8 @@
   - [IV: Directional Sprites, Doors, And More](https://lodev.org/cgtutor/raycasting4.html)
 - Medium
   - [Raycasting in Cub3d](https://medium.com/@rtailidounia/raycasting-in-cub3d-42-network-project-a-practical-tutorial-using-vectors-68eeb16b3de2)
-- [A Comprehensive Guide to Cub3D](https://reactive.so/post/42-a-comprehensive-guide-to-cub3d)
+- Reactive
+  - [A Comprehensive Guide to Cub3D](https://reactive.so/post/42-a-comprehensive-guide-to-cub3d)
 - [Cub3D Tutorial [Using angles]](https://medium.com/@afatir.ahmedfatir/cub3d-tutorial-af5dd31d2fcf)
 - Youtube
   - [Make Your Own Raycaster Part 1](https://www.youtube.com/watch?v=gYRrGTC7GtA&ab_channel=3DSage)
