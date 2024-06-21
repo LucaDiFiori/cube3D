@@ -27,6 +27,8 @@ int	main(int argc, char **argv)
 	/* funzione che valida (map_validator) la mappa:
 	   1) controlla il ".ber"
 	*/ 
+
+	/*funzione che fa il parsing e crea la matrice*/
 	
 	
 	// funzione che crea la matrice della mappa 

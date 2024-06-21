@@ -1,3 +1,23 @@
+/*_______________________________GIT_HUB_REPO_________________________________*/
+/*0- elengo di repo*/
+https://github.com/topics/cub3d
+
+/*1*/
+https://github.com/ael-bekk/Cub3d-Advanced-Raycasting
+
+/*2*/
+https://github.com/mcombeau/cub3D/blob/main/textures/wolfenstein/purple_stone.xpm
+
+/*3-> repo sul rey casting*/
+https://github.com/Saxsori/ray-cast
+/*____________________________________________________________________________*/
+
+
+
+
+
+
+
 /*_________________________________MAPP_______________________________________*/
 /*Info generali---------------------------------------------------------------*/
 * "La mappa può contenere 6 caratteri:" 
@@ -16,7 +36,9 @@
 * La mappa può avere forme irregolari
 
 * La mappa dovrà essere "parsata" come da file: Gli "spazi" sono validi 
-  (a nostra discrezione come gestirli). 
+  (a nostra discrezione come gestirli).
+
+* Nei git linkati sopra ci sono delle mappe con il "nemico" segnato con "H"
 /*----------------------------------------------------------------------------*/
 
 
@@ -89,3 +111,7 @@ C 225,30,0
 11111111 1111111 111111111111
 /*----------------------------------------------------------------------------*/
 /*____________________________________________________________________________*/
+
+
+
+
