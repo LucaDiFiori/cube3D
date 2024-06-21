@@ -50,9 +50,11 @@ all:
 
 SRCS = cube3d.c \
 	   src/map_checks/checks_utils.c \
+	   src/map_checks/map_validation.c \
 	   src/gnl/get_next_line.c \
 	   src/gnl/get_next_line_utils.c \
 	   src/minilib/minilib_1.c \
+	   src/minilib/minilib_2.c \
 	   src/utils/quit_and_free.c \
 	   src/printf/ft_printf.c \
 	   src/init/init.c \

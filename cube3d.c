@@ -25,8 +25,8 @@ int	main(int argc, char **argv)
 	init_game_struct(&game_struct);
 
 	/* funzione che valida (map_validator) la mappa:
-	   1) controlla il ".ber"
-	*/ 
+	   1) controlla il ".ber" */
+	validator(&game_struct, argv); 
 
 	/*funzione che fa il parsing e crea la matrice*/
 	

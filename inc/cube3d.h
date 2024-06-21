@@ -21,8 +21,9 @@
 #include <stdarg.h>
 #include "../src/gnl/get_next_line.h"
 
-#define EXT_ERR "Invalid file extension -> Use .cub file\n"
+#define EXT_ERR "Invalid file extension. '.cub' file needed\n"
 #define ARG_ERR "Invalid number of arguments -> Use example: ./cub3D map.cub"
+#define OPEN_ERR "opening the map file"
 
 typedef struct	s_map
 {
@@ -38,18 +39,26 @@ typedef struct s_game
 
 /*MINILIB*/
 /*minilib*/
-size_t	ft_strlen(const char *s);
+int		ft_strlen(const char *s);
+char	**ft_split(char *str, char c);
+char	*ft_substr(char *s, int start, int len);
+char	*ft_strdup(char *src);
+/*minilib_2*/
+void	*ft_memcpy(void *dest, void *src, int n);
+
 
 /*CHECKS*/
 /*check_utils*/
-int check_extension(char *map_path, t_game *game_struct);
+void	check_extension(char *map_path, t_game *game_struct);
+/*map_validation*/
+void	validator(t_game *game_struct, char **argv);
 
 /*PRINTF*/
-int	ft_printf(const char *format, ...);
+int		ft_printf(const char *format, ...);
 
 /*UTILS*/
 void	print_error(char *error);
-int quit_and_free(char *error, int err_type, t_game *game_struct);
+int		quit_and_free(char *error, int err_type, t_game *game_struct);
 
 /*INIT*/
 void	init_game_struct(t_game *game_struct);

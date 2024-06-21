@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checks_utils.c                                     :+:      :+:    :+:   */
+/*   minilib_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ldi-fior <marvin@42.fr>                    #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-06-21 11:13:25 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024-06-21 11:13:25 by ldi-fior         ###   ########.fr       */
+/*   Created: 2024-06-21 18:23:20 by ldi-fior          #+#    #+#             */
+/*   Updated: 2024-06-21 18:23:20 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
 
-void check_extension(char *map_path, t_game *game_struct)
+void	*ft_memcpy(void *dest, void *src, int n)
 {
-	int	len;
+	int					i;
+	unsigned char		*ptr_dest;
+	const unsigned char	*ptr_src;
 
-	len = ft_strlen(map_path);
-	if (map_path[len - 1] == 'b' && map_path[len - 2] == 'u'
-	&& map_path[len - 3] == 'c' && map_path[len - 4] == '.')
+	ptr_dest = (unsigned char *)dest;
+	ptr_src = (unsigned char *)src;
+	i = 0;
+	if (!dest && !src)
+		return (0);
+	while (i < n)
 	{
-		game_struct->map.map_path = map_path;
-		return ;
+		ptr_dest[i] = ptr_src[i];
+		i++;
 	}
-	else
-		quit_and_free(EXT_ERR, 1, game_struct);
+	return (dest);
 }

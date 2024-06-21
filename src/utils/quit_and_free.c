@@ -26,5 +26,6 @@ int quit_and_free(char *error, int err_type, t_game *game_struct)
 	(void)game_struct; //togliere questa linea/
 	if (err_type == 1)
 		print_error(error);
+	
 	exit (0);
 }
