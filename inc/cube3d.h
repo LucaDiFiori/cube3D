@@ -25,9 +25,20 @@
 #define ARG_ERR "Invalid number of arguments -> Use example: ./cub3D map.cub"
 #define OPEN_ERR "opening the map file"
 
+typedef struct	s_wal_text
+{
+	char	*north;
+	char	*south;
+	char	*east;
+	char	*west;
+	char	*c_color;
+	char 	*f_color;
+}	t_wal_text;
+
 typedef struct	s_map
 {
-	char	*map_path;
+	char		*map_path;
+	t_wal_text	wal_texture;
 }	t_map;
 
 typedef struct s_game
@@ -45,6 +56,7 @@ char	*ft_substr(char *s, int start, int len);
 char	*ft_strdup(char *src);
 /*minilib_2*/
 void	*ft_memcpy(void *dest, void *src, int n);
+char	*ft_strstr(const char *source, const char *to_find);
 
 
 /*CHECKS*/

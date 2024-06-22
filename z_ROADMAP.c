@@ -1,3 +1,13 @@
+/*_______________________________LINK APERTI__________________________________*/
+https://github.com/LucaDiFiori/So_long/blob/main/so_long/map_checks.c
+https://cdn.intra.42.fr/pdf/pdf/116175/en.subject.pdf
+https://github.com/mcombeau/cub3D/blob/main/sources/parsing/get_file_data.c
+https://github.com/mcombeau/cub3D/blob/main/sources/parsing/parse_data.c#L39
+/*____________________________________________________________________________*/
+
+
+
+
 /*_______________________________GIT_HUB_REPO_________________________________*/
 /*0- elengo di repo*/
 https://github.com/topics/cub3d

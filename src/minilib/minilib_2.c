@@ -30,3 +30,26 @@ void	*ft_memcpy(void *dest, void *src, int n)
 	}
 	return (dest);
 }
+
+char	*ft_strstr(const char *source, const char *to_find)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	if (!(*to_find))
+		return ((char *)source);
+	if (!(*source))
+		return (NULL);
+	while (source[i])
+	{
+		while ((to_find[j] && to_find[j] == source[i + j]))
+			j++;
+		if (to_find[j] == '\0')
+			return ((char *)&source[i]);
+		i++;
+		j = 0;
+	}
+	return (NULL);
+}
