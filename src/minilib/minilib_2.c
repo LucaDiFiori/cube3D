@@ -53,3 +53,32 @@ char	*ft_strstr(const char *source, const char *to_find)
 	}
 	return (NULL);
 }
+
+
+
+/*scrivere is_printable
+
+
+
+*/
+
+void	remove_space_strcpy(char *copy, char *to_copy)
+{
+	int	len;
+
+	while (*to_copy && *to_copy == ' ')
+		to_copy++;
+	if (*to_copy == '\0')
+		copy = NULL;
+	len = ft_strlen(to_copy) + 1;
+	copy = (char *)malloc(sizeof(char) * len);
+	while(*to_copy && is_printable(*to_copy))
+	{
+		if (*to_copy == ' ')
+			continue;
+		*copy = *to_copy;
+		copy++;
+		to_copy++;
+	}
+	*copy = '/0';
+}
