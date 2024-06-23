@@ -49,8 +49,8 @@ all:
 	@echo "           \\/____/                 \\/____/                 \\/____/                 ~~              "
 
 SRCS = cube3d.c \
-	   src/map_checks/checks_utils.c \
-	   src/map_checks/map_validation.c \
+	   src/cub_file_parsing/checks_utils.c \
+	   src/cub_file_parsing/info_validation.c \
 	   src/gnl/get_next_line.c \
 	   src/gnl/get_next_line_utils.c \
 	   src/minilib/minilib_1.c \

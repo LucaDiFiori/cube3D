@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_validation.c                                   :+:      :+:    :+:   */
+/*   info_validation.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldi-fior <marvin@42.fr>                    #+#  +:+       +#+        */
+/*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-06-21 17:35:04 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024-06-21 17:35:04 by ldi-fior         ###   ########.fr       */
+/*   Created: 2024/06/21 17:35:04 by ldi-fior          #+#    #+#             */
+/*   Updated: 2024/06/23 16:21:25 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ NOTA: Questa funzione, alla fine, riempirà il campo della struct game: t_wall_t
 	  Alla fine di questa funzione, per controllare che ci siano tutte, dovrò verificare
 	  CHE QUEI CAMPI DELLA STRUCT NON SIANO RIMASTI NULL
 */
-static void cub_file_validator(t_game *g_s, int map_fd)
+void cub_file_validator(t_game *g_s, int map_fd)
 {
 	char	*line;
 	char 	**split_line;
@@ -72,8 +72,8 @@ static void cub_file_validator(t_game *g_s, int map_fd)
 	/*estraggo la prima linea*/
 	line = get_next_line(map_fd);
 
-	/*ciclo su teutte le linee*/
-	while (line != NULL && count_info != 6)
+	/*ciclo su teutte le linee finchè non è finito il file o finchè non ha raccolto tutte le info */
+	while (line != NULL && check_missing_info(g_s))
 	{
 		/* splitto ogni riga sulla spazi creano una matrice della riga*/
 		split_line = ft_split(line, ' ');
@@ -128,7 +128,11 @@ static void cub_file_validator(t_game *g_s, int map_fd)
 	}
 	if (line)
 		free(line);
-	if (count_info != 6 )
+
+	/*Qui verifico che siano state raccolte esattamente 6 informazioni e che tutti
+	  i campi siano riempiti nella struct (e quindi non ho 6 informazioni uguali
+	  nel file)*/
+	if (count_info != 6 || check_missing_info(g_s))
 	{
 		/*Qui mi serve che quit controlli quali delgli elementi della struct texture è
 		  diverso da NULL (quindi allocato e friarlo)*/
@@ -153,45 +157,3 @@ static void cub_file_validator(t_game *g_s, int map_fd)
 
 /*void map_validator --> controllerà la validità della mappa*/
 
-
-
-
-
-
-
-
-
-/**************************************************************************** */
-/*                         FUNZIONE PRINCIPALE                                */
-/**************************************************************************** */
-void	validator(t_game *game_struct, char **argv)
-{
-	int	map_fd;
-
-	/*controllo .cub*/
-	check_extension(argv[1], game_struct);
-
-	/*se l'estensione va bene apro la mappa*/
-	map_fd = open(argv[1], O_RDONLY);
-	if (map_fd < 0)
-	{
-		close(map_fd);
-		quit_and_free(OPEN_ERR, 1, game_struct);
-	}
-
-
-
-
-	/*passo l'fd della mappa alla funzione econtrollo gli elementi del file .cub*/
-	cub_file_validator(game_struct, map_fd);
-
-	/*Qui potrei mettere la funzione che controlla il campo t_walll_text della game_struct
-	  (controlla se tutti i campi sono stati riempiti o no)*/
-
-	/*controllo la mappa vera e propria con map_validator*/
-
-
-
-	/*alla fine chiudo l'fd*/
-	close(map_fd);
-}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldi-fior <marvin@42.fr>                    #+#  +:+       +#+        */
+/*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-06-21 11:16:22 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024-06-21 11:16:22 by ldi-fior         ###   ########.fr       */
+/*   Created: 2024/06/21 11:16:22 by ldi-fior          #+#    #+#             */
+/*   Updated: 2024/06/23 16:13:49 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <pthread.h>
 #include <math.h>
 #include <stdarg.h>
 #include <fcntl.h>
@@ -77,8 +76,9 @@ int	ft_atoi(const char *nptr);
 /*CHECKS*/
 /*check_utils*/
 void	check_extension(char *map_path, t_game *game_struct);
-/*map_validation*/
-void	validator(t_game *game_struct, char **argv);
+int		check_missing_info(t_game *g_s);
+/*info_validation*/
+void	cub_file_validator(t_game *g_s, int map_fd);
 
 /*PRINTF*/
 int		ft_printf(const char *format, ...);
