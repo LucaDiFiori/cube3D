@@ -15,8 +15,6 @@
 int	main(int argc, char **argv)
 {
 	t_game	game_struct;
-	(void)game_struct;///togliere/
-	(void)argv;///togliere/
 
 	if (argc != 2)
 		quit_and_free(ARG_ERR,1, &game_struct);

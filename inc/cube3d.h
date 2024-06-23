@@ -19,6 +19,8 @@
 #include <pthread.h>
 #include <math.h>
 #include <stdarg.h>
+#include <fcntl.h>
+#include <limits.h>
 #include "../src/gnl/get_next_line.h"
 
 #define EXT_ERR "Invalid file extension. '.cub' file needed\n"
@@ -39,8 +41,6 @@ typedef struct	s_wal_text
 	char	*south;
 	char	*east;
 	char	*west;
-	char	*c_color;
-	char 	*f_color;
 	t_rgb	c_rgb;
 	t_rgb	f_rgb;
 }	t_wal_text;
@@ -48,7 +48,7 @@ typedef struct	s_wal_text
 typedef struct	s_map
 {
 	char		*map_path;
-	t_wal_text	wal_text;
+	t_wal_text	wall_text;
 }	t_map;
 
 typedef struct s_game
@@ -67,7 +67,11 @@ char	*ft_strdup(char *src);
 /*minilib_2*/
 void	*ft_memcpy(void *dest, void *src, int n);
 char	*ft_strstr(const char *source, const char *to_find);
-void	remove_space_strcpy(char *copy, char *to_copy);
+int		ft_isprint(int c);
+char	*remove_space_strcpy(char *to_copy);
+
+/*ft_atoi*/
+int	ft_atoi(const char *nptr);
 
 
 /*CHECKS*/
@@ -81,6 +85,7 @@ int		ft_printf(const char *format, ...);
 
 /*UTILS*/
 void	print_error(char *error);
+int		free_matrix(char **ptr_matric);
 int		quit_and_free(char *error, int err_type, t_game *game_struct);
 
 /*INIT*/

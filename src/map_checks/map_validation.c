@@ -12,20 +12,41 @@
 
 #include "../../inc/cube3d.h"
 
-char	*extract_file_data(t_game *g_s, char *info)
-{
-	if (line[0] == 'N' && line[0] == 'O')
-		remove_space_strcpy(g_s->map.wal_text.north, (info + 2))
-	else if (line[0] == 'S' && line[0] == 'O')
-		remove_space_strcpy(g_s->map.wal_text.south, (info + 2))
-	else if (line[0] == 'W' && line[0] == 'E')
-		remove_space_strcpy(g_s->map.wal_text.west, (info + 2))
-	else if (line[0] == 'E' && line[0] == 'A')
-		remove_space_strcpy(g_s->map.wal_text.east, (info + 2))
+#include "../../inc/cube3d.h"
 
-	/*per i colori dovrei splittare la linea dei colori (con la virgola)
-	  verificare che siano 3 e maggiori di zero e minori di 255 e poi metterli 
-	  dentrio gli elementi della struct.*/
+static int extract_rgb(t_rgb *color, char *line) 
+{
+    char **split_line;
+    int i;
+
+	i = 0;
+    // Skippo gli spazi bianchi se presenti
+    while (*line && *line == ' ')
+        line++;
+    if (!*line || !ft_isprint(*line))
+        return (0);
+
+    // Splitto la linea
+    split_line = ft_split(line, ',');
+    while (split_line[i] != NULL) i++;
+    
+	// Verifica che ci siano esattamente 3 elementi
+	if (i != 3) 
+		return (free_matrix(split_line));
+
+    // Conversione e assegnazione dei valori
+    color->r = atoi(split_line[0]);
+    color->g = atoi(split_line[1]);
+    color->b = atoi(split_line[2]);
+
+    // Validazione dei valori RGB
+    if (color->r < 0 || color->r > 255 || color->g < 0 || color->g > 255
+		|| color->b < 0 || color->b > 255) 
+		return (free_matrix(split_line));
+
+    // Pulizia
+	free_matrix(split_line);
+	return (1); // Successo
 }
 
 
@@ -35,12 +56,12 @@ char	*extract_file_data(t_game *g_s, char *info)
 
 /*controlla la validità degli elementi presenti nel cub file
 
-NOTA: Questa funzione, alla fine, riempirà il campo della struct game: t_wal_text
+NOTA: Questa funzione, alla fine, riempirà il campo della struct game: t_wall_text
       con le info descritte nel file.
 	  Alla fine di questa funzione, per controllare che ci siano tutte, dovrò verificare
 	  CHE QUEI CAMPI DELLA STRUCT NON SIANO RIMASTI NULL
 */
-static void cub_file_validator(t_game *g_s, char **argv, int map_fd)
+static void cub_file_validator(t_game *g_s, int map_fd)
 {
 	char	*line;
 	char 	**split_line;
@@ -61,62 +82,52 @@ static void cub_file_validator(t_game *g_s, char **argv, int map_fd)
 		  Se sono quelli desiderati chiamo la funzione (da scrivere) che 
 		  estrarrà le info (gli elementi dopo l'indentifier)*/
 		if (split_line[0][0] == 'N' && split_line[0][1] == 'O'
-			/*&& !(g_s->map.wal_text.north)*/)
+			/*&& !(g_s->map.wall_text.north)*/)
 			{
-				g_s->map.wal_text.north = extract_file_data(g_s, line);
+				g_s->map.wall_text.north = remove_space_strcpy(line + 2);
+				if (!g_s->map.wall_text.north)
+					quit_and_free(DATA_ERR, 1, g_s); ////CAPIRE COSA FREARE
 				count_info++;
-				free(line);
-				free(split_line);
-				line = get_next_line(map_fd);
 			}
 		else if (split_line[0][0] == 'S' && split_line[0][1] == 'O')
 			{
-				g_s->map.wal_text.south = extract_file_data(g_s, line);
+				g_s->map.wall_text.south = remove_space_strcpy(line + 2);
+				if (!g_s->map.wall_text.south)
+					quit_and_free(DATA_ERR, 1, g_s);////CAPIRE COSA FREARE
 				count_info++;
-				free(line);
-				free(split_line);
-				line = get_next_line(map_fd);
 			}
 		else if (split_line[0][0] == 'E' && split_line[0][1] == 'A')
 			{
-				g_s->map.wal_text.east = extract_file_data(g_s, line);
+				g_s->map.wall_text.east = remove_space_strcpy(line + 2);
+				if (!g_s->map.wall_text.east)
+					quit_and_free(DATA_ERR, 1, g_s);////CAPIRE COSA FREARE
 				count_info++;
-				free(line);
-				free(split_line);
-				line = get_next_line(map_fd);
 			}
 		else if (split_line[0][0] == 'W' && split_line[0][1] == 'E')
 			{
-				g_s->map.wal_text.west = extract_file_data(g_s, line);
+				g_s->map.wall_text.west = remove_space_strcpy(line + 2);
+				if (!g_s->map.wall_text.west)
+					quit_and_free(DATA_ERR, 1, g_s);////CAPIRE COSA FREARE
 				count_info++;
-				free(line);
-				free(split_line);
-				line = get_next_line(map_fd);
 			}
 		else if (split_line[0][0] == 'C')
 			{
-				g_s->map.wal_text.c_color = extract_color_data(g_s, line);
+				if (!extract_rgb(&(g_s->map.wall_text.c_rgb), line))
+					quit_and_free(DATA_ERR, 1, g_s);  ////CAPIRE COSA FREARE
 				count_info++;
-				free(line);
-				free(split_line);
-				line = get_next_line(map_fd);
 			}
 		else if (split_line[0][0] == 'F')
 			{
-				g_s->map.wal_text.f_color = extract_color_data(g_s, line);
+				if (!extract_rgb(&(g_s->map.wall_text.f_rgb), line))
+					quit_and_free(DATA_ERR, 1, g_s);  ////CAPIRE COSA FREARE
 				count_info++;
-				free(line);
-				free(split_line);
-				line = get_next_line(map_fd);
 			}
 		free(line);
-		free(split_line);
 		line = get_next_line(map_fd);
+		free(split_line);
 	}
 	if (line)
 		free(line);
-	if (split_line)
-		free(split_line);
 	if (count_info != 6 )
 	{
 		/*Qui mi serve che quit controlli quali delgli elementi della struct texture è
@@ -128,6 +139,8 @@ static void cub_file_validator(t_game *g_s, char **argv, int map_fd)
 	
 	*/
 }
+
+
 
 /*NOTA: LA funzione sopra estrarrà solo le info quindi poi dovrò riaprire il file
         e andare avanti finche non trovo la mappa (se arrivo qui significa che non 
@@ -170,9 +183,9 @@ void	validator(t_game *game_struct, char **argv)
 
 
 	/*passo l'fd della mappa alla funzione econtrollo gli elementi del file .cub*/
-	cub_file_validator(game_struct, argv, map_fd);
+	cub_file_validator(game_struct, map_fd);
 
-	/*Qui potrei mettere la funzione che controlla il campo t_wall_text della game_struct
+	/*Qui potrei mettere la funzione che controlla il campo t_walll_text della game_struct
 	  (controlla se tutti i campi sono stati riempiti o no)*/
 
 	/*controllo la mappa vera e propria con map_validator*/

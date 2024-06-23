@@ -88,7 +88,7 @@ char	*get_line(int fd, char *line)
 	return (line);
 }
 
-char	*get_next_line(int fd, char *line)
+char	*get_next_line(int fd)
 {
 	static char	*line;
 	char		*output;

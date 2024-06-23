@@ -54,31 +54,38 @@ char	*ft_strstr(const char *source, const char *to_find)
 	return (NULL);
 }
 
-
-
-/*scrivere is_printable
-
-
-
-*/
-
-void	remove_space_strcpy(char *copy, char *to_copy)
+int	ft_isprint(int c)
 {
-	int	len;
+	return (c >= 32 && c <= 126);
+}
 
-	while (*to_copy && *to_copy == ' ')
-		to_copy++;
-	if (*to_copy == '\0')
-		copy = NULL;
-	len = ft_strlen(to_copy) + 1;
-	copy = (char *)malloc(sizeof(char) * len);
-	while(*to_copy && is_printable(*to_copy))
+char *remove_space_strcpy(char *to_copy) 
+{
+    int		len;
+    char	*copy; 
+	char	*start;
+
+    // Skip leading spaces
+    while (*to_copy && *to_copy == ' ')
+        to_copy++;
+    if (*to_copy == '\0' || !ft_isprint(*to_copy))
+        return NULL; // Return NULL if the string is empty or contains only spaces
+
+    len = ft_strlen(to_copy) + 1;
+    copy = (char *)malloc(sizeof(char) * len);
+    if (!copy) // Check if malloc failed
+        return NULL;
+
+    start = copy; // Save the start of the copy to return it later
+    while (*to_copy) 
 	{
-		if (*to_copy == ' ')
-			continue;
-		*copy = *to_copy;
-		copy++;
-		to_copy++;
-	}
-	*copy = '/0';
+        if (*to_copy != ' ' && ft_isprint(*to_copy)) 
+		{
+            *copy = *to_copy;
+            copy++;
+        }
+        to_copy++;
+    }
+    *copy = '\0'; // Correctly terminate the string
+    return (start); // Return the start of the allocated memory
 }
