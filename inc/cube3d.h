@@ -24,6 +24,14 @@
 #define EXT_ERR "Invalid file extension. '.cub' file needed\n"
 #define ARG_ERR "Invalid number of arguments -> Use example: ./cub3D map.cub"
 #define OPEN_ERR "opening the map file"
+#define DATA_ERR "bad textures data in the file"
+
+typedef struct s_rgb
+{
+	int	r;
+	int	g;
+	int	b;
+}	t_rgb;
 
 typedef struct	s_wal_text
 {
@@ -33,12 +41,14 @@ typedef struct	s_wal_text
 	char	*west;
 	char	*c_color;
 	char 	*f_color;
+	t_rgb	c_rgb;
+	t_rgb	f_rgb;
 }	t_wal_text;
 
 typedef struct	s_map
 {
 	char		*map_path;
-	t_wal_text	wal_texture;
+	t_wal_text	wal_text;
 }	t_map;
 
 typedef struct s_game
@@ -57,6 +67,7 @@ char	*ft_strdup(char *src);
 /*minilib_2*/
 void	*ft_memcpy(void *dest, void *src, int n);
 char	*ft_strstr(const char *source, const char *to_find);
+void	remove_space_strcpy(char *copy, char *to_copy);
 
 
 /*CHECKS*/
