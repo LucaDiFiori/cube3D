@@ -6,7 +6,7 @@
 /*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 13:51:18 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024/06/23 16:09:38 by ldi-fior         ###   ########.fr       */
+/*   Updated: 2024/06/23 19:23:43 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	main(int argc, char **argv)
 	/* funzione che valida (map_validator) la mappa:
 	   1) controlla il ".ber" */
 	validator(&game_struct, argv); 
+
+	
 
 	/*funzione che fa il parsing e crea la matrice*/
 	

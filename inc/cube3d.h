@@ -6,7 +6,7 @@
 /*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 11:16:22 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024/06/23 16:13:49 by ldi-fior         ###   ########.fr       */
+/*   Updated: 2024/06/24 09:28:28 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char	*ft_strdup(char *src);
 void	*ft_memcpy(void *dest, void *src, int n);
 char	*ft_strstr(const char *source, const char *to_find);
 int		ft_isprint(int c);
-char	*remove_space_strcpy(char *to_copy);
+int		ft_isdigit(int c);
 
 /*ft_atoi*/
 int	ft_atoi(const char *nptr);
@@ -77,6 +77,9 @@ int	ft_atoi(const char *nptr);
 /*check_utils*/
 void	check_extension(char *map_path, t_game *game_struct);
 int		check_missing_info(t_game *g_s);
+int		is_map_line(char *line);
+char	*remove_space_strcpy(char *to_copy);
+
 /*info_validation*/
 void	cub_file_validator(t_game *g_s, int map_fd);
 

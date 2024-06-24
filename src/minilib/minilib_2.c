@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minilib_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldi-fior <marvin@42.fr>                    #+#  +:+       +#+        */
+/*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-06-21 18:23:20 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024-06-21 18:23:20 by ldi-fior         ###   ########.fr       */
+/*   Created: 2024/06/21 18:23:20 by ldi-fior          #+#    #+#             */
+/*   Updated: 2024/06/24 09:28:09 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,34 +58,7 @@ int	ft_isprint(int c)
 {
 	return (c >= 32 && c <= 126);
 }
-
-char *remove_space_strcpy(char *to_copy) 
+int	ft_isdigit(int c)
 {
-    int		len;
-    char	*copy; 
-	char	*start;
-
-    // Skip leading spaces
-    while (*to_copy && *to_copy == ' ')
-        to_copy++;
-    if (*to_copy == '\0' || !ft_isprint(*to_copy))
-        return NULL; // Return NULL if the string is empty or contains only spaces
-
-    len = ft_strlen(to_copy) + 1;
-    copy = (char *)malloc(sizeof(char) * len);
-    if (!copy) // Check if malloc failed
-        return NULL;
-
-    start = copy; // Save the start of the copy to return it later
-    while (*to_copy) 
-	{
-        if (*to_copy != ' ' && ft_isprint(*to_copy)) 
-		{
-            *copy = *to_copy;
-            copy++;
-        }
-        to_copy++;
-    }
-    *copy = '\0'; // Correctly terminate the string
-    return (start); // Return the start of the allocated memory
+	return (c >= '0' && c <= '9');
 }
