@@ -6,7 +6,7 @@
 /*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:35:04 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024/06/24 12:09:09 by ldi-fior         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:39:54 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ NOTA: Questa funzione, alla fine, riempirà il campo della struct game: t_wall_t
 	  Alla fine di questa funzione, per controllare che ci siano tutte, dovrò verificare
 	  CHE QUEI CAMPI DELLA STRUCT NON SIANO RIMASTI NULL
 */
-int cub_file_validator(t_game *g_s, int map_fd)
+/*int cub_file_validator(t_game *g_s, int map_fd)
 {
 	char	*line;
 	char 	**split_line;
@@ -111,22 +111,22 @@ int cub_file_validator(t_game *g_s, int map_fd)
 
 	count_info = 0;
 
-	/*estraggo la prima linea*/
+	//estraggo la prima linea
 	line = get_next_line(map_fd);
 	if (!line)
 		return (0);
 
-	/*ciclo su teutte le linee finchè non è finito il file o finchè non ha raccolto tutte le info */
+	//ciclo su teutte le linee finchè non è finito il file o finchè non ha raccolto tutte le info 
 	while (line != NULL && check_missing_info(g_s))
 	{
-		/* splitto ogni riga sulla spazi creano una matrice della riga*/
+		// splitto ogni riga sulla spazi creano una matrice della riga
 		split_line = ft_split(line, ' ');
 		if (!split_line)
 			break;
 
-		/*controllo i primi due caratteri della prima stringa. 
-		  Se sono quelli desiderati chiamo la funzione (da scrivere) che 
-		  estrarrà le info (gli elementi dopo l'indentifier)*/
+		//controllo i primi due caratteri della prima stringa. 
+		//  Se sono quelli desiderati chiamo la funzione (da scrivere) che 
+		//  estrarrà le info (gli elementi dopo l'indentifier)
 		if (split_line[0][0] == 'N' && split_line[0][1] == 'O')
 		{
 			g_s->map.wall_text.north = remove_space_strcpy(line + 2);
@@ -169,26 +169,92 @@ int cub_file_validator(t_game *g_s, int map_fd)
 		}
 		else if (is_map_line(line))
 			break;
-		/*free(line);
-		line = get_next_line(map_fd);
-		free_matrix(split_line);
-		split_line = NULL;*/
 		cleanup(&line, &split_line, 1);
 		line = get_next_line(map_fd);
 	}
 	cleanup(&line, &split_line, 2);
 
-	/*Qui verifico che siano state raccolte esattamente 6 informazioni e che tutti
-	  i campi siano riempiti nella struct (e quindi non ho 6 informazioni uguali
-	  nel file)*/
+	//Qui verifico che siano state raccolte esattamente 6 informazioni e che tutti
+	//  i campi siano riempiti nella struct (e quindi non ho 6 informazioni uguali
+	//  nel file)
 	if (count_info != 6 || check_missing_info(g_s))
 	{
 		return (0);
 	}
 	return (1);
-
-	
+}*/
+static int parse_texture(char *line, char **texture, int *count_info)
+{
+    *texture = remove_space_strcpy(line);
+    if (!(*texture))
+        return (0);
+    (*count_info)++;
+    return (1);
 }
+
+static int parse_color(char *line, t_rgb *color, int *count_info)
+{
+    if (!extract_rgb(color, line))
+        return (0);
+    (*count_info)++;
+    return (1);
+}
+
+static int handle_texture_and_color(char *line, char **split_line, t_game *g_s, int *count_info)
+{
+    if (split_line[0][0] == 'N' && split_line[0][1] == 'O')
+        return (parse_texture(line + 2, &g_s->map.wall_text.north, count_info));
+    else if (split_line[0][0] == 'S' && split_line[0][1] == 'O')
+        return (parse_texture(line + 2, &g_s->map.wall_text.south, count_info));
+    else if (split_line[0][0] == 'E' && split_line[0][1] == 'A')
+        return (parse_texture(line + 2, &g_s->map.wall_text.east, count_info));
+    else if (split_line[0][0] == 'W' && split_line[0][1] == 'E')
+        return (parse_texture(line + 2, &g_s->map.wall_text.west, count_info));
+    else if (split_line[0][0] == 'F')
+        return (parse_color(line + 1, &g_s->map.wall_text.f_rgb, count_info));
+    else if (split_line[0][0] == 'C')
+        return (parse_color(line + 1, &g_s->map.wall_text.c_rgb, count_info));
+    return (1);
+}
+
+static int parse_line(char *line, t_game *g_s, int *count_info, char **split_line)
+{
+    if (!handle_texture_and_color(line, split_line, g_s, count_info))
+        return (0);
+    return (1);
+}
+
+int cub_file_validator(t_game *g_s, int map_fd)
+{
+    char *line;
+    int count_info = 0;
+	char **split_line;
+
+    line = get_next_line(map_fd);
+    if (!line)
+        return (0);
+    while (line != NULL && check_missing_info(g_s))
+    {
+		split_line = ft_split(line, ' ');
+		if (!split_line)
+			break;	
+        if (!parse_line(line, g_s, &count_info, split_line))
+            break;
+        if (is_map_line(line))
+            break;
+        cleanup(&line, &split_line, 1);
+        line = get_next_line(map_fd);
+    }
+    cleanup(&line, &split_line, 2);
+
+    if (count_info != 6 || check_missing_info(g_s))
+        return (0);
+    return (1);
+}
+
+
+
+
 
 
 
