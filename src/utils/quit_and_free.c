@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quit_and_free.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldi-fior <marvin@42.fr>                    #+#  +:+       +#+        */
+/*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-06-21 13:11:16 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024-06-21 13:11:16 by ldi-fior         ###   ########.fr       */
+/*   Created: 2024/06/21 13:11:16 by ldi-fior          #+#    #+#             */
+/*   Updated: 2024/06/24 11:15:59 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,31 @@ int	free_matrix(char **ptr_matric)
 	return (0);
 }
 
-//void free_map_matric(char **ptr_map, t_game *game_struct)
 
 //void ft_destroy(t_game *game_struct)
 
+void destroy_struct(t_game *game_struct)
+{		
+	if (game_struct->map.wall_text.north)
+		free(game_struct->map.wall_text.north);
+	if (game_struct->map.wall_text.south)
+		free(game_struct->map.wall_text.south);
+	if (game_struct->map.wall_text.east)
+		free(game_struct->map.wall_text.east);
+	if (game_struct->map.wall_text.west)
+		free(game_struct->map.wall_text.west);
+
+}
+
 int quit_and_free(char *error, int err_type, t_game *game_struct)
 {
-	(void)game_struct; //togliere questa linea/
 	if (err_type == 1)
 		print_error(error);
+	if (err_type == 2)
+	{
+		print_error(error);
+		destroy_struct(game_struct);
+	}
 	
 	exit (0);
 }

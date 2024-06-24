@@ -6,7 +6,7 @@
 /*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 13:51:18 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024/06/23 19:23:43 by ldi-fior         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:39:05 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	validator(t_game *game_struct, char **argv)
 {
 	int	map_fd;
 
-	/*controllo .cub*/
+	/*controllo .cub. Se va male la funzione fa exit*/
 	check_extension(argv[1], game_struct);
 
 	/*se l'estensione va bene apro la mappa*/
@@ -34,7 +34,8 @@ static void	validator(t_game *game_struct, char **argv)
 
 
 	/*passo l'fd della mappa alla funzione econtrollo gli elementi del file .cub*/
-	cub_file_validator(game_struct, map_fd);
+	if (!cub_file_validator(game_struct, map_fd))
+		quit_and_free(DATA_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
 
 	/*Qui potrei mettere la funzione che controlla il campo t_walll_text della game_struct
 	  (controlla se tutti i campi sono stati riempiti o no)*/
@@ -62,6 +63,21 @@ int	main(int argc, char **argv)
 	validator(&game_struct, argv); 
 
 	
+
+	printf("map_path = %s\n", game_struct.map.map_path);
+	printf("north = %s\n", game_struct.map.wall_text.north);
+	printf("south = %s\n", game_struct.map.wall_text.south);
+	printf("east = %s\n", game_struct.map.wall_text.east);
+	printf("west = %s\n", game_struct.map.wall_text.west);
+	printf("c_rgb.r = %d\n", game_struct.map.wall_text.c_rgb.r);
+	printf("c_rgb.g = %d\n", game_struct.map.wall_text.c_rgb.g);
+	printf("c_rgb.b = %d\n", game_struct.map.wall_text.c_rgb.b);
+	printf("f_rgb.r = %d\n", game_struct.map.wall_text.f_rgb.r);
+	printf("f_rgb.g = %d\n", game_struct.map.wall_text.f_rgb.g);
+	printf("f_rgb.b = %d\n", game_struct.map.wall_text.f_rgb.b);
+
+	quit_and_free(NULL, 2, &game_struct);
+
 
 	/*funzione che fa il parsing e crea la matrice*/
 	

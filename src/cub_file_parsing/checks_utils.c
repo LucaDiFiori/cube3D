@@ -6,7 +6,7 @@
 /*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 11:13:25 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024/06/24 09:26:32 by ldi-fior         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:05:08 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char *remove_space_strcpy(char *to_copy)
 	char	*start;
 
     // Skip leading spaces
-    while (*to_copy && *to_copy == ' ')
+    while (*to_copy && (*to_copy == ' ' || *to_copy == '\t'))
         to_copy++;
     if (*to_copy == '\0' || !ft_isprint(*to_copy))
         return NULL; // Return NULL if the string is empty or contains only spaces

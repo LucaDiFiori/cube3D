@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldi-fior <marvin@42.fr>                    #+#  +:+       +#+        */
+/*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-06-21 12:07:14 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024-06-21 12:07:14 by ldi-fior         ###   ########.fr       */
+/*   Created: 2024/06/21 12:07:14 by ldi-fior          #+#    #+#             */
+/*   Updated: 2024/06/24 11:45:54 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,17 +88,32 @@ char	*get_line(int fd, char *line)
 	return (line);
 }
 
-char	*get_next_line(int fd)
-{
-	static char	*line;
-	char		*output;
+char *get_next_line(int fd) {
+    static char *line;
+    char *output;
 
-	if (fd < 0 || BUFFER_SIZE < 1)
-		return (NULL);
-	line = get_line(fd, line);
-	if (!line)
-		return (NULL);
-	output = print_line(line);
-	line = update_line(line);
-	return (output);
+    // Special case to clean up static variable
+    if (fd == -2) {
+        free(line);
+        line = NULL;
+        return (NULL);
+    }
+
+    if (fd < 0 || BUFFER_SIZE < 1)
+        return (NULL);
+
+    line = get_line(fd, line);
+    if (!line)
+        return (NULL);
+
+    output = print_line(line);
+    line = update_line(line);
+
+    // If output is NULL, indicating EOF or error, and line is not NULL, free line
+    if (!output && line) {
+        free(line);
+        line = NULL;
+    }
+
+    return (output);
 }

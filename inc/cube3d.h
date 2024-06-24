@@ -6,7 +6,7 @@
 /*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 11:16:22 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024/06/24 09:28:28 by ldi-fior         ###   ########.fr       */
+/*   Updated: 2024/06/24 11:02:17 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int		is_map_line(char *line);
 char	*remove_space_strcpy(char *to_copy);
 
 /*info_validation*/
-void	cub_file_validator(t_game *g_s, int map_fd);
+int		cub_file_validator(t_game *g_s, int map_fd);
 
 /*PRINTF*/
 int		ft_printf(const char *format, ...);
