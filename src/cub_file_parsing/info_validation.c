@@ -6,7 +6,7 @@
 /*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 17:35:04 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024/06/24 12:39:54 by ldi-fior         ###   ########.fr       */
+/*   Updated: 2024/06/24 12:45:27 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ COSA NON FUNZIONA SULLE INFO DELLA MAPPA:
 
 
 
-static int extract_rgb(t_rgb *color, char *line) 
+/*static int extract_rgb(t_rgb *color, char *line) 
 {
     char **split_line;
-		/*mi serve temp_ptr perchè altrimenti dovrei modificare il puntatore
-		split_line (ad esempio facendo split_line++) e questo causa problemi 
-		quando chiamo la funzione free():
-		Questo perchè essendo un array di puntatori, facendo split_line++ sto 
-		puntando alla stringa successiva e non piu al primo elemento. Andrei quindi 
-		a passare questo elemento alla funzione free_matrix ed avrò quindi problemi*/
+		//mi serve temp_ptr perchè altrimenti dovrei modificare il puntatore
+		//split_line (ad esempio facendo split_line++) e questo causa problemi 
+		//quando chiamo la funzione free():
+		//Questo perchè essendo un array di puntatori, facendo split_line++ sto 
+		//puntando alla stringa successiva e non piu al primo elemento. Andrei quindi 
+		//a passare questo elemento alla funzione free_matrix ed avrò quindi problemi
     char *temp_ptr;
     int i;
     
@@ -42,18 +42,18 @@ static int extract_rgb(t_rgb *color, char *line)
     i = 0;
     while (split_line[i] != NULL)
     {
-		/*salto tutti i caratteri che non siano numeri*/
+		//salto tutti i caratteri che non siano numeri
         temp_ptr = split_line[i];
         while (*temp_ptr && !ft_isdigit(*temp_ptr))
             temp_ptr++;
-		/*se la stringa è finita esco */
+		//se la stringa è finita esco 
         if (!*temp_ptr)
 			return (free_matrix(split_line)); // Pulizia e uscita per errore
 
 
 
 			
-		/*per ogni stringa controllo che la lunghezza sia fra 0 e 3 e la converto in numero*/
+		//per ogni stringa controllo che la lunghezza sia fra 0 e 3 e la converto in numero
 		if (i == 0)
 			color->r = ft_atoi(temp_ptr);
 		else if (i == 1)
@@ -73,7 +73,79 @@ static int extract_rgb(t_rgb *color, char *line)
 
     free_matrix(split_line); // Pulizia
     return (1); // Successo
+}*/
+
+static int split_and_validate_line(char *line, char ***split_line) 
+{
+    *split_line = ft_split(line, ',');
+    if (!*split_line)
+        return (0); // Fallimento nell'allocazione
+    return (1); // Successo
 }
+
+static int process_rgb_values(char **split_line, t_rgb *color) 
+{
+    char *temp_ptr;
+    int i = 0;
+
+    while (split_line[i] != NULL) {
+        temp_ptr = split_line[i];
+        while (*temp_ptr && !ft_isdigit(*temp_ptr))
+            temp_ptr++;
+        if (!*temp_ptr)
+            return (0); // Errore: stringa non valida
+
+        if (i == 0)
+            color->r = ft_atoi(temp_ptr);
+        else if (i == 1)
+            color->g = ft_atoi(temp_ptr);
+        else if (i == 2)
+            color->b = ft_atoi(temp_ptr);
+        else
+            return (0); // Errore: troppi valori
+        i++;
+    }
+    return (i == 3 ? 1 : 0); // Successo se esattamente 3 valori
+}
+
+static int validate_rgb_range(t_rgb color) 
+{
+    if (color.r < 0 || color.r > 255 || color.g < 0 || color.g > 255
+		|| color.b < 0 || color.b > 255)
+        return (0); // Valori fuori range
+    return (1); // Valori validi
+}
+
+static int extract_rgb(t_rgb *color, char *line) 
+{
+    char **split_line;
+
+    if (!split_and_validate_line(line, &split_line))
+        return (0); // Fallimento nell'allocazione
+
+    if (!process_rgb_values(split_line, color)) {
+        free_matrix(split_line);
+        return (0); // Errore nell'elaborazione dei valori
+    }
+
+    if (!validate_rgb_range(*color)) {
+        free_matrix(split_line);
+        return (0); // Valori fuori range
+    }
+
+    free_matrix(split_line);
+    return (1); // Successo
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
