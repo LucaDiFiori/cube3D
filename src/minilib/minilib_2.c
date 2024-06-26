@@ -58,7 +58,31 @@ int	ft_isprint(int c)
 {
 	return (c >= 32 && c <= 126);
 }
+
 int	ft_isdigit(int c)
 {
 	return (c >= '0' && c <= '9');
+}
+
+char *ft_strcpy(char *to_copy) 
+{
+    int		len;
+    char	*copy; 
+    char	*start;
+
+    if (!to_copy)
+        return NULL;
+    len = ft_strlen(to_copy) + 1; 
+    copy = (char *)malloc(sizeof(char) * len);
+    if (!copy)
+        return NULL;
+    start = copy;
+    while (*to_copy)
+    {
+        *copy = *to_copy;
+        copy++;
+        to_copy++;
+    }
+    *copy = '\0';
+    return (start);
 }

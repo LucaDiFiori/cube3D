@@ -26,6 +26,7 @@
 #define ARG_ERR "Invalid number of arguments -> Use example: ./cub3D map.cub"
 #define OPEN_ERR "opening the map file"
 #define DATA_ERR "bad textures data in the file"
+#define MALLOC_ERR "malloc error"
 
 typedef struct s_rgb
 {
@@ -47,7 +48,11 @@ typedef struct	s_wal_text
 typedef struct	s_map
 {
 	char		*map_path;
+	char		**map_mat;
+	int			map_rows;
 	t_wal_text	wall_text;
+
+
 }	t_map;
 
 typedef struct s_game
@@ -70,7 +75,7 @@ int		ft_isprint(int c);
 int		ft_isdigit(int c);
 
 /*ft_atoi*/
-int	ft_atoi(const char *nptr);
+int		ft_atoi(const char *nptr);
 
 
 /*CUBE_FILE_PARSING*/
@@ -83,6 +88,8 @@ char	*remove_space_strcpy(char *to_copy);
 void	cleanup(char **line, char ***split_line, int flag);
 /*extract_info*/
 int		extract_info(t_game *g_s, int map_fd);
+/*extract_map*/
+int		extract_map(t_game *g_s, int map_fd);
 
 
 /*PRINTF*/

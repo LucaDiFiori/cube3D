@@ -38,7 +38,9 @@ static void	validator(t_game *game_struct, char **argv)
 		quit_and_free(DATA_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
 
 
-	/*controllo la mappa vera e propria con map_validator*/
+	if (!extract_map(game_struct, map_fd))
+		quit_and_free("manca la mappa", 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
+
 
 
 	/*alla fine chiudo l'fd*/
@@ -72,6 +74,7 @@ int	main(int argc, char **argv)
 	printf("f_rgb.r = %d\n", game_struct.map.wall_text.f_rgb.r);
 	printf("f_rgb.g = %d\n", game_struct.map.wall_text.f_rgb.g);
 	printf("f_rgb.b = %d\n", game_struct.map.wall_text.f_rgb.b);
+
 
 	quit_and_free(NULL, 2, &game_struct);
 

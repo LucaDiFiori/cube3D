@@ -17,24 +17,27 @@ void	print_error(char *error)
 	ft_printf("Error: %s\n", error);
 }
 
-int	free_matrix(char **ptr_matric)
+int free_matrix(char **ptr_matric)
 {
-	int i;
+    int i;
 
-	i = 0;
-	while (ptr_matric[i] != NULL)
-	{
-		free(ptr_matric[i]);
-		i++;
-	}
-	free(ptr_matric);
-	return (0);
+    if (ptr_matric == NULL) // Aggiunta del controllo per ptr_matric NULL
+        return (0);
+
+    i = 0;
+    while (ptr_matric[i] != NULL)
+    {
+        free(ptr_matric[i]);
+        i++;
+    }
+    free(ptr_matric);
+    return (0);
 }
 
 
 //void ft_destroy(t_game *game_struct)
 
-void destroy_struct(t_game *game_struct)
+static void destroy_struct(t_game *game_struct)
 {		
 	if (game_struct->map.wall_text.north)
 		free(game_struct->map.wall_text.north);
@@ -44,7 +47,8 @@ void destroy_struct(t_game *game_struct)
 		free(game_struct->map.wall_text.east);
 	if (game_struct->map.wall_text.west)
 		free(game_struct->map.wall_text.west);
-
+	if (game_struct->map.map_path != NULL)
+		free_matrix(game_struct->map.map_mat);
 }
 
 int quit_and_free(char *error, int err_type, t_game *game_struct)
