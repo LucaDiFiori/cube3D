@@ -41,7 +41,7 @@ static void	validator(t_game *game_struct, char **argv)
 	if (!extract_map(game_struct, map_fd))
 		quit_and_free("manca la mappa", 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
 
-
+	/*dopo questa riga ho allocato anche la matrice*/
 
 	/*alla fine chiudo l'fd*/
 	close(map_fd);
@@ -75,8 +75,13 @@ int	main(int argc, char **argv)
 	printf("f_rgb.g = %d\n", game_struct.map.wall_text.f_rgb.g);
 	printf("f_rgb.b = %d\n", game_struct.map.wall_text.f_rgb.b);
 
+	for (int i = 0; game_struct.map.map_mat[i] != NULL; i++)
+	{
+		printf("linea = %s\n", game_struct.map.map_mat[i]);
+	}
 
-	quit_and_free(NULL, 2, &game_struct);
+
+	quit_and_free(NULL, 2, &game_struct); /*devo aggiungere un opzione a quit and free che liberi la matrice della mappa*/
 
 
 	/*funzione che fa il parsing e crea la matrice*/

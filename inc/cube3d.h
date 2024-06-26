@@ -73,6 +73,9 @@ void	*ft_memcpy(void *dest, void *src, int n);
 char	*ft_strstr(const char *source, const char *to_find);
 int		ft_isprint(int c);
 int		ft_isdigit(int c);
+char	*ft_strcpy(char *to_copy);
+/*minilib_3*/
+char	*ft_strjoin(char *s1, char *s2);
 
 /*ft_atoi*/
 int		ft_atoi(const char *nptr);

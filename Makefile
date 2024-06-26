@@ -57,6 +57,7 @@ SRCS = cube3d.c \
 	   src/gnl/get_next_line_utils.c \
 	   src/minilib/minilib_1.c \
 	   src/minilib/minilib_2.c \
+	   src/minilib/minilib_3.c \
 	   src/minilib/ft_atoi.c \
 	   src/utils/quit_and_free.c \
 	   src/printf/ft_printf.c \
