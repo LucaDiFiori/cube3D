@@ -34,14 +34,11 @@ static void	validator(t_game *game_struct, char **argv)
 
 
 	/*passo l'fd della mappa alla funzione econtrollo gli elementi del file .cub*/
-	if (!cub_file_validator(game_struct, map_fd))
+	if (!extract_info(game_struct, map_fd))
 		quit_and_free(DATA_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
 
-	/*Qui potrei mettere la funzione che controlla il campo t_walll_text della game_struct
-	  (controlla se tutti i campi sono stati riempiti o no)*/
 
 	/*controllo la mappa vera e propria con map_validator*/
-
 
 
 	/*alla fine chiudo l'fd*/

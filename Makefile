@@ -49,8 +49,9 @@ all:
 	@echo "           \\/____/                 \\/____/                 \\/____/                 ~~              "
 
 SRCS = cube3d.c \
-	   src/cub_file_parsing/checks_utils.c \
-	   src/cub_file_parsing/info_validation.c \
+	   src/cub_file_parsing/extract_rgb.c \
+	   src/cub_file_parsing/extract_info_utils.c \
+	   src/cub_file_parsing/extract_info.c \
 	   src/gnl/get_next_line.c \
 	   src/gnl/get_next_line_utils.c \
 	   src/minilib/minilib_1.c \
