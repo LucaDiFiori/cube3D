@@ -47,7 +47,7 @@ static void destroy_struct(t_game *game_struct)
 		free(game_struct->map.wall_text.east);
 	if (game_struct->map.wall_text.west)
 		free(game_struct->map.wall_text.west);
-	if (game_struct->map.map_path != NULL)
+	if (game_struct->map.map_mat != NULL)
 		free_matrix(game_struct->map.map_mat);
 }
 

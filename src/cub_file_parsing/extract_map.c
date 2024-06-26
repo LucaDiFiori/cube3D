@@ -11,16 +11,13 @@
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
-static int missing_map(char *line)
-{
-	if (!*line || line[0] == '\n') 
-		return (1);
-	return (0);
-}
 
-static int find_map(char *line, int map_fd)
+static int find_map( int map_fd)
 {
-	while (line && missing_map(line))
+	char	*line;
+
+	line = get_next_line(map_fd);
+	while (line && (!*line || line[0] == '\n'))
 	{
 		free(line);
 		line = get_next_line(map_fd);
@@ -31,40 +28,16 @@ static int find_map(char *line, int map_fd)
 	{
 		free(line);
 		get_next_line(-2);
-		printf("SONO ENTRATO QUI 1\n");
 		return (0); //in questo casa manca la mappa 
 	}
+	free(line);
+	get_next_line(-2);
 	return (1);
 }
 
 
 
 /*capire cosa friare in caso di errore*/
-int extract_map(t_game *g_s, int map_fd)
-{
-	char	*line;
-	char	*buffer;
-	char	*join_map;
-
-	
-	line = get_next_line(map_fd);
-	if (!line)
-	{
-		get_next_line(-2);
-		printf("SONO ENTRATO QUI 2\n");
-		return (0); //in questo casa manca la mappa 
-	}
-	if (!find_map(line, map_fd))
-	{
-		printf("SONO ENTRATO QUI 3\n");
-		return (0);
-	}
-	/*se sono qui la mappa c'è e la prima riga è stata letta*/
-
-	free(line);
-	get_next_line(-2);
-
-
 	/*Senno faccio una funzione che:
 	 * gli passo l'fd
 	 * dentro dichiaro un puntatore char ( che sarà il buffer di read)
@@ -72,16 +45,28 @@ int extract_map(t_game *g_s, int map_fd)
 	 * faccio uno stjoin con questa riga e libero il buffer
 	 * una volta uscito dal ciclo avrà una lunga stringa che splietterà sul carattere '\n'
 	   assegnando il risultato dello splitt alla struct
-	 - libero la stringa joinata
-	*/
+	 - libero la stringa joinata*/
+int extract_map(t_game *g_s, int map_fd)
+{
+	char	*buffer;
+	char	*join_map;
+	ssize_t bytes_read;
+
+	
+	if (!find_map(map_fd))
+		return (0); /*in questo caso non ho trovato la mappa*/
+
+
+	/*se sono qui la mappa c'è e la prima riga è stata letta*/
+
+
+
 	join_map = NULL;
 	buffer = (char *)malloc(sizeof(char) * 21);
 	if (!buffer) 
-	{
-        // GESTIRE
         return 0;
-    }
-	ssize_t bytes_read = read(map_fd, buffer, 20);
+
+	bytes_read = read(map_fd, buffer, 20);
 	while (bytes_read > 0)
 	{
     	buffer[bytes_read] = '\0';
@@ -111,9 +96,6 @@ int extract_map(t_game *g_s, int map_fd)
 	free(join_map);
 
 	if (!g_s->map.map_mat)
-	{
-		printf("SONO ENTRATO QUI 5\n");
 		return (0);
-	}
 	return (1);
 }

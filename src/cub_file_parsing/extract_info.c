@@ -20,9 +20,9 @@ static int check_missing_info(t_game *g_s)
 {
 	if (!g_s->map.wall_text.north || !g_s->map.wall_text.south
 		|| !g_s->map.wall_text.east || !g_s->map.wall_text.west
-		|| !g_s->map.wall_text.c_rgb.r || !g_s->map.wall_text.c_rgb.g 
-		|| !g_s->map.wall_text.c_rgb.b || !g_s->map.wall_text.f_rgb.r 
-		|| !g_s->map.wall_text.f_rgb.g || !g_s->map.wall_text.f_rgb.b)
+		|| g_s->map.wall_text.c_rgb.r == -1 || g_s->map.wall_text.c_rgb.g == -1 
+		|| g_s->map.wall_text.c_rgb.b == -1 || g_s->map.wall_text.f_rgb.r == -1
+		|| g_s->map.wall_text.f_rgb.g == -1 || g_s->map.wall_text.f_rgb.b == -1)
 		return (1);
 	return (0);
 }
