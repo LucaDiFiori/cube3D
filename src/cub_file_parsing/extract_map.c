@@ -25,9 +25,9 @@
 
 1: Keep skipping empty lines until the first line of the map is found or the 
 	  end of the file is reached.
-2: If the file ends before the map is found, return 0
-3: If the map is found, return 1 */
-static int find_map( int map_fd)
+2: If the file ends before the map is found, return NULL
+3: If the map is found, return line */
+static char  *find_map( int map_fd)
 {
 	char	*line;
 
@@ -41,19 +41,21 @@ static int find_map( int map_fd)
 	{
 		free(line);
 		get_next_line(-2);
-		return (0);
+		return (NULL);
 	}
-	free(line);
 	get_next_line(-2);
-	return (1);			//3
+	return (line);			//3
 }
 
 /*This function reads the first line of the map (if it exists) and returns it as a string. */
 static char *find_and_read_first_line(int map_fd)
 {
-    if (!find_map(map_fd))
+    char *line;
+
+    line = find_map(map_fd);
+    if (!line)
         return (NULL);
-    return get_next_line(map_fd);
+    return (line);
 }
 
 /*This function reads the map line by line and joins them into a single string. */
@@ -76,6 +78,8 @@ static char *join_lines(int map_fd, char *first_line)
         free(line);
         line = get_next_line(map_fd);
     }
+    free(line);
+    get_next_line(-2);
     return join_map;
 }
 
@@ -129,8 +133,10 @@ int extract_map(t_game *g_s, int map_fd)
     }
 
     if (check_for_missing_line(map_fd))
+    {
+        free(join_map);
         return (0);
-
+    }
     split_and_assign_map(g_s, join_map);
     return (1);
 }
