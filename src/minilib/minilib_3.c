@@ -39,3 +39,17 @@ char	*ft_strjoin(char *s1, char *s2)
 	free(s1);
 	return (str);
 }
+
+char	*ft_strchr(const char *s, int c)
+{
+	char	*temp;
+
+	temp = (char *)s;
+	while (*temp != (char)c)
+	{
+		if (*temp == '\0')
+			return (NULL);
+		temp++;
+	}
+	return (temp);
+}

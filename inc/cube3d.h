@@ -21,12 +21,15 @@
 #include <fcntl.h>
 #include <limits.h>
 #include "../src/gnl/get_next_line.h"
+#include <stdbool.h>
+
 
 #define EXT_ERR "Invalid file extension. '.cub' file needed\n"
 #define ARG_ERR "Invalid number of arguments -> Use example: ./cub3D map.cub"
 #define OPEN_ERR "opening the map file"
 #define DATA_ERR "bad textures data in the file"
 #define MALLOC_ERR "malloc error"
+#define MAP_ERR "map error"
 
 typedef struct s_rgb
 {
@@ -76,6 +79,7 @@ int		ft_isdigit(int c);
 char	*ft_strcpy(char *to_copy);
 /*minilib_3*/
 char	*ft_strjoin(char *s1, char *s2);
+char	*ft_strchr(const char *s, int c);
 
 /*ft_atoi*/
 int		ft_atoi(const char *nptr);

@@ -11,91 +11,126 @@
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
+/*
+	IDEA:
+	1: Find the first line of the map
+	2: Read the map line by line and join them into a single string
+	3: Split the string into a matrix of strings
+	4: Assign the matrix to the map_mat field of the game struct
+	5: Return 1 if the map was successfully extracted, 0 otherwise
+*/
 
+
+/*This function checks if the map is present in the file
+
+1: Keep skipping empty lines until the first line of the map is found or the 
+	  end of the file is reached.
+2: If the file ends before the map is found, return 0
+3: If the map is found, return 1 */
 static int find_map( int map_fd)
 {
 	char	*line;
 
-	line = get_next_line(map_fd);
+	line = get_next_line(map_fd);			//1
 	while (line && (!*line || line[0] == '\n'))
 	{
 		free(line);
 		line = get_next_line(map_fd);
 	}
-	/*Se sono uscito dal ciclo ed il file è terminato (!line) significa che la
-	  mappa manca*/
-	if (!line)
+	if (!line)			//2
 	{
 		free(line);
 		get_next_line(-2);
-		return (0); //in questo casa manca la mappa 
+		return (0);
 	}
 	free(line);
 	get_next_line(-2);
-	return (1);
+	return (1);			//3
 }
 
+/*This function reads the first line of the map (if it exists) and returns it as a string. */
+static char *find_and_read_first_line(int map_fd)
+{
+    if (!find_map(map_fd))
+        return (NULL);
+    return get_next_line(map_fd);
+}
 
+/*This function reads the map line by line and joins them into a single string. */
+static char *join_lines(int map_fd, char *first_line)
+{
+    char *join_map = NULL;
+    char *line = first_line;
+    while (line && line[0] != '\n')
+    {
+        char *temp = ft_strjoin(join_map, line);
+        if (!temp)
+        {
+            if (join_map)
+                free(join_map);
+            free(line);
+            get_next_line(-2);
+            return (NULL);
+        }
+        join_map = temp;
+        free(line);
+        line = get_next_line(map_fd);
+    }
+    return join_map;
+}
 
-/*capire cosa friare in caso di errore*/
-	/*Senno faccio una funzione che:
-	 * gli passo l'fd
-	 * dentro dichiaro un puntatore char ( che sarà il buffer di read)
-	 * leggo tot caratteri alla volta in un ciclo (finche read non restituisce 0)
-	 * faccio uno stjoin con questa riga e libero il buffer
-	 * una volta uscito dal ciclo avrà una lunga stringa che splietterà sul carattere '\n'
-	   assegnando il risultato dello splitt alla struct
-	 - libero la stringa joinata*/
+/*This function checks if any line is missing. It extracts a line and checks if 
+  the first character is a digit */
+static int check_for_missing_line(int map_fd)
+{
+    char *line = get_next_line(map_fd);
+    if (line && ft_isdigit(line[0]))
+    {
+        free(line);
+        get_next_line(-2);
+        return (1);
+    }
+    free(line);
+    get_next_line(-2);
+    return (0);
+}
+
+/*This function splits the joined map into a matrix of strings and assigns it to 
+  the map_mat field of the game struct. */
+static void split_and_assign_map(t_game *g_s, char *join_map)
+{
+    g_s->map.map_mat = ft_split(join_map, '\n');
+    free(join_map);
+    if (!g_s->map.map_mat)
+        quit_and_free(MALLOC_ERR, 2, g_s);
+}
+
+/*This function extracts the map from the file and assigns it to the map_mat field 
+  of the game struct. It returns 1 if the map was successfully extracted, 0 otherwise. 
+  
+  NOTE: After calling the join_lines function, we exit the while loop that reads 
+        the map line by line. This can happen either when the map is finished or 
+		if we encounter an '\n' character.
+		We then check if the last line is missing by calling the 
+		check_for_missing_line function, which reads the next line and checks 
+		if the first character is a digit. If the first character is a digit, 
+		it means we have a missing line inside the map*/
 int extract_map(t_game *g_s, int map_fd)
 {
-	char	*buffer;
-	char	*join_map;
-	ssize_t bytes_read;
+    char *first_line = find_and_read_first_line(map_fd);
+    if (!first_line)
+        return (0);
 
-	
-	if (!find_map(map_fd))
-		return (0); /*in questo caso non ho trovato la mappa*/
-
-
-	/*se sono qui la mappa c'è e la prima riga è stata letta*/
-
-
-
-	join_map = NULL;
-	buffer = (char *)malloc(sizeof(char) * 21);
-	if (!buffer) 
-        return 0;
-
-	bytes_read = read(map_fd, buffer, 20);
-	while (bytes_read > 0)
-	{
-    	buffer[bytes_read] = '\0';
-    	char *temp = ft_strjoin(join_map, buffer); // Concatenate
-    	if (!temp) 
-    	{
-        	free(buffer); // Only free buffer here, join_map is already freed by ft_strjoin if it fails
-        	return 0;
-    	}
-    	join_map = temp;
-    	bytes_read = read(map_fd, buffer, 20); // Read next block
-	}
-	free(buffer); // Free buffer after the loop
-	//buffer = NULL; // Prevent reuse
-
-    if (bytes_read == -1) {
-        // Errore di lettura dal file descriptor
-        free(join_map);
-		//join_map = NULL; // Prevent reuse
-        return 0;
+    char *join_map = join_lines(map_fd, first_line);
+    if (!join_map)
+    {
+        quit_and_free(MALLOC_ERR, 2, g_s);
+        return (0);
     }
 
+    if (check_for_missing_line(map_fd))
+        return (0);
 
-
-
-	g_s->map.map_mat = ft_split(join_map, '\n');
-	free(join_map);
-
-	if (!g_s->map.map_mat)
-		return (0);
-	return (1);
+    split_and_assign_map(g_s, join_map);
+    return (1);
 }
