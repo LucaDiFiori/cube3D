@@ -22,6 +22,10 @@
 #include <limits.h>
 #include "../src/gnl/get_next_line.h"
 #include <stdbool.h>
+#include "../mlx_linux/mlx.h"
+
+
+
 
 
 #define EXT_ERR "Invalid file extension. '.cub' file needed\n"

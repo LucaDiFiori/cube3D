@@ -3,6 +3,15 @@ https://github.com/LucaDiFiori/So_long/blob/main/so_long/map_checks.c
 https://cdn.intra.42.fr/pdf/pdf/116175/en.subject.pdf
 https://github.com/mcombeau/cub3D/blob/main/sources/parsing/get_file_data.c
 https://github.com/mcombeau/cub3D/blob/main/sources/parsing/parse_data.c#L39
+
+gitbook minrt: https://42-cursus.gitbook.io/guide/rank-04/minirt/building-the-thing
+
+
+                                  youtube
+https://www.youtube.com/watch?v=xW8skO7MFYw&ab_channel=javidx9
+
+
+
 /*____________________________________________________________________________*/
 
 

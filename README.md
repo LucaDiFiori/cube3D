@@ -12,6 +12,8 @@
 - Reactive
   - [A Comprehensive Guide to Cub3D](https://reactive.so/post/42-a-comprehensive-guide-to-cub3d)
 - Youtube
+  - [Essential Mathematics For Aspiring Game Developers](https://www.youtube.com/watch?v=DPfxjQ6sqrc&ab_channel=javidx9)
+  - [Super Fast Ray Casting in Tiled Worlds using DDA](https://www.youtube.com/watch?v=NbSee-XM7WA&t=175s&ab_channel=javidx9)
   - [Make Your Own Raycaster Part 1](https://www.youtube.com/watch?v=gYRrGTC7GtA&ab_channel=3DSage)
   - [Make Your Own Raycaster Part 2](https://www.youtube.com/watch?v=PC1RaETIx3Y&ab_channel=3DSage)
   - [Super Fast Ray Casting in Tiled Worlds using DDA](https://www.youtube.com/watch?v=NbSee-XM7WA&ab_channel=javidx9)

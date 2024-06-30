@@ -40,14 +40,7 @@ static void	validator(t_game *game_struct, char **argv)
 
 	if (!extract_map(game_struct, map_fd))
 		quit_and_free(MAP_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
-	/*******codice per stampare la mappa. Da rimuovere */
-	int i = 0;
-	while (game_struct->map.map_mat[i])
-	{
-		printf("linea = %s\n", game_struct->map.map_mat[i]);
-		i++;
-	}
-	/*********************************************** */
+
 
 	/*dopo questa riga ho allocato anche la matrice*/
 
@@ -58,6 +51,13 @@ static void	validator(t_game *game_struct, char **argv)
 	close(map_fd);
 }
 
+
+
+
+
+/**************************************************************************** */
+/*                      	   		MAIN	  		                          */
+/**************************************************************************** */
 int	main(int argc, char **argv)
 {
 	t_game	game_struct;
@@ -73,7 +73,7 @@ int	main(int argc, char **argv)
 	validator(&game_struct, argv); 
 
 	
-
+	/*************************************************** */
 	printf("map_path = %s\n", game_struct.map.map_path);
 	printf("north = %s\n", game_struct.map.wall_text.north);
 	printf("south = %s\n", game_struct.map.wall_text.south);
@@ -85,10 +85,17 @@ int	main(int argc, char **argv)
 	printf("f_rgb.r = %d\n", game_struct.map.wall_text.f_rgb.r);
 	printf("f_rgb.g = %d\n", game_struct.map.wall_text.f_rgb.g);
 	printf("f_rgb.b = %d\n", game_struct.map.wall_text.f_rgb.b);
+	int i = 0;
+	while (game_struct.map.map_mat[i])
+	{
+		printf("linea = %s\n", game_struct.map.map_mat[i]);
+		i++;
+	}
+	/*********************************************** */
 
 
 
-	quit_and_free(NULL, 2, &game_struct); /*devo aggiungere un opzione a quit and free che liberi la matrice della mappa*/
+	quit_and_free(NULL, 2, &game_struct);
 
 
 	/*funzione che fa il parsing e crea la matrice*/
