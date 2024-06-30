@@ -93,9 +93,18 @@ int	main(int argc, char **argv)
 	}
 	/*********************************************** */
 
+	/*inizializazione del motore grafico e lancio della finestra */
+	if (!init_engine(&game_struct))
+		quit_and_free(MLX_ERR, 2, &game_struct);
+
+	
 
 
-	quit_and_free(NULL, 2, &game_struct);
+
+
+
+
+	quit_and_free("fine", 2, &game_struct);
 
 
 	/*funzione che fa il parsing e crea la matrice*/

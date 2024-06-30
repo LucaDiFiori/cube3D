@@ -22,10 +22,13 @@
 #include <limits.h>
 #include "../src/gnl/get_next_line.h"
 #include <stdbool.h>
-#include "../mlx_linux/mlx.h"
+#include <../mlx_linux/mlx.h>
 
 
-
+#define RES_X 960
+#define RES_Y 720
+//#define RES_X 640
+//#define RES_Y 480
 
 
 #define EXT_ERR "Invalid file extension. '.cub' file needed\n"
@@ -34,6 +37,7 @@
 #define DATA_ERR "bad textures data in the file"
 #define MALLOC_ERR "malloc error"
 #define MAP_ERR "map error"
+#define MLX_ERR "mlx initialization error"
 
 typedef struct s_rgb
 {
@@ -52,6 +56,12 @@ typedef struct	s_wal_text
 	t_rgb	f_rgb;
 }	t_wal_text;
 
+typedef struct s_mlx
+{
+	void	*mlx_ptr;
+	void	*win_ptr;
+}	t_mlx;
+
 typedef struct	s_map
 {
 	char		*map_path;
@@ -65,6 +75,7 @@ typedef struct	s_map
 typedef struct s_game
 {
 	t_map	map;
+	t_mlx	mlx;
 }	t_game;
 
 
@@ -114,7 +125,10 @@ int		quit_and_free(char *error, int err_type, t_game *game_struct);
 
 
 /*INIT*/
+/*init_struct.c*/
 void	init_game_struct(t_game *game_struct);
+/*init_engine.c*/
+int		init_engine(t_game *g_s);
 
 
 

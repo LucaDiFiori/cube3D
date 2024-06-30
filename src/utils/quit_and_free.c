@@ -34,6 +34,12 @@ int free_matrix(char **ptr_matric)
     return (0);
 }
 
+static void ft_destroy_engine(t_game *game_struct)
+{
+	if (game_struct->mlx.win_ptr)
+		mlx_destroy_window(game_struct->mlx.mlx_ptr, game_struct->mlx.win_ptr);
+}
+
 
 //void ft_destroy(t_game *game_struct)
 
@@ -59,6 +65,7 @@ int quit_and_free(char *error, int err_type, t_game *game_struct)
 	{
 		print_error(error);
 		destroy_struct(game_struct);
+		ft_destroy_engine(game_struct);
 	}
 	
 	exit (0);
