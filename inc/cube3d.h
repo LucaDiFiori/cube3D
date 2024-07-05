@@ -112,6 +112,8 @@ void	cleanup(char **line, char ***split_line, int flag);
 int		extract_info(t_game *g_s, int map_fd);
 /*extract_map*/
 int		extract_map(t_game *g_s, int map_fd);
+/*chech_map*/
+int		check_map(t_game *game);
 
 
 /*PRINTF*/

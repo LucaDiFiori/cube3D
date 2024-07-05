@@ -42,7 +42,13 @@ static void	validator(t_game *game_struct, char **argv)
 		quit_and_free(MAP_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
 
 
+
 	/*dopo questa riga ho allocato anche la matrice*/
+	if (check_map(game_struct))
+	{
+		printf("controllo mappa NO");
+		quit_and_free(MAP_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
+	}
 
 
 	/* qui devo chiamare la funzione che valida la mappa*/
@@ -106,10 +112,5 @@ int	main(int argc, char **argv)
 
 	quit_and_free("fine", 2, &game_struct);
 
-
-	/*funzione che fa il parsing e crea la matrice*/
-	
-	
-	// funzione che crea la matrice della mappa 
 
 }
