@@ -25,7 +25,7 @@
 #include <../mlx_linux/mlx.h>
 
 #define RES_X 1440
-#define RES_Y 960
+#define RES_Y 810
 //#define RES_X 960
 //#define RES_Y 720
 //#define RES_X 640

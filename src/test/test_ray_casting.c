@@ -1,11 +1,19 @@
 #include "../../inc/cube3d.h"
 
+/*calcola la lunghezza piu lunga fra tutte le*/
 int calculate_map_width(char **map_mat) {
-    int width = 0;
-    while (map_mat[0][width] != '\0') {
-        width++;
+    int max_width = 0;
+    int y = 0;
+
+    while (map_mat[y] != NULL) {
+        int current_width = ft_strlen(map_mat[y]);
+        if (current_width > max_width) {
+            max_width = current_width;
+        }
+        y++;
     }
-    return width;
+
+    return max_width;
 }
 
 // Funzione per calcolare dinamicamente l'altezza della mappa
@@ -65,14 +73,14 @@ void create_backgound(t_game *g_s, t_img_data *img_data)
 
 
 /*    questa funzione disegna un quadrato della dimensione, colore e posizione indicati*/
-void draw_square(t_img_data *img_data, int start_x, int start_y, int size, int color)
+void draw_square(t_img_data *img_data, float start_x, float start_y, float size_x, float size_y, int color)
 {
-    int end_x = start_x + size;
-    int end_y = start_y + size;
+    float end_x = start_x + size_x;
+    float end_y = start_y + size_y;
 
-    for (int x = start_x; x < end_x; x++)
+    for (float x = start_x; x < end_x; x++)
     {
-        for (int y = start_y; y < end_y; y++)
+        for (float y = start_y; y < end_y; y++)
         {
             my_pixel_put(img_data, x, y, color);
         }
@@ -96,8 +104,11 @@ void draw_map(t_game *g_s, t_img_data *img_data)
     int MAP_WIDTH = calculate_map_width(g_s->map.map_mat);
     int MAP_HEIGHT = calculate_map_height(g_s->map.map_mat);
 
-    int cell_width = MINI_RES_X / MAP_WIDTH; // Calcola la larghezza di ogni cella sulla minimappa
-    int cell_height = MINI_RES_Y / MAP_HEIGHT; // Calcola l'altezza di ogni cella sulla minimappa
+    float cell_width = MINI_RES_X / MAP_WIDTH; // Calcola la larghezza di ogni cella sulla minimappa
+    float cell_height = MINI_RES_Y / MAP_HEIGHT; // Calcola l'altezza di ogni cella sulla minimappa
+
+    float offset_x = (MINI_RES_X - (MAP_WIDTH * cell_width)) / 2; // Calcola l'offset orizzontale per centrare la mappa
+    float offset_y = (MINI_RES_Y - (MAP_HEIGHT * cell_height)) / 2; // Calcola l'offset verticale per centrare la mappa
 
     for (int y = 0; y < MAP_HEIGHT; y++) // Itera su ogni riga della mappa
     {
@@ -105,16 +116,16 @@ void draw_map(t_game *g_s, t_img_data *img_data)
         {
             if (g_s->map.map_mat[y][x] == '1') // Se il carattere è '1', disegna un quadrato bianco
             {
-                int map_x = x * cell_width;
-                int map_y = y * cell_height;
-                draw_square(img_data, map_x, map_y, cell_width, color); // Disegna un quadrato proporzionato alla cella
+                float map_x = x * cell_width + offset_x;
+                float map_y = y * cell_height + offset_y;
+                draw_square(img_data, map_x, map_y, cell_width, cell_height, color); // Disegna un quadrato proporzionato alla cella
             }
             else if (g_s->map.map_mat[y][x] == 'N' || g_s->map.map_mat[y][x] == 'W' //disegno il personaggio
                 ||g_s->map.map_mat[y][x] == 'W' || g_s->map.map_mat[y][x] == 'O')
             {
-                int map_x = x * cell_width;
-                int map_y = y * cell_height;
-                 draw_square(img_data, map_x, map_y, cell_width, player_color);
+                float map_x = x * cell_width + offset_x;
+                float map_y = y * cell_height + offset_y;
+                draw_square(img_data, map_x, map_y, cell_width, cell_height, player_color);
             }
         }
     }
