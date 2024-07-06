@@ -1,5 +1,25 @@
 #include "../../inc/cube3d.h"
 
+int calculate_map_width(char **map_mat) {
+    int width = 0;
+    while (map_mat[0][width] != '\0') {
+        width++;
+    }
+    return width;
+}
+
+// Funzione per calcolare dinamicamente l'altezza della mappa
+int calculate_map_height(char **map_mat) {
+    int height = 0;
+    while (map_mat[height] != NULL) {
+        height++;
+    }
+    return height;
+}
+
+
+
+
 
 
 /*funzione per riempire la schermata di un dato colore*/
@@ -28,11 +48,8 @@ void create_backgound(t_game *g_s, t_img_data *img_data)
     fill_background(img_data, MINI_RES_X, MINI_RES_Y, background_color);
 	//__________________________________________________________________________
 
-
-	//___________________________METTO L'IMMAGINE A SCHERMO_____________________
-    // Collega l'immagine alla finestra (metto l'immagine a schermo)
-    fill_background(img_data, MINI_RES_X, MINI_RES_Y, background_color);
-	//__________________________________________________________________________
+    // Mostra l'immagine della minimappa sulla finestra principale
+    mlx_put_image_to_window(g_s->mlx.mlx_ptr, g_s->mlx.win_ptr, img_data->img, RES_X - MINI_RES_X, 0);
 
 
 	/*DA LIBERARE:
@@ -44,45 +61,23 @@ void create_backgound(t_game *g_s, t_img_data *img_data)
 
 
 
-/*funzione per disegnare un quadratino nel punto indicato*/
-void draw_player_square(t_img_data *img_data, float player_map_x, float player_map_y, int color) {
-    int size = 5; // Dimensione del lato del quadrato, regola questo per cambiare le dimensioni
-    int start_x = player_map_x - size / 2;
-    int start_y = player_map_y - size / 2;
+
+
+
+/*    questa funzione disegna un quadrato della dimensione, colore e posizione indicati*/
+void draw_square(t_img_data *img_data, int start_x, int start_y, int size, int color)
+{
     int end_x = start_x + size;
     int end_y = start_y + size;
 
-    for (int x = start_x; x < end_x; x++) {
-        for (int y = start_y; y < end_y; y++) {
+    for (int x = start_x; x < end_x; x++)
+    {
+        for (int y = start_y; y < end_y; y++)
+        {
             my_pixel_put(img_data, x, y, color);
         }
     }
 }
-
-/*Questa funzione prende la sesso puntatore ad immagine creato in create_background
-  e ci disegna il personaggio*/
-void drow_player(t_game *g_s, t_img_data *img_data)
-{
-    int color = 0xFFFFFF; // Colore bianco per il giocatore
-
-
-    // Calcolo delle coordinate del giocatore sulla minimappa
-    float player_map_x = g_s->player.x * RES_X / MINI_RES_X ;    // Scala x sulla mappa  // MINI_RES_X/RES_X chat aveva messo cosi;
-    float player_map_y = g_s->player.y * RES_Y / MINI_RES_Y;  // Scala y sulla mappa
-
-
-	printf("player_map_x: %f\n", player_map_x);
-	printf("player_map_y: %f\n", player_map_y);
-
-    // Disegna il giocatore sulla minimappa
-    //my_pixel_put(img_data, player_map_x, player_map_y, color);
-	draw_player_square(img_data, player_map_x, player_map_y, color);
-
-    // Mostra l'immagine della minimappa sulla finestra principale
-    mlx_put_image_to_window(g_s->mlx.mlx_ptr, g_s->mlx.win_ptr, img_data->img, RES_X - MINI_RES_X, 0);
-}
-
-
 
 
 
@@ -96,23 +91,32 @@ void drow_player(t_game *g_s, t_img_data *img_data)
 void draw_map(t_game *g_s, t_img_data *img_data)
 {
     int color = 0xFFFFFF; // Colore bianco per i muri
-    int y = 0;
+    int player_color = 0x00FF00;
 
-    while (g_s->map.map_mat[y] != NULL) // Itera su ogni linea finché non è NULL
+    int MAP_WIDTH = calculate_map_width(g_s->map.map_mat);
+    int MAP_HEIGHT = calculate_map_height(g_s->map.map_mat);
+
+    int cell_width = MINI_RES_X / MAP_WIDTH; // Calcola la larghezza di ogni cella sulla minimappa
+    int cell_height = MINI_RES_Y / MAP_HEIGHT; // Calcola l'altezza di ogni cella sulla minimappa
+
+    for (int y = 0; y < MAP_HEIGHT; y++) // Itera su ogni riga della mappa
     {
-        int x = 0;
-        while (g_s->map.map_mat[y][x] != '\0') // Itera su ogni carattere della linea finché non è il terminatore di stringa
+        for (int x = 0; x < MAP_WIDTH; x++) // Itera su ogni colonna della mappa
         {
             if (g_s->map.map_mat[y][x] == '1') // Se il carattere è '1', disegna un quadrato bianco
             {
-                float map_x = x * RES_X / MINI_RES_X;
-                float map_y = y * RES_Y / MINI_RES_Y;
-                //draw_player_square(img_data, map_x, map_y, color);
-                my_pixel_put(img_data, map_x, map_y, color); //una volta riscritta sostituire draw_player_quare
+                int map_x = x * cell_width;
+                int map_y = y * cell_height;
+                draw_square(img_data, map_x, map_y, cell_width, color); // Disegna un quadrato proporzionato alla cella
             }
-            x++;
+            else if (g_s->map.map_mat[y][x] == 'N' || g_s->map.map_mat[y][x] == 'W' //disegno il personaggio
+                ||g_s->map.map_mat[y][x] == 'W' || g_s->map.map_mat[y][x] == 'O')
+            {
+                int map_x = x * cell_width;
+                int map_y = y * cell_height;
+                 draw_square(img_data, map_x, map_y, cell_width, player_color);
+            }
         }
-        y++;
     }
 }
 
@@ -132,7 +136,7 @@ void minimap_test(t_game *g_s)
 	create_backgound(g_s, &img_data);
 
 	draw_map(g_s, &img_data);
-	drow_player(g_s, &img_data);
+
 
 
 }

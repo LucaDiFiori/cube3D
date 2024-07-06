@@ -35,7 +35,7 @@
 	-> returno 0 (BENE! il carattere ' ' non è raggiungibile)
 */
 
-static int	flood_fill(char **map, int i, int j, int rows, int cols)
+/*static int	flood_fill(char **map, int i, int j, int rows, int cols)
 {
 	if (i < 0 || i >= rows || j < 0 || j >= cols || map[i][j] == '1' || map[i][j] == '*')
 		return (0);
@@ -46,7 +46,7 @@ static int	flood_fill(char **map, int i, int j, int rows, int cols)
 		flood_fill(map, i, j - 1, rows, cols) || flood_fill(map, i, j + 1, rows, cols))
 		return (1);
 	return (0);
-}
+}*/
 
 /*
 IS_REACHABLE controlla se il carattere ' ' è raggiungibile dal personaggio (non vogliamo che lo sia).
@@ -65,7 +65,7 @@ static int	is_reachable(char **map, int rows, int cols)
 		{
 			if (map[i][j] == 'N' || map[i][j] == 'S'
 				|| map[i][j] == 'E' || map[i][j] == 'W')
-				return (flood_fill(map, i, j, rows, cols));
+				return (/*flood_fill(map, i, j, rows, cols)*/0);
 			j++;
 		}
 		i++;
