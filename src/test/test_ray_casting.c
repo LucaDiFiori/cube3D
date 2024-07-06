@@ -67,7 +67,7 @@ void drow_player(t_game *g_s, t_img_data *img_data)
 
 
     // Calcolo delle coordinate del giocatore sulla minimappa
-    float player_map_x = g_s->player.x * RES_X / MINI_RES_X ;    // Scala x sulla mappa
+    float player_map_x = g_s->player.x * RES_X / MINI_RES_X ;    // Scala x sulla mappa  // MINI_RES_X/RES_X chat aveva messo cosi;
     float player_map_y = g_s->player.y * RES_Y / MINI_RES_Y;  // Scala y sulla mappa
 
 
@@ -92,12 +92,12 @@ void drow_player(t_game *g_s, t_img_data *img_data)
 void draw_map(t_game *g_s, t_img_data *img_data)
 {
     int color = 0xFFFFFF; // Colore bianco per i muri
+    int y = 0;
 
-
-
-    for (int y = 0; y < g_s->map.map_y; y++)
+    while (g_s->map.map_mat[y] != NULL) // Itera su ogni linea finché non è NULL
     {
-        for (int x = 0; x < g_s->map.map_x; x++)
+        int x = 0;
+        while (g_s->map.map_mat[y][x] != '\0') // Itera su ogni carattere della linea finché non è il terminatore di stringa
         {
             if (g_s->map.map_mat[y][x] == '1') // Se il carattere è '1', disegna un quadrato bianco
             {
@@ -105,7 +105,9 @@ void draw_map(t_game *g_s, t_img_data *img_data)
                 float map_y = y * RES_Y / MINI_RES_Y;
                 draw_player_square(img_data, map_x, map_y, color);
             }
+            x++;
         }
+        y++;
     }
 }
 
@@ -124,7 +126,7 @@ void minimap_test(t_game *g_s)
 	
 	create_backgound(g_s, &img_data);
 
-	draw_map(g_s, &img_data);
+	//draw_map(g_s, &img_data);
 	drow_player(g_s, &img_data);
 
 
