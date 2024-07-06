@@ -88,7 +88,11 @@ void drow_player(t_game *g_s, t_img_data *img_data)
 
 
 
-/*******SONO ARRIVATO QUI MA DEVO IMPLEMENTARE UNA FUNZIONE CHE CALCOLI LA LUNGHEZZA E L'ALTEZZA DELLA MAPPA */
+/*******SONO ARRIVATO QUI MA DEVO IMPLEMENTARE UNA FUNZIONE CHE CALCOLI LA LUNGHEZZA E L'ALTEZZA DELLA MAPPA 
+ * IL PROBLEMA E IN DROW PLAYER SQUARE
+ * - drow player square funziona per il personaggio ma forse per la 
+ *   mappa dovrei usare mlx_put_image_to_window con dei quadrati binachi di una certa dimensione
+*/
 void draw_map(t_game *g_s, t_img_data *img_data)
 {
     int color = 0xFFFFFF; // Colore bianco per i muri
@@ -103,7 +107,8 @@ void draw_map(t_game *g_s, t_img_data *img_data)
             {
                 float map_x = x * RES_X / MINI_RES_X;
                 float map_y = y * RES_Y / MINI_RES_Y;
-                draw_player_square(img_data, map_x, map_y, color);
+                //draw_player_square(img_data, map_x, map_y, color);
+                my_pixel_put(img_data, map_x, map_y, color); //una volta riscritta sostituire draw_player_quare
             }
             x++;
         }
@@ -126,7 +131,7 @@ void minimap_test(t_game *g_s)
 	
 	create_backgound(g_s, &img_data);
 
-	//draw_map(g_s, &img_data);
+	draw_map(g_s, &img_data);
 	drow_player(g_s, &img_data);
 
 
