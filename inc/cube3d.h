@@ -24,11 +24,17 @@
 #include <stdbool.h>
 #include <../mlx_linux/mlx.h>
 
-
-#define RES_X 960
-#define RES_Y 720
+#define RES_X 1440
+#define RES_Y 960
+//#define RES_X 960
+//#define RES_Y 720
 //#define RES_X 640
 //#define RES_Y 480
+
+/********************* */
+#define MINI_RES_X (RES_X / 5)
+#define MINI_RES_Y (RES_Y / 5)
+/********************* */
 
 
 #define EXT_ERR "Invalid file extension. '.cub' file needed\n"
@@ -38,6 +44,31 @@
 #define MALLOC_ERR "malloc error"
 #define MAP_ERR "map error"
 #define MLX_ERR "mlx initialization error"
+
+
+
+/************************************** */
+typedef struct	s_img_data {
+	void	*img; //puntatore generico per l'immagine.
+	char	*addr; //puntatore ai dati dell'immagine restituite da mlx_get_data_addr
+	int		bpp; //bit per pixel.
+	int		line_length; //dimensione di una linea dell'immagine in byte.
+	int		endian; //ordine dei byte (endianess).
+}				t_img_data;
+/************************************** */
+
+
+
+
+
+
+
+typedef struct s_asset
+{
+	float	x;
+	float	y;
+}	t_asset;
+
 
 typedef struct s_rgb
 {
@@ -66,7 +97,8 @@ typedef struct	s_map
 {
 	char		*map_path;
 	char		**map_mat;
-	int			map_rows;
+	int			map_x;
+	int			map_y;
 	t_wal_text	wall_text;
 
 
@@ -76,6 +108,7 @@ typedef struct s_game
 {
 	t_map	map;
 	t_mlx	mlx;
+	t_asset player;
 }	t_game;
 
 
@@ -112,8 +145,10 @@ void	cleanup(char **line, char ***split_line, int flag);
 int		extract_info(t_game *g_s, int map_fd);
 /*extract_map*/
 int		extract_map(t_game *g_s, int map_fd);
-/*chech_map*/
+
+/*MAP_CHECKS*/
 int		check_map(t_game *game);
+int		is_closed(t_game game);
 
 
 /*PRINTF*/
@@ -132,6 +167,17 @@ void	init_game_struct(t_game *game_struct);
 /*init_engine.c*/
 int		init_engine(t_game *g_s);
 
+
+
+
+
+/********************************** */
+/*TEST*/
+/*utils*/
+void my_pixel_put(t_img_data *data, int x, int y, int color);
+/*ray_casting*/
+void   minimap_test(t_game *g_s);
+/************************************** */
 
 
 

@@ -38,6 +38,7 @@ static void ft_destroy_engine(t_game *game_struct)
 {
 	if (game_struct->mlx.win_ptr)
 		mlx_destroy_window(game_struct->mlx.mlx_ptr, game_struct->mlx.win_ptr);
+	/*capire se bisogna mettere anche free(mlx);*/
 }
 
 

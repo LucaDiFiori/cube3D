@@ -41,12 +41,13 @@ static void	validator(t_game *game_struct, char **argv)
 	if (!extract_map(game_struct, map_fd))
 		quit_and_free(MAP_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
 
+	
 
 
 	/*dopo questa riga ho allocato anche la matrice*/
-	if (check_map(game_struct))
+	
+	if (!check_map(game_struct))
 	{
-		printf("controllo mappa NO");
 		quit_and_free(MAP_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
 	}
 
@@ -99,10 +100,25 @@ int	main(int argc, char **argv)
 	}
 	/*********************************************** */
 
+
+
 	/*inizializazione del motore grafico e lancio della finestra */
 	if (!init_engine(&game_struct))
 		quit_and_free(MLX_ERR, 2, &game_struct);
 
+
+
+
+
+
+
+
+
+	/*******************PROVA RAY CASTING********************************* */
+	minimap_test(&game_struct);
+	 // Mette il programma in attesa degli eventi (necessario per mantenere aperta la finestra)
+    mlx_loop(game_struct.mlx.mlx_ptr);
+	/**************************************************** */
 	
 
 
