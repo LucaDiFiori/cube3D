@@ -1,6 +1,6 @@
 NAME = cube3d
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
 INCLUDES = -I/usr/include -Imlx_linux -O3
 
@@ -23,6 +23,7 @@ SRCS = cube3d.c \
 	   src/cub_file_parsing/extract_info_utils.c \
 	   src/cub_file_parsing/extract_info.c \
 	   src/cub_file_parsing/extract_map.c \
+	   src/map_checks/check_map_utils.c \
 	   src/map_checks/check_map.c \
 	   src/map_checks/check_walls.c \
 	   src/gnl/get_next_line.c \
@@ -35,8 +36,8 @@ SRCS = cube3d.c \
 	   src/printf/ft_printf.c \
 	   src/init/init_struct.c \
 	   src/init/init_engine.c \
-	   src/test/test_ray_casting.c \
-	   src/test/test_ray_casting_utils.c \
+	   src/minimap/test_ray_casting.c \
+	   src/minimap/test_ray_casting_utils.c \
 
 OBJS = $(SRCS:%.c=obj/%.o)
 

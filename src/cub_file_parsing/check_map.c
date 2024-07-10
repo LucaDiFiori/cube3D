@@ -1,16 +1,54 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_walls.c                                      :+:      :+:    :+:   */
+/*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmaestri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ldi-fior <marvin@42.fr>                    #+#  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/06 01:08:41 by cmaestri          #+#    #+#             */
-/*   Updated: 2024/07/07 02:29:50 by cmaestri         ###   ########.fr       */
+/*   Created: 2024-07-03 12:51:03 by ldi-fior          #+#    #+#             */
+/*   Updated: 2024-07-03 12:51:03 by ldi-fior         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "../../inc/cube3d.h"
+
+/* CONTROLLO I CARATTERI DELLA MAPPA
+scorro la matrice contenente la mappa e controllo che ci siano solo caratteri validi.
+-se trovo un carattere non valido returno 1.
+-incremento k se trovo un carattere corrispondente al player (N,S,E,W) e se k > 1 (è stato inserito più di un player) returno 1.
+-se non trovo errori returno 0.
+*/
+static int	check_characters(t_game game)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	c;
+	
+	i = 0;
+	k = 0;
+	while (game.map.map_mat[i])
+	{
+		j = 0;
+		while (game.map.map_mat[i][j])
+		{
+			c = game.map.map_mat[i][j];
+			if (c != '0' && c != '1' && c != ' ' && c != 'N' 
+				&& c != 'S' && c != 'E' && c != 'W')
+				return (1);
+			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+				k++;
+			if (k > 1)
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+	// !!!!!!!!! poi possiamo settare la posizione del player a c direttamente qui se ci va !!!!!!!!!
+}
+
 
 /* CONTROLLO LE RIGHE
 - il primo loop controlla la prima riga
@@ -75,11 +113,18 @@ static int	check_columns(t_game game)
 	}
 	return (1);
 }
-// se il controllo delle righe e delle colonne non è andato a buon fine returno 0 (errore), altrimenti returno 1 (success).
-int	is_closed(t_game game)
+// se il controllo delle righe e delle colonne è andato a buon fine la mappa è chiusa e returno 1, altrimenti returno 0.
+static int	is_closed(t_game game)
 {
 	if (!check_rows(game) || !check_columns(game))
 		return (0);
 	else
 		return (1);
+}
+
+int	check_map(t_game game)
+{
+	if (check_characters(game) || !is_closed(game))
+		return (1);
+	return (0);
 }

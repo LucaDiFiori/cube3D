@@ -56,10 +56,18 @@ static void destroy_struct(t_game *game_struct)
 		free(game_struct->map.wall_text.west);
 	if (game_struct->map.map_mat != NULL)
 		free_matrix(game_struct->map.map_mat);
+	//if (game_struct->minimap.img)
+		//free(game_struct->minimap.img); //SE METTO QUESTO FREE LEAKA DE PIU
 }
 
 int quit_and_free(char *error, int err_type, t_game *game_struct)
 {
+	if (err_type == 0)
+	{
+		ft_printf("%s\n", error);
+		destroy_struct(game_struct);
+		ft_destroy_engine(game_struct);
+	}
 	if (err_type == 1)
 		print_error(error);
 	if (err_type == 2)
@@ -68,6 +76,11 @@ int quit_and_free(char *error, int err_type, t_game *game_struct)
 		destroy_struct(game_struct);
 		ft_destroy_engine(game_struct);
 	}
-	
 	exit (0);
+}
+
+int	ft_close_x(t_game *ptr_game)
+{
+	quit_and_free("See U <3", 0, ptr_game);
+	return (0);
 }

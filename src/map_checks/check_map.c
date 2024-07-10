@@ -6,15 +6,37 @@
 /*   By: cmaestri <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 23:24:59 by cmaestri          #+#    #+#             */
-/*   Updated: 2024/07/06 01:59:20 by cmaestri         ###   ########.fr       */
+/*   Updated: 2024/07/07 09:30:51 by cmaestri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
 
 /*
+funzione per determinare il numero di righe e colonne della mappa. se trovo una riga con un numero maggiore di colonne rispetto alla precedente, aggiorno il numero di map_cols.
+*/
+void	find_rows_and_cols(t_map *map)
+{
+	int	x;
+	
+	if (!map->map_mat)
+		return ;
+	map->map_y = 0;
+	map->map_x = 0;
+	while (map->map_mat[map->map_y])
+	{
+		x = 0;
+		while (map->map_mat[map->map_y][x])
+			x++;
+		if (x > map->map_y)
+			map->map_x = x;
+		map->map_y++;
+	}
+}
 
+/*
 1) PRIMO IF:
+(ho modificato i nomi delle variabili, i è x e j è y)
 - se la riga che sto esaminando è al di fuori del bordo superiore della mappa (i < 0)
 - o se è al di fuori del bordo inferiore della mappa (i >= rows)
 - o se la colonna che sto esaminando è al di fuori del bordo sinistro della mappa (j < 0)
@@ -35,18 +57,18 @@
 	-> returno 0 (BENE! il carattere ' ' non è raggiungibile)
 */
 
-/*static int	flood_fill(char **map, int i, int j, int rows, int cols)
+static int	flood_fill(char **map, int x, int y, int rows, int cols)
 {
-	if (i < 0 || i >= rows || j < 0 || j >= cols || map[i][j] == '1' || map[i][j] == '*')
+	if (x < 0 || x >= rows || y < 0 || y >= cols || map[x][y] == '1' || map[x][y] == '*')
 		return (0);
-	if (map[i][j] == ' ')
+	if (map[x][y] == ' ')
 		return (1);
-	map[i][j] = '*';
-	if (flood_fill(map, i - 1, j, rows, cols) || flood_fill(map, i + 1, j, rows, cols) ||
-		flood_fill(map, i, j - 1, rows, cols) || flood_fill(map, i, j + 1, rows, cols))
+	map[x][y] = '*';
+	if (flood_fill(map, x - 1, y, rows, cols) || flood_fill(map, x + 1, y, rows, cols) ||
+		flood_fill(map, x, y - 1, rows, cols) || flood_fill(map, x, y + 1, rows, cols))
 		return (1);
 	return (0);
-}*/
+}
 
 /*
 IS_REACHABLE controlla se il carattere ' ' è raggiungibile dal personaggio (non vogliamo che lo sia).
@@ -54,21 +76,21 @@ scorre lungo la mappa e quando trova il carattere del player (N,S,E,W) chiama la
 */
 static int	is_reachable(char **map, int rows, int cols)
 {
-	int	i;
-	int	j;
+	int	x;
+	int	y;
 
-	i = 0;
-	while (i < rows)
+	x = 0;
+	while (x < rows)
 	{
-		j = 0;
-		while (j < cols)
+		y = 0;
+		while (y < cols)
 		{
-			if (map[i][j] == 'N' || map[i][j] == 'S'
-				|| map[i][j] == 'E' || map[i][j] == 'W')
-				return (/*flood_fill(map, i, j, rows, cols)*/0);
-			j++;
+			if (map[x][y] == 'N' || map[x][y] == 'S'
+				|| map[x][y] == 'E' || map[x][y] == 'W')
+				return (flood_fill(map, x, y, rows, cols));
+			y++;
 		}
-		i++;
+		x++;
 	}
 	return (0);
 }
@@ -77,19 +99,19 @@ static int	is_reachable(char **map, int rows, int cols)
 /* CONTROLLO I CARATTERI DELLA MAPPA
 scorro la matrice contenente la mappa e controllo che ci siano solo caratteri validi.
 -se trovo un carattere non valido returno 1.
--incremento k se trovo un carattere corrispondente al player 
- (N,S,E,W) e se k > 1 (è stato inserito più di un player) returno 1.
+-incremento num_player se trovo un carattere corrispondente al player 
+ (N,S,E,W) e se num_player > 1 (è stato inserito più di un player) returno 1.
 -se non trovo errori returno 0.
 */
 static int	check_characters(t_game *game)
 {
-	int		y;
 	int		x;
-	int		k;
+	int		y;
+	int		num_players;
 	char	c;
 	
 	y = 0;
-	k = 0;
+	num_players = 0;
 	while (game->map.map_mat[y])
 	{
 		x = 0;
@@ -101,11 +123,11 @@ static int	check_characters(t_game *game)
 				return (1);
 			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 			{
-				k++;
-				game->player.y = y;
 				game->player.x = x;
+				game->player.y = y;
+				num_players++;
 			}
-			if (k > 1)
+			if (num_players > 1)
 				return (1);
 			x++;
 		}
@@ -113,29 +135,35 @@ static int	check_characters(t_game *game)
 	}
 	return (0);
 }
+
 /*
 la funzione CHECK MAP
-- conta per prima cosa le righe e le colonne della mappa (così da poterle passare alla funzione is_reachable).
-- dopodiché:
-	- se la funzione check_characters ritorna 1 (errore) 
-	- o is closed returna 0 (!is_closed = non è chiusa eheheh)
-	- o la funzione is_reachable returna 1 (quindi il carattere ' ' è raggiungibile dal personaggio, il che non va bene) 
-	-> returno 0 (errore)
-- altrimenti returno 1 (success).
+- chiama la funzione find_rows_and_cols per determinare il numero di righe e colonne della mappa.
+- se la mappa è chiusa (is_closed) 
+	-> per prima cosa crea una copia della mappa (map_copy)
+	-> poi chiama la funzione check_characters per controllare che tutti i caratteri della mappa siano validi e che esista un solo player sulla mappa (N, S, W, E) 
+	-> e is_reachable (flood_fill) per controllare se il carattere ' ' è raggiungibile.
+		-> se queste due funzioni returnano 1 (ERRORE) libero per prima cosa la copia della mappa e poi returno 0 (ERRORE!)
+	-> altriementi libero la copia della mappa e returno 1 (no problema)
+- altrimenti returno 0 (ERRORE!)
 */
+
 int	check_map(t_game *game)
 {
-	int rows; 
-	int cols;
+	char **map_copy;
 
-	rows = 0;
-	while (game->map.map_mat[rows])
-		rows++;
-	cols = 0;
-	while (game->map.map_mat[0][cols])
-		cols++;
-	if (check_characters(game) || !is_closed(*game)
-		|| is_reachable(game->map.map_mat, rows, cols))
-		return (0);
-	return (1);
+	find_rows_and_cols(&game->map);
+	if (is_closed(*game))
+	{
+		map_copy = duplicate_map(game->map.map_mat, game->map.map_y, game->map.map_x);
+		if (check_characters(game)
+			|| is_reachable(map_copy, game->map.map_y, game->map.map_x))
+			{
+				free_mapcopy(map_copy, game->map.map_y);
+				return (0);
+			}
+		free_mapcopy(map_copy, game->map.map_y);
+		return (1);
+	}
+	return (0);
 }

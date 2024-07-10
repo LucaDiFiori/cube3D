@@ -38,4 +38,12 @@ void	init_game_struct(t_game *game_struct)
 {
 	init_map_struct(game_struct);
 	init_mlx_struct(game_struct);
+
+	/*minimappa*/
+	game_struct->minimap.minimap_height = MINI_RES_Y;
+	game_struct->minimap.minimap_width = MINI_RES_X;
+	game_struct->minimap.view_size = 5;
+	game_struct->minimap.cell_width = game_struct->minimap.minimap_width / (2.0 * game_struct->minimap.view_size + 1);
+	game_struct->minimap.cell_height = game_struct->minimap.minimap_height / (2.0 * game_struct->minimap.view_size + 1);
+
 }

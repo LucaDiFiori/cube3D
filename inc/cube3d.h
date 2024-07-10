@@ -25,7 +25,7 @@
 #include <../mlx_linux/mlx.h>
 
 #define RES_X 1440
-#define RES_Y 810
+#define RES_Y 960
 //#define RES_X 960
 //#define RES_Y 720
 //#define RES_X 640
@@ -34,6 +34,9 @@
 /********************* */
 #define MINI_RES_X (RES_X / 5)
 #define MINI_RES_Y (RES_Y / 5)
+
+
+
 /********************* */
 
 
@@ -48,13 +51,24 @@
 
 
 /************************************** */
-typedef struct	s_img_data {
+
+
+typedef struct	s_minimap 
+{
 	void	*img; //puntatore generico per l'immagine.
 	char	*addr; //puntatore ai dati dell'immagine restituite da mlx_get_data_addr
 	int		bpp; //bit per pixel.
 	int		line_length; //dimensione di una linea dell'immagine in byte.
 	int		endian; //ordine dei byte (endianess).
-}				t_img_data;
+	
+	
+	int		minimap_width;
+	int		minimap_height;
+
+	int		view_size;
+	int		cell_width;
+	int		cell_height;
+}				t_minimap;
 /************************************** */
 
 
@@ -109,6 +123,12 @@ typedef struct s_game
 	t_map	map;
 	t_mlx	mlx;
 	t_asset player;
+
+	/********************* */
+	t_minimap minimap;
+
+
+
 }	t_game;
 
 
@@ -128,6 +148,8 @@ char	*ft_strcpy(char *to_copy);
 /*minilib_3*/
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(const char *s, int c);
+int		max(int a, int b);
+int		min(int a, int b);
 
 /*ft_atoi*/
 int		ft_atoi(const char *nptr);
@@ -149,6 +171,10 @@ int		extract_map(t_game *g_s, int map_fd);
 /*MAP_CHECKS*/
 int		check_map(t_game *game);
 int		is_closed(t_game game);
+/*utils*/
+char	*duplicate_row(char *row, int current_cols, int cols);
+char	**duplicate_map(char **map, int rows, int cols);
+void	free_mapcopy(char **map, int rows);
 
 
 /*PRINTF*/
@@ -159,6 +185,7 @@ int		ft_printf(const char *format, ...);
 void	print_error(char *error);
 int		free_matrix(char **ptr_matric);
 int		quit_and_free(char *error, int err_type, t_game *game_struct);
+int		ft_close_x(t_game *ptr_game);
 
 
 /*INIT*/
@@ -172,11 +199,15 @@ int		init_engine(t_game *g_s);
 
 
 /********************************** */
-/*TEST*/
+/*MINIMAP*/
 /*utils*/
-void my_pixel_put(t_img_data *data, int x, int y, int color);
+void my_pixel_put(t_minimap *data, int x, int y, int color);
+void draw_square(t_minimap *minimap, float start_x, float start_y, float size_x,
+    float size_y);
+void draw_circle(t_minimap *minimap, float center_x, float center_y,
+    float radius, int color);
 /*ray_casting*/
-void   minimap_test(t_game *g_s);
+void minimap_test(t_game *g_s);
 /************************************** */
 
 
