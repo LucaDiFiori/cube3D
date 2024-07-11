@@ -22,8 +22,8 @@ typedef struct	s_minimap
 	//float	offset_y;
 
 	int		view_size;
-	int		cell_width;
-	int		cell_height;
+	float		cell_width;
+	float		cell_height;
 
 }				t_minimap;
 /************************************** */

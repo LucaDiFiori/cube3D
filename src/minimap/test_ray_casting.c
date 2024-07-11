@@ -54,6 +54,8 @@ void draw_map(t_game *g_s)
     }
 }
 
+
+
 void draw_player(t_game *g_s, float x, float y) 
 {
     float player_x = (x - max(0, g_s->player.x - 4)) * g_s->minimap.cell_width + g_s->minimap.cell_width / 2;
