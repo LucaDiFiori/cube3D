@@ -38,6 +38,8 @@ SRCS = cube3d.c \
 	   src/init/init_engine.c \
 	   src/minimap/test_ray_casting.c \
 	   src/minimap/test_ray_casting_utils.c \
+	   src/moves/moves.c \
+	   src/moves/moves_utils.c \
 
 OBJS = $(SRCS:%.c=obj/%.o)
 

@@ -14,6 +14,7 @@
 # define CUBE3D_H
 
 #include <stdio.h>
+#include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <math.h>
@@ -23,6 +24,8 @@
 #include "../src/gnl/get_next_line.h"
 #include <stdbool.h>
 #include <../mlx_linux/mlx.h>
+#include <X11/Xlib.h>
+#include "cubestruct.h"
 
 #define RES_X 1440
 #define RES_Y 960
@@ -34,6 +37,11 @@
 /********************* */
 #define MINI_RES_X (RES_X / 5)
 #define MINI_RES_Y (RES_Y / 5)
+
+#define PI 3.1415927
+
+//0.0125
+#define MOVESPEED 0.0050
 
 
 
@@ -48,88 +56,6 @@
 #define MAP_ERR "map error"
 #define MLX_ERR "mlx initialization error"
 
-
-
-/************************************** */
-
-
-typedef struct	s_minimap 
-{
-	void	*img; //puntatore generico per l'immagine.
-	char	*addr; //puntatore ai dati dell'immagine restituite da mlx_get_data_addr
-	int		bpp; //bit per pixel.
-	int		line_length; //dimensione di una linea dell'immagine in byte.
-	int		endian; //ordine dei byte (endianess).
-	
-	
-	int		minimap_width;
-	int		minimap_height;
-
-	int		view_size;
-	int		cell_width;
-	int		cell_height;
-}				t_minimap;
-/************************************** */
-
-
-
-
-
-
-
-typedef struct s_asset
-{
-	float	x;
-	float	y;
-}	t_asset;
-
-
-typedef struct s_rgb
-{
-	int	r;
-	int	g;
-	int	b;
-}	t_rgb;
-
-typedef struct	s_wal_text
-{
-	char	*north;
-	char	*south;
-	char	*east;
-	char	*west;
-	t_rgb	c_rgb;
-	t_rgb	f_rgb;
-}	t_wal_text;
-
-typedef struct s_mlx
-{
-	void	*mlx_ptr;
-	void	*win_ptr;
-}	t_mlx;
-
-typedef struct	s_map
-{
-	char		*map_path;
-	char		**map_mat;
-	int			map_x;
-	int			map_y;
-	t_wal_text	wall_text;
-
-
-}	t_map;
-
-typedef struct s_game
-{
-	t_map	map;
-	t_mlx	mlx;
-	t_asset player;
-
-	/********************* */
-	t_minimap minimap;
-
-
-
-}	t_game;
 
 
 
@@ -193,7 +119,18 @@ int		ft_close_x(t_game *ptr_game);
 void	init_game_struct(t_game *game_struct);
 /*init_engine.c*/
 int		init_engine(t_game *g_s);
+void    init_asset(t_game *g);
 
+
+/*MOVES*/
+/*moves_utils*/
+float degrees_to_radiant(float degrees);
+
+/*moves*/
+int     inputs(int key, t_game *g);
+int key_press(int key, t_game *g);
+int key_release(int key, t_game *g);
+int handle_movement(t_game *g);
 
 
 
@@ -201,13 +138,15 @@ int		init_engine(t_game *g_s);
 /********************************** */
 /*MINIMAP*/
 /*utils*/
-void my_pixel_put(t_minimap *data, int x, int y, int color);
-void draw_square(t_minimap *minimap, float start_x, float start_y, float size_x,
+void my_pixel_put(t_game *g, t_img_data *data, int x, int y, int color);
+void draw_square(t_game *g, t_img_data *minimap, float start_x, float start_y, float size_x,
     float size_y);
-void draw_circle(t_minimap *minimap, float center_x, float center_y,
+void draw_circle(t_game *g, t_img_data *data, float center_x, float center_y,
     float radius, int color);
 /*ray_casting*/
+void draw_map(t_game *g_s);
 void minimap_test(t_game *g_s);
+void draw_player(t_game *g_s, float x, float y);
 /************************************** */
 
 

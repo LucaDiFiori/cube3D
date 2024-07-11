@@ -12,6 +12,29 @@
 
 #include "inc/cube3d.h"
 
+/*da cancellare*/
+static void stampamappa(t_game *g)
+{
+	printf("map_path = %s\n", g->map.map_path);
+	printf("north = %s\n", g->map.wall_text.north);
+	printf("south = %s\n", g->map.wall_text.south);
+	printf("east = %s\n", g->map.wall_text.east);
+	printf("west = %s\n", g->map.wall_text.west);
+	printf("c_rgb.r = %d\n", g->map.wall_text.c_rgb.r);
+	printf("c_rgb.g = %d\n", g->map.wall_text.c_rgb.g);
+	printf("c_rgb.b = %d\n", g->map.wall_text.c_rgb.b);
+	printf("f_rgb.r = %d\n", g->map.wall_text.f_rgb.r);
+	printf("f_rgb.g = %d\n", g->map.wall_text.f_rgb.g);
+	printf("f_rgb.b = %d\n", g->map.wall_text.f_rgb.b);
+	int i = 0;
+	while (g->map.map_mat[i])
+	{
+		printf("%s\n", g->map.map_mat[i]);
+		i++;
+	}
+
+}
+
 /**************************************************************************** */
 /*                      FUNZIONE PRINCIPALE VALIDAZIONE                       */
 /**************************************************************************** */
@@ -75,28 +98,17 @@ int	main(int argc, char **argv)
 	init_game_struct(&game_struct);
 
 	// funzione che valida (map_validator) la mappa: 1) controlla il ".ber"
-	validator(&game_struct, argv); 
+	validator(&game_struct, argv);
+
+	/*devo inizializzarla qui perche leggo N,W,S,E solo qui*/
+	init_asset(&game_struct);
 
 	
-	// ***************************************************
-	printf("map_path = %s\n", game_struct.map.map_path);
-	printf("north = %s\n", game_struct.map.wall_text.north);
-	printf("south = %s\n", game_struct.map.wall_text.south);
-	printf("east = %s\n", game_struct.map.wall_text.east);
-	printf("west = %s\n", game_struct.map.wall_text.west);
-	printf("c_rgb.r = %d\n", game_struct.map.wall_text.c_rgb.r);
-	printf("c_rgb.g = %d\n", game_struct.map.wall_text.c_rgb.g);
-	printf("c_rgb.b = %d\n", game_struct.map.wall_text.c_rgb.b);
-	printf("f_rgb.r = %d\n", game_struct.map.wall_text.f_rgb.r);
-	printf("f_rgb.g = %d\n", game_struct.map.wall_text.f_rgb.g);
-	printf("f_rgb.b = %d\n", game_struct.map.wall_text.f_rgb.b);
-	int i = 0;
-	while (game_struct.map.map_mat[i])
-	{
-		printf("linea = %s\n", game_struct.map.map_mat[i]);
-		i++;
-	}
+	// ******************DACANCELLARE*********************************
+	stampamappa(&game_struct);
 	// ***********************************************
+
+
 
 	//inizializazione del motore grafico e lancio della finestra
 	if (!init_engine(&game_struct))
@@ -107,22 +119,40 @@ int	main(int argc, char **argv)
 
 
 	// *******************PROVA RAY CASTING*********************************
-	
-	
-	minimap_test(&game_struct);
-	 // Mette il programma in attesa degli eventi (necessario per mantenere aperta la finestra)
+	/*minimap_test(&game_struct);
 
+	//gestione chiusura con il tasto x
 	mlx_hook(game_struct.mlx.win_ptr, 17, 0, *ft_close_x, &game_struct);
+
+	//hook per i pulsanti  --> devo fare la funzione INPUTS
+	mlx_key_hook(game_struct.mlx.win_ptr, *inputs, &game_struct);
     
-	mlx_loop(game_struct.mlx.mlx_ptr);
+	//loop della finestra 
+	mlx_loop(game_struct.mlx.mlx_ptr);*/
+
 
 	
-	/*PRENDERE ISPIRAZIONE DAL PROGRAMMA SOTTO PERCHE IN QUEL MODO SI RIDIMENSIONA
-	  - per far rdimensionare la minimappa devo modificare delle cose:
-	    come dimensione della minimappa usa le macro MINI_ ..
-		invece devo mettere altri due elementi della struct del gioco ed assagnargli le madro.
-		a quel punto usare quelle nelle funzione drov map*/
+	//disegno la minimappa
+	minimap_test(&game_struct);
 
+	//gestisco la chiusura con il tasto x
+	mlx_hook(game_struct.mlx.win_ptr, 17, 0, *ft_close_x, &game_struct);
+
+	// Imposta gli hook per la pressione e il rilascio dei tasti
+    mlx_hook(game_struct.mlx.win_ptr, 2, 1L<<0, key_press, &game_struct);
+    mlx_hook(game_struct.mlx.win_ptr, 3, 1L<<1, key_release, &game_struct);
+
+    // Imposta l'hook per il loop principale
+	/*La funzionehandle_movement nel tuo codice (handle_movement nel tuo caso) 
+	viene chiamata ripetutamente dal loop principale di MinilibX ogni volta che 
+	la finestra è in attesa di input o di rendering. All'interno di loop_hook, 
+	puoi includere la logica per controllare lo stato dei tasti (W, A, S, D) e 
+	gestire il movimento del personaggio, aggiornare la minimappa, e eseguire 
+	altre operazioni necessarie per il funzionamento del tuo gioco.*/
+    mlx_loop_hook(game_struct.mlx.mlx_ptr, handle_movement, &game_struct);
+
+    // Avvia il loop della finestra
+    mlx_loop(game_struct.mlx.mlx_ptr);
 
 
 

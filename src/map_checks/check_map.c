@@ -125,6 +125,7 @@ static int	check_characters(t_game *game)
 			{
 				game->player.x = x;
 				game->player.y = y;
+				game->player.dir = c;
 				num_players++;
 			}
 			if (num_players > 1)
