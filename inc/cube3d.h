@@ -41,7 +41,7 @@
 #define PI 3.1415927
 
 //0.0125
-#define MOVESPEED 0.0050
+#define MOVESPEED 0.005
 
 
 

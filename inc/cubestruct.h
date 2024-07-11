@@ -23,7 +23,7 @@ typedef struct	s_minimap
 
 	int		view_size;
 	float		cell_width;
-	float		cell_height;
+	float 		cell_height;
 
 }				t_minimap;
 /************************************** */

@@ -1,6 +1,10 @@
 #include "../../inc/cube3d.h"
 
 /*************************************MAPPA ZOOMATA*************************** */
+
+
+
+
 // Funzione per riempire la schermata di un dato colore
 static void fill_background(t_game *g, t_img_data *data, int width, int height, int background_color)
 {

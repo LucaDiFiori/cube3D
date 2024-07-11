@@ -63,16 +63,18 @@ void handle_movement(t_game *g)
 	}
 }*/
 
+
 static void	move_forward(t_game *g_s, t_asset *asset)
 {
-	float new_x = asset->x + asset->rad_x * asset->speed;
-	float new_y = asset->y + asset->rad_y * asset->speed;
 
 
 
 
-	if (g_s->map.map_mat[(int)new_y][(int)new_x] != '1')
+
+	if (g_s->map.map_mat[(int)asset->y][(int)asset->x] != '1')
 	{
+		float new_x = asset->x + asset->rad_x * asset->speed;
+		float new_y = asset->y + asset->rad_y * asset->speed;
 		asset->x = new_x;
 		asset->y = new_y;
 		printf("new_x = %f\n", new_x);
