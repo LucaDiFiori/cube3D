@@ -1,8 +1,8 @@
 NAME = cube3d
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
-LDFLAGS = -Lmlx_linux -lmlx_Linux -L/usr/lib -lXext -lX11 -lm -lz
-INCLUDES = -I/usr/include -Imlx_linux -O3
+LDFLAGS = -Lmlx -lmlx -L/usr/lib -lXext -lX11 -lm -lz
+INCLUDES = -I/usr/include -Imlx -O3
 
 .PHONY: all configure_mlx
 
@@ -44,7 +44,7 @@ SRCS = cube3d.c \
 OBJS = $(SRCS:%.c=obj/%.o)
 
 $(NAME): $(OBJS)
-	@(cd mlx_linux && ./configure)
+	@(cd mlx && ./configure)
 	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $(NAME) 
 
 obj/%.o: %.c
@@ -53,10 +53,10 @@ obj/%.o: %.c
 
 clean:
 	@rm -rf obj
-	@(cd mlx_linux && $(MAKE) clean)
+	@(cd mlx && $(MAKE) clean)
 
 fclean: clean
-	@(cd mlx_linux && $(MAKE) clean)
+	@(cd mlx && $(MAKE) clean)
 	@rm -f $(NAME)
 
 re: fclean all

@@ -23,7 +23,7 @@
 #include <limits.h>
 #include "../src/gnl/get_next_line.h"
 #include <stdbool.h>
-#include <../mlx_linux/mlx.h>
+#include <../mlx/mlx.h>
 #include <X11/Xlib.h>
 #include "cubestruct.h"
 
