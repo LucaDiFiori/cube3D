@@ -45,13 +45,23 @@ int	split_and_validate_line(char *line, char ***split_line)
 static int process_rgb_values(char **split_line, t_rgb *color) 
 {
     char *temp_ptr;
-    int i = 0;
+    int j; 
+    int i;
 
+    i = 0;
     while (split_line[i] != NULL) 
 	{
         temp_ptr = split_line[i];
-        while (*temp_ptr && !ft_isdigit(*temp_ptr))
+        while (*temp_ptr && (*temp_ptr == ' ' || *temp_ptr == '\t'))
             temp_ptr++;
+        j = 0;
+        while (temp_ptr[j] && temp_ptr[j] != '\n')
+        {
+            printf("temp_ptr[j] = %s\n", temp_ptr);
+            if (!ft_isdigit(temp_ptr[j]))
+                return (0);
+            j++;
+        }
         if (!*temp_ptr)
             return (0);
         if (i == 0)
@@ -69,6 +79,8 @@ static int process_rgb_values(char **split_line, t_rgb *color)
 	else
     	return 0;
 }
+
+
 
 /*function to check if the rgb values are in the range 0-255
   RETURN: - 1 if the values are valid

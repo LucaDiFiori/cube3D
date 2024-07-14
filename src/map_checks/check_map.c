@@ -123,6 +123,7 @@ static int	check_characters(t_game *game)
 				return (1);
 			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 			{
+				/*DA MODIFICARE: FARE UNA FUNZIONE CHE SALVA LE POSIZIONI*/
 				game->player.x = x;
 				game->player.y = y;
 				game->player.dir = c;

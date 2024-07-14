@@ -16,30 +16,47 @@ typedef struct	s_minimap
 {
 	
 	t_img_data	img_bg;
+	t_img_data	img_p;
 	int		minimap_width;
 	int		minimap_height;
 	//float	offset_x;
 	//float	offset_y;
 
 	int		view_size;
-	float		cell_width;
-	float 		cell_height;
+	float	cell_width;
+	float 	cell_height;
 
 }				t_minimap;
 /************************************** */
 
 
-
+typedef struct s_mov
+{
+	bool up;
+	bool down;
+	bool left;
+	bool right;
+} t_mov;
 
 typedef struct s_asset
 {
+	/*direzione iniziale personaggio*/
 	char	dir;	// N, S, E, W
+	
+	/*posizioni personaggio */
 	float	x;
 	float	y;
-	float	rad_x;
-	float   rad_y;
-	float		speed;
-	int		movement; //
+
+	/*vettore direzione personaggio*/
+	float	dir_vec[2];
+
+	/*tasto premuto per il movimento*/
+	int keys[256];
+	//int moved;
+
+
+	/*mi manca il vettore del piano*/
+
 }	t_asset;
 
 
@@ -77,13 +94,6 @@ typedef struct	s_map
 
 }	t_map;
 
-/*typedef struct s_key
-{
-	int w;
-	int s;
-	int d;
-	int a;
-} t_key;*/
 
 typedef struct s_game
 {

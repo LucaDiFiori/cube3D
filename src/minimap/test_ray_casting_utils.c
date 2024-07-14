@@ -13,6 +13,18 @@ void my_pixel_put(t_game *g, t_img_data *data, int x, int y, int color)
     }
 }
 
+// Funzione per riempire la schermata di un dato colore
+void fill_background(t_game *g, t_img_data *data, int width, int height, int background_color)
+{
+    for (int y = 0; y < height; y++)
+    {
+        for (int x = 0; x < width; x++)
+        {
+            my_pixel_put(g, data, x, y, background_color);
+        }
+    }
+}
+
 /*    questa funzione disegna un quadrato della dimensione, colore e posizione indicati*/
 void draw_square(t_game *g, t_img_data *img_data, float start_x, float start_y,
     float size_x, float size_y) 

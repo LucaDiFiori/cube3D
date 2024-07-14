@@ -26,9 +26,10 @@ static void	init_map_struct(t_game *g)
 	g->map.wall_text.f_rgb.r = -1;
 	g->map.wall_text.f_rgb.g = -1;
 	g->map.wall_text.f_rgb.b = -1;
+	g->map.map_x = 0;
 }
 
-static void init_minimap(t_game *g)
+static void init_minimap_struct(t_game *g)
 {
 	g->minimap.minimap_height = MINI_RES_Y;
 	g->minimap.minimap_width = MINI_RES_X;
@@ -45,38 +46,36 @@ static void init_mlx_struct(t_game *g)
 	g->mlx.win_ptr = NULL;
 }
 
-static void init_key (t_game *g)
+static void init_keys (t_game *g)
 {
-	/*g->key.w = 0;
-	g->key.a = 0;
-	g->key.s = 0;
-	g->key.d = 0;*/
-	g->player.movement = 0;
+
+	//g->player.moved = 0;
+	for (int i = 0; i < 256; i++)
+		g->player.keys[i] = 0;
 }
 
 
 void init_asset(t_game *g)
 {
-	g->player.speed = MOVESPEED;
 	if (g->player.dir == 'N')
 	{
-		g->player.rad_x = 0;
-		g->player.rad_y = -1.0;
+		g->player.dir_vec[0] = 0;
+		g->player.dir_vec[1] = -1;
 	}
 	else if (g->player.dir  == 'E')
 	{
-		g->player.rad_x = 1;
-		g->player.rad_y = 0;
+		g->player.dir_vec[0] = 1;
+		g->player.dir_vec[1] = 0;
 	}
 	else if (g->player.dir  == 'S')
 	{
-		g->player.rad_x = 0;
-		g->player.rad_y = 1;
+		g->player.dir_vec[0] = 0;
+		g->player.dir_vec[1] = 1;
 	}
 	else if (g->player.dir  == 'W')
 	{
-		g->player.rad_x = -1;
-		g->player.rad_y = 0;
+		g->player.dir_vec[0] = -1;
+		g->player.dir_vec[1] = 0;
 	}
 }
 
@@ -84,8 +83,8 @@ void init_game_struct(t_game *g)
 {
 	init_map_struct(g);
 	init_mlx_struct(g);
-	init_minimap(g);
-	init_key(g);
+	init_minimap_struct(g);
+	init_keys(g);
 
 	/*minimappa*/
 

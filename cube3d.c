@@ -64,7 +64,7 @@ static void	validator(t_game *game_struct, char **argv)
 	if (!extract_map(game_struct, map_fd))
 		quit_and_free(MAP_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
 
-	
+	printf("line apiu lunga = %d\n", game_struct->map.map_x);
 
 
 	//dopo questa riga ho allocato anche la matrice
@@ -131,25 +131,25 @@ int	main(int argc, char **argv)
 	mlx_loop(game_struct.mlx.mlx_ptr);*/
 
 
-	
 	//disegno la minimappa
-	minimap_test(&game_struct);
+	init_minimap(&game_struct);
 
 	//gestisco la chiusura con il tasto x
 	mlx_hook(game_struct.mlx.win_ptr, 17, 0, *ft_close_x, &game_struct);
 
+	/*___________________________________________________________________________
+    // Imposta l'hook dei movimenti
+    mlx_hook(game_struct.mlx.win_ptr, 2, 1L << 0, handle_movement, &game_struct);
+	___________________________________________________________________________ */
+    
+	/*___________________________________________________________________________*/ 
 	// Imposta gli hook per la pressione e il rilascio dei tasti
-    mlx_hook(game_struct.mlx.win_ptr, 2, 1L<<0, key_press, &game_struct);
-    mlx_hook(game_struct.mlx.win_ptr, 3, 1L<<1, key_release, &game_struct);
+	mlx_hook(game_struct.mlx.win_ptr, 2, 1L<<0, key_press, &game_struct);
+	mlx_hook(game_struct.mlx.win_ptr, 3, 1L<<1, key_release, &game_struct);
 
-    // Imposta l'hook per il loop principale
-	/*La funzionehandle_movement nel tuo codice (handle_movement nel tuo caso) 
-	viene chiamata ripetutamente dal loop principale di MinilibX ogni volta che 
-	la finestra è in attesa di input o di rendering. All'interno di loop_hook, 
-	puoi includere la logica per controllare lo stato dei tasti (W, A, S, D) e 
-	gestire il movimento del personaggio, aggiornare la minimappa, e eseguire 
-	altre operazioni necessarie per il funzionamento del tuo gioco.*/
-    mlx_loop_hook(game_struct.mlx.mlx_ptr, handle_movement, &game_struct);
+	// Aggiorna il ciclo di rendering per gestire il movimento continuo
+	mlx_loop_hook(game_struct.mlx.mlx_ptr, handle_movement, &game_struct);
+	/*___________________________________________________________________________ */
 
     // Avvia il loop della finestra
     mlx_loop(game_struct.mlx.mlx_ptr);

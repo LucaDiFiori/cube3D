@@ -24,37 +24,9 @@
 #include "../src/gnl/get_next_line.h"
 #include <stdbool.h>
 #include <../mlx/mlx.h>
-#include <X11/Xlib.h>
+#include <X11/Xlib.h> 
 #include "cubestruct.h"
-
-#define RES_X 1440
-#define RES_Y 960
-//#define RES_X 960
-//#define RES_Y 720
-//#define RES_X 640
-//#define RES_Y 480
-
-/********************* */
-#define MINI_RES_X (RES_X / 5)
-#define MINI_RES_Y (RES_Y / 5)
-
-#define PI 3.1415927
-
-//0.0125
-#define MOVESPEED 0.005
-
-
-
-/********************* */
-
-
-#define EXT_ERR "Invalid file extension. '.cub' file needed\n"
-#define ARG_ERR "Invalid number of arguments -> Use example: ./cub3D map.cub"
-#define OPEN_ERR "opening the map file"
-#define DATA_ERR "bad textures data in the file"
-#define MALLOC_ERR "malloc error"
-#define MAP_ERR "map error"
-#define MLX_ERR "mlx initialization error"
+#include "cubemacro.h"
 
 
 
@@ -127,10 +99,10 @@ void    init_asset(t_game *g);
 float degrees_to_radiant(float degrees);
 
 /*moves*/
-int     inputs(int key, t_game *g);
-int key_press(int key, t_game *g);
-int key_release(int key, t_game *g);
+int key_press(int keycode, t_game *g);
+int key_release(int keycode, t_game *g);
 int handle_movement(t_game *g);
+//int handle_movement(int keycode, t_game *g);
 
 
 
@@ -139,11 +111,14 @@ int handle_movement(t_game *g);
 /*MINIMAP*/
 /*utils*/
 void my_pixel_put(t_game *g, t_img_data *data, int x, int y, int color);
+void fill_background(t_game *g, t_img_data *data, int width, int height, int background_color);
 void draw_square(t_game *g, t_img_data *minimap, float start_x, float start_y, float size_x,
     float size_y);
 void draw_circle(t_game *g, t_img_data *data, float center_x, float center_y,
     float radius, int color);
+
 /*ray_casting*/
+void init_minimap(t_game *g);
 void draw_map(t_game *g_s);
 void minimap_test(t_game *g_s);
 void draw_player(t_game *g_s, float x, float y);
