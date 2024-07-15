@@ -59,17 +59,17 @@ static char *find_and_read_first_line(int map_fd)
 }
 
 /*trova la linea piu lunga della mappa*/
-static void max_width_extractor(t_game *g, char *line)
+/*static void max_width_extractor(t_game *g, char *line)
 {
     int len;
 
     len = ft_strlen(line);
     if (g->map.map_x < len)
         g->map.map_x = len;
-}
+}*/
 
 /*This function reads the map line by line and joins them into a single string. */
-static char *join_lines(t_game *g, int map_fd, char *first_line)
+static char *join_lines(/*t_game *g, */int map_fd, char *first_line)
 {
     char *join_map = NULL;
     char *line = first_line;
@@ -77,7 +77,7 @@ static char *join_lines(t_game *g, int map_fd, char *first_line)
 
     while (line && line[0] != '\n')
     {
-        max_width_extractor(g, line);
+        //max_width_extractor(g, line);
         temp = ft_strjoin(join_map, line);
         if (!temp)
         {
@@ -138,7 +138,7 @@ int extract_map(t_game *g_s, int map_fd)
     if (!first_line)
         return (0);
 
-    char *join_map = join_lines(g_s, map_fd, first_line);
+    char *join_map = join_lines(/*g_s,*/ map_fd, first_line);
     if (!join_map)
     {
         quit_and_free(MALLOC_ERR, 2, g_s);

@@ -64,7 +64,7 @@ static void	validator(t_game *game_struct, char **argv)
 	if (!extract_map(game_struct, map_fd))
 		quit_and_free(MAP_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
 
-	printf("line apiu lunga = %d\n", game_struct->map.map_x);
+	printf("line apiu lunga = %d\n", game_struct->map.map_x);/******************************* */
 
 
 	//dopo questa riga ho allocato anche la matrice
@@ -73,6 +73,8 @@ static void	validator(t_game *game_struct, char **argv)
 	{
 		quit_and_free(MAP_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
 	}
+
+	printf("line apiu lunga = %d\n", game_struct->map.map_x);/*************************** */
 
 
 	//qui devo chiamare la funzione che valida la mappa
@@ -119,17 +121,6 @@ int	main(int argc, char **argv)
 
 
 	// *******************PROVA RAY CASTING*********************************
-	/*minimap_test(&game_struct);
-
-	//gestione chiusura con il tasto x
-	mlx_hook(game_struct.mlx.win_ptr, 17, 0, *ft_close_x, &game_struct);
-
-	//hook per i pulsanti  --> devo fare la funzione INPUTS
-	mlx_key_hook(game_struct.mlx.win_ptr, *inputs, &game_struct);
-    
-	//loop della finestra 
-	mlx_loop(game_struct.mlx.mlx_ptr);*/
-
 
 	//disegno la minimappa
 	init_minimap(&game_struct);

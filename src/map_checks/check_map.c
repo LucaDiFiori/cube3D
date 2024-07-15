@@ -12,8 +12,6 @@
 
 #include "../../inc/cube3d.h"
 
-
-
 /*
 1) PRIMO IF:
 (ho modificato i nomi delle variabili, i è x e j è y)
