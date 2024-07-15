@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cube3d.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldi-fior <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cmaestri <cmaestri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 11:16:22 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024/06/24 12:52:58 by ldi-fior         ###   ########.fr       */
+/*   Updated: 2024/07/15 15:06:21 by cmaestri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ int		extract_map(t_game *g_s, int map_fd);
 int		check_map(t_game *game);
 int		is_closed(t_game game);
 /*utils*/
+void	find_rows_and_cols(t_map *map);
 char	*duplicate_row(char *row, int current_cols, int cols);
 char	**duplicate_map(char **map, int rows, int cols);
 void	free_mapcopy(char **map, int rows);

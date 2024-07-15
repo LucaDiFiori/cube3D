@@ -3,36 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmaestri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cmaestri <cmaestri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 23:24:59 by cmaestri          #+#    #+#             */
-/*   Updated: 2024/07/07 09:30:51 by cmaestri         ###   ########.fr       */
+/*   Updated: 2024/07/15 16:09:32 by cmaestri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
 
-/*
-funzione per determinare il numero di righe e colonne della mappa. se trovo una riga con un numero maggiore di colonne rispetto alla precedente, aggiorno il numero di map_cols.
-*/
-void	find_rows_and_cols(t_map *map)
-{
-	int	x;
-	
-	if (!map->map_mat)
-		return ;
-	map->map_y = 0;
-	map->map_x = 0;
-	while (map->map_mat[map->map_y])
-	{
-		x = 0;
-		while (map->map_mat[map->map_y][x])
-			x++;
-		if (x > map->map_y)
-			map->map_x = x;
-		map->map_y++;
-	}
-}
+
 
 /*
 1) PRIMO IF:
@@ -97,44 +77,64 @@ static int	is_reachable(char **map, int rows, int cols)
 
 
 /* CONTROLLO I CARATTERI DELLA MAPPA
-scorro la matrice contenente la mappa e controllo che ci siano solo caratteri validi.
--se trovo un carattere non valido returno 1.
--incremento num_player se trovo un carattere corrispondente al player 
- (N,S,E,W) e se num_player > 1 (è stato inserito più di un player) returno 1.
--se non trovo errori returno 0.
+scorro la matrice contenente la mappa e al suo interno chiamo valid_chars(), che controlla che ci siano solo caratteri validi.
+- se il carattere che sto controllando non e' tra quelli validi returno 0.
+- se trovo uno dei caratteri corrispondenti al player setto le coordinate (x e y) e l'orientamento (dir) del player e returno 2 a check_characters() per segnalare la presenza di un player
+- in check_characters(), se !valid_chars() returno 1 -> errore
+- se valid_chars() returna un valore > 1 (2) incremento player
+- se player != 1 (è stato inserito più di un player o non ci sono player) returno 1 -> errore.
+- se non trovo errori returno 0.
 */
+
+static int valid_chars(t_game *game, char c, int x, int y)
+{
+	if ((c != '0' && c != '1' && c != ' ' && c != 'N' && c != 'S' && c != 'E' && c != 'W' && c != 'D' && c != 'U'))
+		return (0);
+	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+	{
+		game->player.x = x;
+		game->player.y = y;
+		game->player.dir = c;
+		return (2);
+	}
+	if (c == 'D')
+	{
+		game->map.door_x = x;
+		game->map.door_y = y;
+	}
+	if (c == 'U')
+	{
+		game->map.exit_x = x;
+		game->map.exit_y = y;
+	}
+	return (1);
+}
+
 static int	check_characters(t_game *game)
 {
 	int		x;
 	int		y;
-	int		num_players;
+	int		player;
 	char	c;
 	
 	y = 0;
-	num_players = 0;
+	player = 0;
 	while (game->map.map_mat[y])
 	{
 		x = 0;
 		while (game->map.map_mat[y][x])
 		{
 			c = game->map.map_mat[y][x];
-			if ((c != '0' && c != '1' && c != ' ' && c != 'N' && c != 'S'
-				&& c != 'E' && c != 'W'))
+			if (!valid_chars(game, c, x, y))
 				return (1);
-			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
-			{
-				/*DA MODIFICARE: FARE UNA FUNZIONE CHE SALVA LE POSIZIONI*/
-				game->player.x = x;
-				game->player.y = y;
-				game->player.dir = c;
-				num_players++;
-			}
-			if (num_players > 1)
-				return (1);
+			if (valid_chars(game, c, x, y) > 1)
+				player++;
 			x++;
 		}
 		y++;
 	}
+	if (player != 1)
+		return (1);
 	return (0);
 }
 

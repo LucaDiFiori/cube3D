@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   launch.c                                           :+:      :+:    :+:   */
+/*   init_struct.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ldi-fior <marvin@42.fr>                    #+#  +:+       +#+        */
+/*   By: cmaestri <cmaestri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024-06-21 14:17:34 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024-06-21 14:17:34 by ldi-fior         ###   ########.fr       */
+/*   Created: 2024/06/21 14:17:34 by ldi-fior          #+#    #+#             */
+/*   Updated: 2024/07/15 16:17:40 by cmaestri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,10 @@ static void	init_map_struct(t_game *g)
 	g->map.wall_text.f_rgb.g = -1;
 	g->map.wall_text.f_rgb.b = -1;
 	g->map.map_x = 0;
+	g->map.door_x = -1;
+	g->map.door_y = -1;
+	g->map.exit_x = -1;
+	g->map.exit_y = -1;
 }
 
 static void init_minimap_struct(t_game *g)
