@@ -3,14 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   check_map_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmaestri <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cmaestri <cmaestri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 23:24:59 by cmaestri          #+#    #+#             */
-/*   Updated: 2024/07/07 09:02:48 by cmaestri         ###   ########.fr       */
+/*   Updated: 2024/07/15 15:05:48 by cmaestri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
+
+/*
+funzione per determinare il numero di righe e colonne della mappa. se trovo una riga con un numero maggiore di colonne rispetto alla precedente, aggiorno il numero di map_cols.
+*/
+void	find_rows_and_cols(t_map *map)
+{
+	int	x;
+	
+	if (!map->map_mat)
+		return ;
+	map->map_y = 0;
+	map->map_x = 0;
+	while (map->map_mat[map->map_y])
+	{
+		x = 0;
+		while (map->map_mat[map->map_y][x])
+			x++;
+		if (x > map->map_y)
+			map->map_x = x;
+		map->map_y++;
+	}
+}
 
 /* si occupa di copiare riga per riga la mappa in map_copy, aggiungendo spazi (' ') per arrivare alla lunghezza della riga più lunga ed avere così una mappa quadrata.
 */
