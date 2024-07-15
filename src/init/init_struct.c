@@ -34,10 +34,6 @@ static void init_minimap_struct(t_game *g)
 	g->minimap.minimap_height = MINI_RES_Y;
 	g->minimap.minimap_width = MINI_RES_X;
 	g->minimap.view_size = 5;
-	g->minimap.cell_width = g->minimap.minimap_width / (2.0 * g->minimap.view_size + 1);
-	g->minimap.cell_height = g->minimap.cell_width;
-	//g->minimap.offset_x = g->minimap.cell_width / 2;
-	//g->minimap.offset_y = g->minimap.cell_height / 2;
 }
 
 static void init_mlx_struct(t_game *g)

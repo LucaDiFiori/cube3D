@@ -28,7 +28,7 @@ void	find_rows_and_cols(t_map *map)
 		x = 0;
 		while (map->map_mat[map->map_y][x])
 			x++;
-		if (x > map->map_y)
+		if (x > map->map_x)
 			map->map_x = x;
 		map->map_y++;
 	}

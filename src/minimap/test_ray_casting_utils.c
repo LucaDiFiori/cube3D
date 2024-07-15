@@ -26,7 +26,7 @@ void fill_background(t_game *g, t_img_data *data, int width, int height, int bac
 }
 
 /*    questa funzione disegna un quadrato della dimensione, colore e posizione indicati*/
-void draw_square(t_game *g, t_img_data *img_data, float start_x, float start_y,
+void draw_square(t_game *g, float start_x, float start_y,
     float size_x, float size_y) 
 {
     float x = start_x;
@@ -35,7 +35,7 @@ void draw_square(t_game *g, t_img_data *img_data, float start_x, float start_y,
     while (x < start_x + size_x) {
         y = start_y;
         while (y < start_y + size_y) {
-            my_pixel_put(g, img_data, x, y, 0xFFFFFF);
+            my_pixel_put(g, &g->minimap.img_bg, x, y, 0xFFFFFF);
             y++;
         }
         x++;

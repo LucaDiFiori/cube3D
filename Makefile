@@ -1,4 +1,4 @@
-NAME = cube3d
+NAME = cub3D
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -Lmlx -lmlx -L/usr/lib -lXext -lX11 -lm -lz

@@ -112,7 +112,7 @@ int handle_movement(t_game *g);
 /*utils*/
 void my_pixel_put(t_game *g, t_img_data *data, int x, int y, int color);
 void fill_background(t_game *g, t_img_data *data, int width, int height, int background_color);
-void draw_square(t_game *g, t_img_data *minimap, float start_x, float start_y, float size_x,
+void draw_square(t_game *g, float start_x, float start_y, float size_x,
     float size_y);
 void draw_circle(t_game *g, t_img_data *data, float center_x, float center_y,
     float radius, int color);
@@ -121,7 +121,8 @@ void draw_circle(t_game *g, t_img_data *data, float center_x, float center_y,
 void init_minimap(t_game *g);
 void draw_map(t_game *g_s);
 void minimap_test(t_game *g_s);
-void draw_player(t_game *g_s, float x, float y);
+void draw_player(t_game *g_s, float x, float y); //non zoomato
+//void draw_player(t_game *g_s); //zoomato
 /************************************** */
 
 

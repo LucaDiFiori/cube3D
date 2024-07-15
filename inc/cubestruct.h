@@ -16,7 +16,6 @@ typedef struct	s_minimap
 {
 	
 	t_img_data	img_bg;
-	t_img_data	img_p;
 	int		minimap_width;
 	int		minimap_height;
 	//float	offset_x;
@@ -25,6 +24,9 @@ typedef struct	s_minimap
 	int		view_size;
 	float	cell_width;
 	float 	cell_height;
+
+	float zoom_factor;
+	
 
 }				t_minimap;
 /************************************** */
