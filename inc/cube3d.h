@@ -6,7 +6,7 @@
 /*   By: cmaestri <cmaestri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 11:16:22 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024/07/15 15:06:21 by cmaestri         ###   ########.fr       */
+/*   Updated: 2024/07/16 11:59:05 by cmaestri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ int		extract_map(t_game *g_s, int map_fd);
 /*MAP_CHECKS*/
 int		check_map(t_game *game);
 int		is_closed(t_game game);
+int     is_reachable(char **map, int rows, int cols);
 /*utils*/
 void	find_rows_and_cols(t_map *map);
 char	*duplicate_row(char *row, int current_cols, int cols);
