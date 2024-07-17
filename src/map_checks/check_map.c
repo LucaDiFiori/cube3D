@@ -6,7 +6,7 @@
 /*   By: cmaestri <cmaestri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/02 23:24:59 by cmaestri          #+#    #+#             */
-/*   Updated: 2024/07/16 12:01:34 by cmaestri         ###   ########.fr       */
+/*   Updated: 2024/07/17 10:35:30 by cmaestri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,18 +93,22 @@ la funzione CHECK MAP
 int	check_map(t_game *game)
 {
 	char **map_copy;
+	char **map_copy2;
 
 	find_rows_and_cols(&game->map);
 	if (is_closed(*game))
 	{
 		map_copy = duplicate_map(game->map.map_mat, game->map.map_y, game->map.map_x);
+		map_copy2 = duplicate_map(game->map.map_mat, game->map.map_y, game->map.map_x);
 		if (check_characters(game)
-			|| is_reachable(map_copy, game->map.map_y, game->map.map_x))
+			|| is_reachable(game, map_copy, map_copy2, game->map.map_y, game->map.map_x))
 			{
 				free_mapcopy(map_copy, game->map.map_y);
+				free_mapcopy(map_copy2, game->map.map_y);
 				return (0);
 			}
 		free_mapcopy(map_copy, game->map.map_y);
+		free_mapcopy(map_copy2, game->map.map_y);
 		return (1);
 	}
 	return (0);
