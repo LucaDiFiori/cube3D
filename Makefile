@@ -26,6 +26,7 @@ SRCS = cube3d.c \
 	   src/map_checks/check_map_utils.c \
 	   src/map_checks/check_map.c \
 	   src/map_checks/check_walls.c \
+	   src/map_checks/flood_fill.c\
 	   src/gnl/get_next_line.c \
 	   src/gnl/get_next_line_utils.c \
 	   src/minilib/minilib_1.c \

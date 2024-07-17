@@ -92,10 +92,9 @@ typedef struct	s_map
 	int			map_x;
 	int			map_y;
 	t_wal_text	wall_text;
-	int			door_x;
-	int			door_y;
-	int			exit_x;
-	int			exit_y;
+	int			num_players;
+	int			num_doors;
+	int			num_exits;
 
 
 }	t_map;
