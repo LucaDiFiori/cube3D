@@ -35,7 +35,6 @@ SRCS = cube3d.c \
 	   src/utils/quit_and_free.c \
 	   src/printf/ft_printf.c \
 	   src/init/init_struct.c \
-	   src/init/init_engine.c \
 	   src/minimap/test_ray_casting.c \
 	   src/minimap/test_ray_casting_utils.c \
 	   src/moves/moves.c \

@@ -12,6 +12,17 @@
 
 #include "../../inc/cube3d.h"
 
+int init_engine(t_game *g_s)
+{
+	g_s->mlx.mlx_ptr = mlx_init();
+	if (!g_s->mlx.mlx_ptr)
+		return (0);
+	g_s->mlx.win_ptr = mlx_new_window(g_s->mlx.mlx_ptr, RES_X, RES_Y, "cub3D");
+	if (!g_s->mlx.win_ptr)
+		return (0);
+	return (1);
+}
+
 static void	init_map_struct(t_game *g)
 {
 	g->map.map_path = NULL;
@@ -40,19 +51,6 @@ static void init_minimap_struct(t_game *g)
 	g->minimap.view_size = 5;
 }
 
-static void init_mlx_struct(t_game *g)
-{
-	g->mlx.mlx_ptr = NULL;
-	g->mlx.win_ptr = NULL;
-}
-
-static void init_keys (t_game *g)
-{
-
-	//g->player.moved = 0;
-	for (int i = 0; i < 256; i++)
-		g->player.keys[i] = 0;
-}
 
 
 void init_asset(t_game *g)
@@ -82,9 +80,11 @@ void init_asset(t_game *g)
 void init_game_struct(t_game *g)
 {
 	init_map_struct(g);
-	init_mlx_struct(g);
+	g->mlx.mlx_ptr = NULL;
+	g->mlx.win_ptr = NULL;
 	init_minimap_struct(g);
-	init_keys(g);
+	for (int i = 0; i < 256; i++)
+		g->player.keys[i] = 0;
 
 	/*minimappa*/
 

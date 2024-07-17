@@ -46,8 +46,8 @@ char	*ft_strcpy(char *to_copy);
 /*minilib_3*/
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(const char *s, int c);
-int		max(int a, int b);
-int		min(int a, int b);
+int		max(int a, int b);  //forse da cancellare
+int		min(int a, int b);  //forse da cancellare
 
 /*ft_atoi*/
 int		ft_atoi(const char *nptr);
@@ -90,7 +90,6 @@ int		ft_close_x(t_game *ptr_game);
 /*INIT*/
 /*init_struct.c*/
 void	init_game_struct(t_game *game_struct);
-/*init_engine.c*/
 int		init_engine(t_game *g_s);
 void    init_asset(t_game *g);
 
