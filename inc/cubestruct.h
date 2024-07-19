@@ -51,13 +51,12 @@ typedef struct s_asset
 
 	/*vettore direzione personaggio*/
 	float	dir_vec[2];
+	/*vettore del piano*/
+	float plane_vec[2];
 
 	/*tasto premuto per il movimento*/
 	int keys[256];
 	//int moved;
-
-
-	/*mi manca il vettore del piano*/
 
 }	t_asset;
 
@@ -98,6 +97,30 @@ typedef struct	s_map
 
 
 }	t_map;
+
+typedef struct s_raycast
+{
+	double	camera_x;
+	double	dir_x;
+	double	dir_y;
+	int		step_x;
+	int		step_y;
+	double	wall_distance;
+	double	wall_x;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	int		side;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+	int		map_x;
+	int		map_y;
+	t_asset	player;
+
+} t_raycast;
+
 
 
 typedef struct s_game

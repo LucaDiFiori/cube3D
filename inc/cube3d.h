@@ -6,7 +6,7 @@
 /*   By: cmaestri <cmaestri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 11:16:22 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024/07/17 10:35:48 by cmaestri         ###   ########.fr       */
+/*   Updated: 2024/07/19 10:41:08 by cmaestri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ void minimap_test(t_game *g_s);
 void draw_player(t_game *g_s, float x, float y); //non zoomato
 //void draw_player(t_game *g_s); //zoomato
 /************************************** */
+static void init_raycasting(t_raycast *ray)
 
 
 

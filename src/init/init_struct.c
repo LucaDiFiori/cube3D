@@ -6,7 +6,7 @@
 /*   By: cmaestri <cmaestri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/21 14:17:34 by ldi-fior          #+#    #+#             */
-/*   Updated: 2024/07/16 11:31:52 by cmaestri         ###   ########.fr       */
+/*   Updated: 2024/07/19 11:23:59 by cmaestri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,29 @@ void init_asset(t_game *g)
 	{
 		g->player.dir_vec[0] = 0;
 		g->player.dir_vec[1] = -1;
+		g->player.plane_vec[0] = 0.66;
+		g->player.plane_vec[1] = 0;
 	}
 	else if (g->player.dir  == 'E')
 	{
 		g->player.dir_vec[0] = 1;
 		g->player.dir_vec[1] = 0;
+		g->player.plane_vec[0] = 0;
+		g->player.plane_vec[1] = 0.66;
 	}
 	else if (g->player.dir  == 'S')
 	{
 		g->player.dir_vec[0] = 0;
 		g->player.dir_vec[1] = 1;
+		g->player.plane_vec[0] = -0.66;
+		g->player.plane_vec[1] = 0;
 	}
 	else if (g->player.dir  == 'W')
 	{
 		g->player.dir_vec[0] = -1;
 		g->player.dir_vec[1] = 0;
+		g->player.plane_vec[0] = 0;
+		g->player.plane_vec[1] = -0.66;
 	}
 }
 
