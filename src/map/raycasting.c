@@ -6,7 +6,7 @@
 /*   By: cmaestri <cmaestri@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/17 15:28:53 by cmaestri          #+#    #+#             */
-/*   Updated: 2024/07/19 11:43:40 by cmaestri         ###   ########.fr       */
+/*   Updated: 2024/07/23 15:04:41 by cmaestri         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,3 +77,24 @@ static void	dda_loop(t_raycast *ray, t_map *map)
 			found_wall = true;
 	}
 }
+
+static void	find_line_height(t_raycast *ray)
+{
+	if (!ray->side)
+		ray->wall_distance = ray->side_dist_x - ray->delta_dist_x;
+	else
+		ray->wall_distance = ray->side_dist_y - ray->delta_dist_y;
+	ray->line_height = (int) RES_Y / ray->wall_distance;
+	ray->draw_start = ray->line_height / 2 + (int) RES_Y / 2;
+	if (ray->draw_start < 0)
+		ray->draw_start = 0;
+	ray->draw_end = ray->line_height / 2 + (int) RES_Y / 2;
+	if (ray->draw_end >= RES_Y)
+		ray->draw_end = (int) RES_Y - 1;
+	if (ray->side == 0)
+		ray->wall_x = ray->player.y + ray->wall_distance * ray->dir_y;
+	else
+		ray->wall_x = ray->player.x + ray->wall_distance * ray->dir_x;
+	ray->wall_x -= floor(ray->wall_x);
+}
+
