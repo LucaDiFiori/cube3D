@@ -12,28 +12,33 @@
 
 #include "inc/cube3d.h"
 
-/*da cancellare*/
-static void stampamappa(t_game *g)
+static void init_game(t_game *g)
 {
-	printf("map_path = %s\n", g->map.map_path);
-	printf("north = %s\n", g->map.wall_text.north);
-	printf("south = %s\n", g->map.wall_text.south);
-	printf("east = %s\n", g->map.wall_text.east);
-	printf("west = %s\n", g->map.wall_text.west);
-	printf("c_rgb.r = %d\n", g->map.wall_text.c_rgb.r);
-	printf("c_rgb.g = %d\n", g->map.wall_text.c_rgb.g);
-	printf("c_rgb.b = %d\n", g->map.wall_text.c_rgb.b);
-	printf("f_rgb.r = %d\n", g->map.wall_text.f_rgb.r);
-	printf("f_rgb.g = %d\n", g->map.wall_text.f_rgb.g);
-	printf("f_rgb.b = %d\n", g->map.wall_text.f_rgb.b);
-	int i = 0;
-	while (g->map.map_mat[i])
-	{
-		printf("%s\n", g->map.map_mat[i]);
-		i++;
-	}
+	//inizializazione del motore grafico e lancio della finestra
+	if (!init_engine(g))
+		quit_and_free(MLX_ERR, 2, g);
+
+	//inizializzo la matrice contente i pixel delle texture dei muri
+	init_textures_mat(g);
+
+	/*devo inizializzarla qui perche leggo N,W,S,E solo qui*/
+	init_player_dir(g);
+
+	// Inizializza l'immagine del contatore FPS
+	init_fps_counter(g); 
+
+	//inizializzo la minimappa
+	init_minimap(g);
+
+	
+	//inizializzo il puntatore all'imagine del frame
+	init_img_data(g, &g->frame, RES_X, RES_Y);
+
 
 }
+
+
+
 
 /**************************************************************************** */
 /*                      FUNZIONE PRINCIPALE VALIDAZIONE                       */
@@ -54,34 +59,72 @@ static void	validator(t_game *game_struct, char **argv)
 	}
 
 
-
-
 	//passo l'fd della mappa alla funzione econtrollo gli elementi del file .cub
 	if (!extract_info(game_struct, map_fd))
-		quit_and_free(DATA_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
+		quit_and_free(DATA_ERR, 3, game_struct);
 
 
 	if (!extract_map(game_struct, map_fd))
-		quit_and_free(MAP_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
+		quit_and_free(MAP_ERR, 3, game_struct);
 
-	printf("line apiu lunga = %d\n", game_struct->map.map_x);/******************************* */
-
-
-	//dopo questa riga ho allocato anche la matrice
 	
 	if (!check_map(game_struct))
 	{
-		quit_and_free(MAP_ERR, 2, game_struct); // Fallimento nella validazione dei dati capire cosa fare
+		quit_and_free(MAP_ERR, 3, game_struct);
 	}
-
-	printf("line apiu lunga = %d\n", game_struct->map.map_x);/*************************** */
-
-
-	//qui devo chiamare la funzione che valida la mappa
 
 	//alla fine chiudo l'fd
 	close(map_fd);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/**************************************************************************** */
+/*                      	   GAME LOOP	  		                          */
+/**************************************************************************** */
+
+static int ft_cube (t_game *g)
+{
+	static unsigned long last_frame_time = 0;
+	unsigned long current_time = get_time_in_milliseconds();
+	unsigned long frame_time = current_time - last_frame_time;
+	
+	// Verifica se è il momento di eseguire il rendering
+	if (frame_time >= FPS_LIMIT)
+	{
+		// Aggiorna il tempo di frame
+		g->frametime_sec = frame_time / 1000.0; // Converti millisecondi in secondi
+		
+		// Aggiorna la velocità in base al framerate
+		g->player.move_speed = g->frametime_sec * MOVESPEED;
+		g->player.rot_speed = g->frametime_sec * ROTSPEED;
+		
+		// Gestisci la logica di movimento
+		handle_movement(g);
+		
+		// Esegui il rendering del frame
+		render(g);
+		
+		// Mostra il frame rate
+		//printf("fps = %d\n", (int)(1 / g->frametime_sec));
+		draw_fps_counter(g);
+		
+		// Aggiorna il tempo dell'ultimo frame
+		last_frame_time = current_time;
+	}
+return 0;
+}
+
+	
 
 
 
@@ -96,60 +139,28 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		quit_and_free(ARG_ERR,1, &game_struct);
 
+
 	// funzione che inizializza la struct del gioco 
 	init_game_struct(&game_struct);
 
 	// funzione che valida (map_validator) la mappa: 1) controlla il ".ber"
 	validator(&game_struct, argv);
 
-	/*devo inizializzarla qui perche leggo N,W,S,E solo qui*/
-	init_asset(&game_struct);
 
-	
-	// ******************DACANCELLARE*********************************
-	stampamappa(&game_struct);
-	// ***********************************************
+	init_game(&game_struct);
 
 
-
-	//inizializazione del motore grafico e lancio della finestra
-	if (!init_engine(&game_struct))
-		quit_and_free(MLX_ERR, 2, &game_struct);
+	handle_input(&game_struct);
 
 
+	//*****************************FUNZIONE DI GIOCO***********************************
+	mlx_loop_hook(game_struct.mlx.mlx_ptr, ft_cube, &game_struct); 
+	//*****************************FUNZIONE DI GIOCO***********************************
 
 
-
-	// *******************PROVA RAY CASTING*********************************
-
-	//disegno la minimappa
-	init_minimap(&game_struct);
-
-	//gestisco la chiusura con il tasto x
-	mlx_hook(game_struct.mlx.win_ptr, 17, 0, *ft_close_x, &game_struct);
-
-	/*___________________________________________________________________________
-    // Imposta l'hook dei movimenti
-    mlx_hook(game_struct.mlx.win_ptr, 2, 1L << 0, handle_movement, &game_struct);
-	___________________________________________________________________________ */
-    
-	/*___________________________________________________________________________*/ 
-	// Imposta gli hook per la pressione e il rilascio dei tasti
-	mlx_hook(game_struct.mlx.win_ptr, 2, 1L<<0, key_press, &game_struct);
-	mlx_hook(game_struct.mlx.win_ptr, 3, 1L<<1, key_release, &game_struct);
-
-	// Aggiorna il ciclo di rendering per gestire il movimento continuo
-	mlx_loop_hook(game_struct.mlx.mlx_ptr, handle_movement, &game_struct);
-	/*___________________________________________________________________________ */
-
-    // Avvia il loop della finestra
+	// Avvia il loop della finestra
     mlx_loop(game_struct.mlx.mlx_ptr);
 
 
-
-	
-
-	quit_and_free("fine", 2, &game_struct);
-
-
+	//quit_and_free("fine", 2, &game_struct);
 }

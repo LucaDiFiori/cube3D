@@ -33,12 +33,19 @@ SRCS = cube3d.c \
 	   src/minilib/minilib_3.c \
 	   src/minilib/ft_atoi.c \
 	   src/utils/quit_and_free.c \
+	   src/utils/fps.c \
 	   src/printf/ft_printf.c \
 	   src/init/init_struct.c \
-	   src/minimap/test_ray_casting.c \
-	   src/minimap/test_ray_casting_utils.c \
+	   src/init/init_img.c \
+	   src/init/init_textures.c \
+	   src/minimap/minimap.c \
+	   src/minimap/minimap_utils.c \
 	   src/moves/moves.c \
 	   src/moves/moves_utils.c \
+	   src/moves/rotate_utils.c \
+	   src/render/render.c \
+	   src/render/raycasting_utils.c \
+	   src/render/raycasting.c \
 
 OBJS = $(SRCS:%.c=obj/%.o)
 

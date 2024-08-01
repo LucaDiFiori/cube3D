@@ -91,7 +91,8 @@ static char *join_lines(/*t_game *g, */int map_fd, char *first_line)
         free(line);
         line = get_next_line(map_fd);
     }
-    free(line);
+    if(line)
+        free(line);
     get_next_line(-2);
     return join_map;
 }

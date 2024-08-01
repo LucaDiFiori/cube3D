@@ -57,7 +57,6 @@ static int process_rgb_values(char **split_line, t_rgb *color)
         j = 0;
         while (temp_ptr[j] && temp_ptr[j] != '\n')
         {
-            printf("temp_ptr[j] = %s\n", temp_ptr);
             if (!ft_isdigit(temp_ptr[j]))
                 return (0);
             j++;
@@ -115,14 +114,14 @@ int extract_rgb(t_rgb *color, char *line)
         return (0); // Fallimento nell'allocazione
     if (!process_rgb_values(split_line, color)) 
     {
-        free_matrix(split_line);
+        free_matrix((void **)split_line);
         return (0); // Errore nell'elaborazione dei valori
     }
     if (!validate_rgb_range(*color)) 
     {
-        free_matrix(split_line);
+        free_matrix((void **)split_line);
         return (0); // Valori fuori range
     }
-    free_matrix(split_line);
+    free_matrix((void **)split_line);
     return (1);
 }

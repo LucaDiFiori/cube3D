@@ -92,7 +92,7 @@ static int valid_chars(t_game *game, char c, int x, int y)
 	{
 		game->player.x = x;
 		game->player.y = y;
-		game->player.dir = c;
+		game->player.start_dir = c;
 		return (2);
 	}
 	if (c == 'D')

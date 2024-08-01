@@ -84,7 +84,8 @@ char	*get_line(int fd, char *line)
 		buffer[j] = '\0';
 		line = ft_strjoin_gnl(line, buffer);
 	}
-	free(buffer);
+	if (buffer)
+		free(buffer);
 	return (line);
 }
 

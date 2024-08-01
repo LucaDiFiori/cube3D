@@ -15,25 +15,15 @@
 
 #define RES_X 1440
 #define RES_Y 960
-//#define RES_X 960
-//#define RES_Y 720
-//#define RES_X 640
-//#define RES_Y 480
-
-/********************* */
+#define TEXT_WIDTH 64
+#define TEXT_HEIGHT 64
 #define MINI_RES_X (RES_X / 5)
 #define MINI_RES_Y (RES_Y / 5)
-
 #define PI 3.1415927
-
-//0.0125
-#define MOVESPEED 0.0005
-
-
-
-/********************* */
-
-
+#define FOV 0.66
+#define FPS_LIMIT 16.6
+#define MOVESPEED 3.0
+#define ROTSPEED 1.5
 #define EXT_ERR "Invalid file extension. '.cub' file needed\n"
 #define ARG_ERR "Invalid number of arguments -> Use example: ./cub3D map.cub"
 #define OPEN_ERR "opening the map file"
@@ -41,5 +31,7 @@
 #define MALLOC_ERR "malloc error"
 #define MAP_ERR "map error"
 #define MLX_ERR "mlx initialization error"
+#define INIT_IMG_ERR "mlx_xpm_file_to_image error"
+#define MEMCPY_ERR "memcpy error"
 
 #endif

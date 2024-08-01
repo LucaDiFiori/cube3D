@@ -18,11 +18,11 @@ in the game_struct.
 If any information is missing, the function returns 1; otherwise, it returns 0 */
 static int check_missing_info(t_game *g_s)
 {
-	if (!g_s->map.wall_text.north || !g_s->map.wall_text.south
-		|| !g_s->map.wall_text.east || !g_s->map.wall_text.west
-		|| g_s->map.wall_text.c_rgb.r == -1 || g_s->map.wall_text.c_rgb.g == -1 
-		|| g_s->map.wall_text.c_rgb.b == -1 || g_s->map.wall_text.f_rgb.r == -1
-		|| g_s->map.wall_text.f_rgb.g == -1 || g_s->map.wall_text.f_rgb.b == -1)
+	if (!g_s->map.text.north || !g_s->map.text.south
+		|| !g_s->map.text.east || !g_s->map.text.west
+		|| g_s->map.text.c_rgb.r == -1 || g_s->map.text.c_rgb.g == -1 
+		|| g_s->map.text.c_rgb.b == -1 || g_s->map.text.f_rgb.r == -1
+		|| g_s->map.text.f_rgb.g == -1 || g_s->map.text.f_rgb.b == -1)
 		return (1);
 	return (0);
 }
@@ -54,6 +54,7 @@ static int parse_color(char *line, t_rgb *color, int *count_info)
     return (1);
 }
 
+
 /*
 Function to parse the line extracted from the file.
 If the line is a texture line, the function calls parse_texture to extract the
@@ -63,18 +64,28 @@ color. */
 static int  parse_line(char *line, t_game *g_s, int *count_info, char **split_line)
 {
     if (split_line[0][0] == 'N' && split_line[0][1] == 'O')
-        return (parse_texture(line + 2, &g_s->map.wall_text.north, count_info));
+        return (parse_texture(line + 2, &g_s->map.text.north, count_info));
     else if (split_line[0][0] == 'S' && split_line[0][1] == 'O')
-        return (parse_texture(line + 2, &g_s->map.wall_text.south, count_info));
+        return (parse_texture(line + 2, &g_s->map.text.south, count_info));
     else if (split_line[0][0] == 'E' && split_line[0][1] == 'A')
-        return (parse_texture(line + 2, &g_s->map.wall_text.east, count_info));
+        return (parse_texture(line + 2, &g_s->map.text.east, count_info));
     else if (split_line[0][0] == 'W' && split_line[0][1] == 'E')
-        return (parse_texture(line + 2, &g_s->map.wall_text.west, count_info));
+        return (parse_texture(line + 2, &g_s->map.text.west, count_info));
     else if (split_line[0][0] == 'F')
-        return (parse_color(line + 1, &g_s->map.wall_text.f_rgb, count_info));
+        return (parse_color(line + 1, &g_s->map.text.f_rgb, count_info));
     else if (split_line[0][0] == 'C')
-        return (parse_color(line + 1, &g_s->map.wall_text.c_rgb, count_info));
+        return (parse_color(line + 1, &g_s->map.text.c_rgb, count_info));
+    
     return (1);
+}
+
+//converte i valori rgb in un unico valore intero
+static void rgb_to_int(t_game *g)
+{
+    g->map.c_color = (g->map.text.c_rgb.r << 16) + (g->map.text.c_rgb.g << 8) +\
+        g->map.text.c_rgb.b;
+    g->map.f_color = (g->map.text.f_rgb.r << 16) + (g->map.text.f_rgb.g << 8) +\
+        g->map.text.f_rgb.b;
 }
 
 /******************************************************************************/
@@ -122,5 +133,6 @@ int extract_info(t_game *g_s, int map_fd)
     cleanup(&line, &split_line, 2);
     if (count_info != 6 || check_missing_info(g_s))
         return (0);
+    rgb_to_int(g_s);
     return (1);
 }

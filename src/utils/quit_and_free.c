@@ -17,12 +17,9 @@ void	print_error(char *error)
 	ft_printf("Error: %s\n", error);
 }
 
-int free_matrix(char **ptr_matric)
+int free_matrix(void **ptr_matric)
 {
     int i;
-
-    if (ptr_matric == NULL) // Aggiunta del controllo per ptr_matric NULL
-        return (0);
 
     i = 0;
     while (ptr_matric[i] != NULL)
@@ -34,53 +31,103 @@ int free_matrix(char **ptr_matric)
     return (0);
 }
 
-static void ft_destroy_engine(t_game *game_struct)
+static void ft_destroy_engine(t_game *g)
 {
-	if (game_struct->mlx.win_ptr)
-		mlx_destroy_window(game_struct->mlx.mlx_ptr, game_struct->mlx.win_ptr);
-	/*capire se bisogna mettere anche free(mlx);*/
+	if (g->mlx.mlx_ptr && g->mlx.win_ptr)
+		mlx_destroy_window(g->mlx.mlx_ptr, g->mlx.win_ptr);
+	if (g->mlx.mlx_ptr)
+	{
+		mlx_destroy_display(g->mlx.mlx_ptr);
+		mlx_loop_end(g->mlx.mlx_ptr);
+		free(g->mlx.mlx_ptr);
+	}
 }
 
 
-//void ft_destroy(t_game *game_struct)
+//void ft_destroy(t_game *g)
 
-static void destroy_struct(t_game *game_struct)
+static void destroy_struct(t_game *g)
 {		
-	if (game_struct->map.wall_text.north)
-		free(game_struct->map.wall_text.north);
-	if (game_struct->map.wall_text.south)
-		free(game_struct->map.wall_text.south);
-	if (game_struct->map.wall_text.east)
-		free(game_struct->map.wall_text.east);
-	if (game_struct->map.wall_text.west)
-		free(game_struct->map.wall_text.west);
-	if (game_struct->map.map_mat != NULL)
-		free_matrix(game_struct->map.map_mat);
-	//if (game_struct->minimap.img)
-		//free(game_struct->minimap.img); //SE METTO QUESTO FREE LEAKA DE PIU
+	if (g->map.text.north)
+		free(g->map.text.north);
+	if (g->map.text.south)
+		free(g->map.text.south);
+	if (g->map.text.east)
+		free(g->map.text.east);
+	if (g->map.text.west)
+		free(g->map.text.west);
+	if (g->map.map_mat != NULL)
+		free_matrix((void **)g->map.map_mat);
+	if (g->screen_pixels != NULL)
+		free_matrix((void **)g->screen_pixels);
+	if (g->map.text.wall_pixels)
+		free_matrix((void **)g->map.text.wall_pixels);
 }
 
-int quit_and_free(char *error, int err_type, t_game *game_struct)
+/*static void destroy_img(t_game *g)
 {
-	if (err_type == 0)
-	{
-		ft_printf("%s\n", error);
-		destroy_struct(game_struct);
-		ft_destroy_engine(game_struct);
-	}
-	if (err_type == 1)
-		print_error(error);
-	if (err_type == 2)
-	{
-		print_error(error);
-		destroy_struct(game_struct);
-		ft_destroy_engine(game_struct);
-	}
-	exit (0);
-}
+	//questa aiuta ma non risolve
+	if (g->frame.img)
+		mlx_destroy_image(g->mlx.mlx_ptr, g->frame.img);
+	if (g->minimap.img_bg.img)
+		mlx_destroy_image(g->mlx.mlx_ptr, g->minimap.img_bg.img);
+	if (g->fps.img)
+		mlx_destroy_image(g->mlx.mlx_ptr, g->fps.img);
+}*/
 
 int	ft_close_x(t_game *ptr_game)
 {
 	quit_and_free("See U <3", 0, ptr_game);
 	return (0);
+}
+
+void clear_matrix(int **matrix)
+{
+    int i, j;
+
+    i = 0;
+    while (i < RES_Y)
+    {
+        j = 0;
+        while (j < RES_X)
+        {
+            matrix[i][j] = 0;
+            j++;
+        }
+        i++;
+    }
+}
+
+
+
+
+/*POI FARE UN ENUM PER IL TIèPE_ERR E RIORDINARE*/
+int quit_and_free(char *error, int err_type, t_game *g)
+{
+	if (err_type == 0)
+	{
+		ft_printf("%s\n", error);
+		destroy_struct(g);
+		ft_destroy_engine(g);
+
+		//destroy_img(g); /*capire se togliere*/
+	}
+	else if (err_type == 1)
+		print_error(error);
+	else if (err_type == 2)
+	{
+		print_error(error);
+		destroy_struct(g);
+		ft_destroy_engine(g);
+		//destroy_img(g); /*capire se togliere*/
+	}
+	/*questa la uso quando non ho immagini allocate altrimenti le libera comunque e va in seg*/
+	else if (err_type == 3) // questa la uso nel validator, 
+	{
+		print_error(error);
+		destroy_struct(g);
+		ft_destroy_engine(g);
+		//destroy_img(g);  //qui non va in seg
+	}
+	exit (0);
 }

@@ -54,18 +54,30 @@ char	*ft_strchr(const char *s, int c)
 	return (temp);
 }
 
-int max(int a, int b)
+static void	*ft_memset(void *b, int c, size_t len)
 {
-    if (a > b)
-        return (a);
-    else
-        return (b);
+	unsigned char	*ptr;
+
+	ptr = b;
+	while (len--)
+		*ptr++ = (unsigned char)c;
+	return (b);
 }
 
-int min(int a, int b)
+static void	ft_bzero(void *s, size_t n)
 {
-        if (a < b)
-        return (a);
-    else
-        return (b);
+	ft_memset(s, 0, n);
+}
+
+void	*ft_calloc(int count, int size)
+{
+	void	*ptr;
+	int	len;
+
+	len = count * size;
+	ptr = (void *)malloc(len);
+	if (ptr == NULL)
+		return (NULL);
+	ft_bzero(ptr, len);
+	return (ptr);
 }

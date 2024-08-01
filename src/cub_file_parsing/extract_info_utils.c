@@ -22,7 +22,7 @@ void cleanup(char **line, char ***split_line, int flag)
 	if (flag == 1)
 	{
 		free(*line);
-		free_matrix(*split_line);
+		free_matrix((void **)*split_line);
 		*split_line = NULL;
 	}
 	else if (flag == 2)
@@ -30,7 +30,7 @@ void cleanup(char **line, char ***split_line, int flag)
 		if (*line)
 			free(*line);
 		if (*split_line)
-			free_matrix(*split_line);
+			free_matrix((void **)*split_line);
 		get_next_line(-2);
 	}
 }
