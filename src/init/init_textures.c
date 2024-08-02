@@ -44,9 +44,13 @@ static int *extract_pixels_from_xpm(t_game *g, char *text_path)
   Scopo: Caricare e inizializzare le texture dai file XPM all'inizio del gioco.*/
 void    init_textures_mat(t_game *g)
 {
+
+    
 	g->map.text.wall_pixels[0] = extract_pixels_from_xpm(g, g->map.text.north);
 	g->map.text.wall_pixels[1] = extract_pixels_from_xpm(g, g->map.text.south);
 	g->map.text.wall_pixels[2] = extract_pixels_from_xpm(g, g->map.text.east);
 	g->map.text.wall_pixels[3] = extract_pixels_from_xpm(g, g->map.text.west);
-	g->map.text.wall_pixels[4] = NULL;
+    g->map.text.wall_pixels[4] = extract_pixels_from_xpm(g, "textures/wolfenstein/door.xpm");
+	g->map.text.wall_pixels[5] = extract_pixels_from_xpm(g, "textures/wolfenstein/dooropen.xpm");
+    g->map.text.wall_pixels[6] = NULL;
 }

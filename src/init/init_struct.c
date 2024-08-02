@@ -26,7 +26,7 @@ static void init_text(t_game *g)
 	g->map.text.f_rgb.b = -1;
 	g->map.text.wall_side = 0;
 	g->map.text.wall_pixels = NULL;
-	g->map.text.wall_pixels = ft_calloc(5, sizeof(int *));
+	g->map.text.wall_pixels = ft_calloc(7, sizeof(int *)); //aggiunto 6 per la porta
 	if (!g->map.text.wall_pixels)
 		quit_and_free(MALLOC_ERR, 2, g);
 	g->map.text.column_x = 0;
@@ -40,8 +40,6 @@ static void	init_map_struct(t_game *g)
 	g->map.map_mat = NULL;
 	init_text(g);
 	g->map.map_x = 0;
-	g->map.door_x = -1;
-	g->map.door_y = -1;
 	g->map.exit_x = -1;
 	g->map.exit_y = -1;
 	g->map.c_color = 0;
@@ -101,6 +99,7 @@ void init_ray(t_game *g)
 	g->ray.line_height = 0;
 	g->ray.draw_start = 0;
 	g->ray.draw_end = 0;
+	g->ray.hit_type = 0;
 }
 
 /*Alloca la matrice che rappresenta i singoli pixel della schermata di gioco*/
@@ -139,6 +138,7 @@ void init_game_struct(t_game *g)
 	/*player array*/
 	for (int i = 0; i < 256; i++)
 		g->player.keys[i] = 0;
+	g->player.toggle_door_debounce = 0;
 	
 	/*frame*/
 	g->time = 0;

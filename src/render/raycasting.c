@@ -70,47 +70,50 @@ static void init_step_and_distance(t_game *g)
 	}
 }
 
+
 static void dda(t_game *g)
 {
-	int	hit;
-
-	hit = 0;
-	while (hit == 0)
-	{
-		if (g->ray.side_dist_x < g->ray.side_dist_y)
-		{
-			g->ray.side_dist_x += g->ray.delta_dist_x;
-			g->ray.current_x += g->ray.step_x;
-			g->ray.side = 0;
-		}
-		else
-		{
-			g->ray.side_dist_y += g->ray.delta_dist_y;
-			g->ray.current_y += g->ray.step_y;
-			g->ray.side = 1;
-		}
-		//if (g->ray.current_y < 0.25 || g->ray.current_y > g->map.map_y - 0.25 || g->ray.current_x > g->map.map_x -1.25)
-		//	break;
-		/*else*/if (g->map.map_mat[g->ray.current_y][g->ray.current_x] == '1')  // QUESTA LINEA DECIDE COSA è SOLITO E QUINDI COSA VIENE DISEGNATO A SCHERMO COME MURO
-			hit = 1;
-	}
+    int hit = 0;
+    while (hit == 0)
+    {
+        if (g->ray.side_dist_x < g->ray.side_dist_y)
+        {
+            g->ray.side_dist_x += g->ray.delta_dist_x;
+            g->ray.current_x += g->ray.step_x;
+            g->ray.side = 0;
+        }
+        else
+        {
+            g->ray.side_dist_y += g->ray.delta_dist_y;
+            g->ray.current_y += g->ray.step_y;
+            g->ray.side = 1;
+        }
+        if (g->map.map_mat[g->ray.current_y][g->ray.current_x] == '1')  // muro
+            hit = 1;
+        else if (g->map.map_mat[g->ray.current_y][g->ray.current_x] == 'D')  // porta
+            hit = 2;
+		else if (g->map.map_mat[g->ray.current_y][g->ray.current_x] == 'd')  // porta aperta
+			hit = 3;
+    }
+    g->ray.hit_type = hit;  // Salva il tipo di oggetto colpito
 }
 
-/*vedere se dividerla in 3 funzioni*/
+
+//vedere se dividerla in 3 funzioni
 static void find_column_height(t_game *g)
 {
-	/*Questa parte del codice determina la distanza dal giocatore al muro che il 
-	  raggio ha colpito (wall_distance). Se g->ray.side è 0, significa che il 
-	  raggio ha colpito una parete verticale; se è 1, ha colpito una parete orizzontale.*/
+	//Questa parte del codice determina la distanza dal giocatore al muro che il 
+	//  raggio ha colpito (wall_distance). Se g->ray.side è 0, significa che il 
+	//  raggio ha colpito una parete verticale; se è 1, ha colpito una parete orizzontale.
 	if (g->ray.side == 0)
 		g->ray.wall_distance = (g->ray.side_dist_x - g->ray.delta_dist_x);
 	else
 		g->ray.wall_distance = (g->ray.side_dist_y - g->ray.delta_dist_y);
 
-	/*calcolo dell'altezza della linea*/
+	//calcolo dell'altezza della linea
 	g->ray.line_height = (int)(RES_Y / g->ray.wall_distance);
 
-	/*calcolo del punto di inizio e fine della linea da disegnare*/
+	//calcolo del punto di inizio e fine della linea da disegnare
 	g->ray.draw_start = -(g->ray.line_height) / 2 + RES_Y / 2;
 	if (g->ray.draw_start < 0)
 		g->ray.draw_start = 0;
@@ -118,13 +121,15 @@ static void find_column_height(t_game *g)
 	if (g->ray.draw_end >= RES_Y)
 		g->ray.draw_end = RES_Y - 1;
 
-	/*Questa parte calcola la posizione precisa del punto di impatto del raggio 
-	  sul muro, memorizzandola in wall_x.*/
+	//Questa parte calcola la posizione precisa del punto di impatto del raggio 
+	//  sul muro, memorizzandola in wall_x.
 	if (g->ray.side == 0)
 		g->ray.wall_x = g->player.y + g->ray.wall_distance * g->ray.dir_y;
 	else
 		g->ray.wall_x = g->player.x + g->ray.wall_distance * g->ray.dir_x;
 	g->ray.wall_x -= floor(g->ray.wall_x);
+
+	
 }
 
 

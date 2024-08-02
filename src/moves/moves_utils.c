@@ -21,7 +21,8 @@ static int is_walkable(t_game *g, double x, double y)
 	map_x = (int)floor(x);
 	map_y = (int)floor(y);
     return (map_x >= 0 && map_x < g->map.map_x && map_y >= 0 
-        && map_y < g->map.map_y && g->map.map_mat[map_y][map_x] != '1');
+        && map_y < g->map.map_y && g->map.map_mat[map_y][map_x] != '1'
+        && g->map.map_mat[map_y][map_x] != 'D');
 }
 
 int move_forward(t_game *g) 

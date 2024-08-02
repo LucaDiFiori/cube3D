@@ -95,16 +95,6 @@ static int valid_chars(t_game *game, char c, int x, int y)
 		game->player.start_dir = c;
 		return (2);
 	}
-	if (c == 'D')
-	{
-		game->map.door_x = x;
-		game->map.door_y = y;
-	}
-	if (c == 'U')
-	{
-		game->map.exit_x = x;
-		game->map.exit_y = y;
-	}
 	return (1);
 }
 

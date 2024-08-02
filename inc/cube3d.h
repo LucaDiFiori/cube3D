@@ -132,6 +132,8 @@ void my_pixel_put(t_game *g, t_img *data, int x, int y, int color);
 void fill_background(t_game *g, t_img *data, int width, int height, int background_color);
 void draw_square(t_game *g, double start_x, double start_y, double size_x,
     double size_y);
+void draw_door(t_game *g, double start_x, double start_y,
+    double size_x, double size_y);
 void draw_circle(t_game *g, t_img *data, double center_x, double center_y,
     double radius, int color);
 

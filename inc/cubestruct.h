@@ -10,7 +10,9 @@ enum e_wall_side
 	NORTH = 0,
 	SOUTH = 1,
 	EAST = 2,
-	WEST = 3
+	WEST = 3,
+	DOOR = 4,
+	DOOROPEN = 5
 };
 
 typedef struct s_img
@@ -57,7 +59,7 @@ typedef struct s_asset
 
 	/*tasto premuto per il movimento*/
 	int keys[256];
-	//int moved;
+	int toggle_door_debounce;
 
 	//velocità di movimento e rotazione calcolate in base al frametime
 	double move_speed;
@@ -146,8 +148,6 @@ typedef struct	s_map
 	char		**map_mat;
 	int			map_x;
 	int			map_y;
-	int			door_x;
-	int			door_y;
 	int			exit_x;
 	int			exit_y;
 
@@ -201,6 +201,8 @@ typedef struct ray
 	//lowest and highest pixel to fill in current stripe
 	int		draw_start; 
 	int		draw_end; 
+
+	int hit_type; // 1 = muro, 2 = porta 3 = porta aperta
 
 
 }	t_ray;

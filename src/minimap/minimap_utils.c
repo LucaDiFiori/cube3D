@@ -56,6 +56,22 @@ void draw_square(t_game *g, double start_x, double start_y,
     }
 }
 
+void draw_door(t_game *g, double start_x, double start_y,
+    double size_x, double size_y) 
+{
+    int x = (int)start_x;
+    int y;
+
+    while (x < start_x + size_x) {
+        y = (int)start_y;
+        while (y < start_y + size_y) {
+            my_pixel_put(g, &g->minimap.img_bg, x, y, 0x00FFFF);
+            y++;
+        }
+        x++;
+    }
+}
+
 void draw_circle(t_game *g, t_img *img_data, double center_x, double center_y,
     double radius, int color) 
 {

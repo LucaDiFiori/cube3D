@@ -49,7 +49,13 @@ dell'immagine di gioco basandosi sul risultato del raycasting.*/
 	//   mirroring orizzontale per ottenere il lato corretto della texture.
 static void calculate_texture_x(t_game *g)
 {
-    find_wall_side(g);
+	if (g->ray.hit_type == 2)  // Se ha colpito una porta
+        g->map.text.wall_side = DOOR;  // Imposta il lato della texture come DOOR
+	else if (g->ray.hit_type == 3)
+		g->map.text.wall_side = DOOROPEN;
+    else
+        find_wall_side(g);  // Altrimenti trova il lato normale*/
+    //find_wall_side(g);
 
     g->map.text.column_x = (int)(g->ray.wall_x * TEXT_WIDTH);
     if ((g->ray.side == 0 && g->ray.dir_x < 0) || (g->ray.side == 1 && g->ray.dir_y > 0))
@@ -102,8 +108,8 @@ static void update_screen_pixels(t_game *g, int x)
 
         g->map.text.current_tex_y += g->map.text.vertical_step;
         color = g->map.text.wall_pixels[g->map.text.wall_side] \
-			[TEXT_HEIGHT * g->map.text.column_y \
-			+ g->map.text.column_x];
+            [TEXT_HEIGHT * g->map.text.column_y \
+            + g->map.text.column_x];
         if (g->map.text.wall_side == NORTH || g->map.text.wall_side == EAST)
             color = (color >> 1) & 8355711;
         if (color > 0)

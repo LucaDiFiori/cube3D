@@ -22,6 +22,7 @@ int key_press(int keycode, t_game *g) {
         g->player.keys[1] = 1;
     else if (keycode == 65363) // Right arrow key
         g->player.keys[2] = 1;
+
     return (0);
 }
 
@@ -32,8 +33,33 @@ int key_release(int keycode, t_game *g) {
         g->player.keys[1] = 0;
     else if (keycode == 65363) // Right arrow key
         g->player.keys[2] = 0;
+    if (keycode == 'e')
+        g->player.toggle_door_debounce = 0;
     return (0);
 }
+
+
+static int toggle_door(t_game *g, int x, int y)
+{
+    if (g->map.map_mat[y + 1][x] == 'D')
+        g->map.map_mat[y + 1][x] = 'd'; //mi serve una variabile diversa dalla altre tipo "d" altrimenti modificherebbe tutte le posizioni con quella lettera
+    else if (g->map.map_mat[y + 1][x] == 'd')
+        g->map.map_mat[y + 1][x] = 'D';
+    else if (g->map.map_mat[y - 1][x] == 'D')
+        g->map.map_mat[y - 1][x] = 'd';
+    else if (g->map.map_mat[y - 1][x] == 'd')
+        g->map.map_mat[y - 1][x] = 'D';
+    else if (g->map.map_mat[y][x + 1] == 'D')
+        g->map.map_mat[y][x + 1] = 'd';
+    else if (g->map.map_mat[y][x + 1] == 'd')
+        g->map.map_mat[y][x + 1] = 'D';
+    else if (g->map.map_mat[y][x - 1] == 'D')
+        g->map.map_mat[y][x - 1] = 'd';
+    else if (g->map.map_mat[y][x - 1] == 'd')
+        g->map.map_mat[y][x - 1] = 'D';
+    return 0;
+}
+
 
 void handle_input(t_game *g)
 {
@@ -43,9 +69,11 @@ void handle_input(t_game *g)
 }
 
 
+
 int handle_movement(t_game *g) 
 {
     int rotdir;
+
 
     if (g->player.keys['w'])
         move_forward(g);
@@ -65,5 +93,13 @@ int handle_movement(t_game *g)
         rotdir = 1;
         rotate_player(g, rotdir);
     }
+    /*if (g->player.keys['e'])
+        toggle_door(g, (int)g->player.x, (int)g->player.y);*/
+    if (g->player.keys['e'] && !g->player.toggle_door_debounce) {
+        toggle_door(g, (int)g->player.x, (int)g->player.y);
+        g->player.toggle_door_debounce = 1; // Imposta il debounce dopo l'azione
+    }
+
+
     return 0;
 }

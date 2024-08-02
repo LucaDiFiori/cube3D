@@ -53,10 +53,11 @@ void draw_map(t_game *g)
         for (int x = 0; x < row_length; x++) {
             double map_x = x * g->minimap.cell_width;
             double map_y = y * g->minimap.cell_height;
-
-            if (g->map.map_mat[y][x] == '1') {
+            if (g->map.map_mat[y][x] == 'D' || g->map.map_mat[y][x] == 'd') //porta
+                draw_door(g, map_x, map_y, g->minimap.cell_width - 1, g->minimap.cell_height - 1); //questi -1 danno l effetto griglia sulla mappa
+            else if (g->map.map_mat[y][x] == '1') //muro
                 draw_square(g, map_x, map_y, g->minimap.cell_width - 1, g->minimap.cell_height - 1); //questi -1 danno l effetto griglia sulla mappa
-            }
+            
         }
     }
 }
