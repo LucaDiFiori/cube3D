@@ -40,16 +40,27 @@ static void	init_map_struct(t_game *g)
 	g->map.map_mat = NULL;
 	init_text(g);
 	g->map.map_x = 0;
-	g->map.exit_x = -1;
-	g->map.exit_y = -1;
 	g->map.c_color = 0;
 	g->map.f_color = 0;
+	g->map.num_players = 0;
 }
 
 
 
+static void init_player_data(t_game *g)
+{
+	g->player.plane_y = 0;
+	g->player.plane_y = 0;
+	g->player.move_speed = 0;
+	g->player.rot_speed = 0;
+	for (int i = 0; i < 256; i++)
+		g->player.keys[i] = 0;
+	g->player.toggle_door_debounce = 0;
+}
+
 void init_player_dir(t_game *g)
 {
+	init_player_data(g);
 	if (g->player.start_dir == 'N')
 	{
 		g->player.dir_vec[0] = 0;
@@ -79,6 +90,7 @@ void init_player_dir(t_game *g)
 		g->player.plane_y = -(FOV);
 	}
 }
+
 
 void init_ray(t_game *g)
 {
@@ -135,15 +147,12 @@ void init_game_struct(t_game *g)
 	g->minimap.minimap_width = MINI_RES_X;
 	//g->minimap.view_size = 5;
 
-	/*player array*/
-	for (int i = 0; i < 256; i++)
-		g->player.keys[i] = 0;
-	g->player.toggle_door_debounce = 0;
 	
 	/*frame*/
 	g->time = 0;
 	g->old_time = 0;
 	g->frametime_sec = 0;
+	g->mouse_pos = RES_X/2;
 
 
 	//init_ray(g); tanto la chiamo in render

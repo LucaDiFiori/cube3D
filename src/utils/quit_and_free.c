@@ -108,6 +108,12 @@ int quit_and_free(char *error, int err_type, t_game *g)
 	{
 		ft_printf("%s\n", error);
 		destroy_struct(g);
+		if (g->fps.img)
+			free(g->fps.img);
+		if (g->minimap.img_bg.img)
+			free(g->minimap.img_bg.img);
+		if (g->frame.img)
+			free(g->frame.img);
 		ft_destroy_engine(g);
 
 		//destroy_img(g); /*capire se togliere*/
@@ -118,6 +124,13 @@ int quit_and_free(char *error, int err_type, t_game *g)
 	{
 		print_error(error);
 		destroy_struct(g);
+		ft_destroy_engine(g);
+		if (g->fps.img)
+			free(g->fps.img);
+		if (g->minimap.img_bg.img)
+			free(g->minimap.img_bg.img);
+		if (g->frame.img)
+			free(g->frame.img);
 		ft_destroy_engine(g);
 		//destroy_img(g); /*capire se togliere*/
 	}

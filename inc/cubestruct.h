@@ -148,12 +148,10 @@ typedef struct	s_map
 	char		**map_mat;
 	int			map_x;
 	int			map_y;
-	int			exit_x;
-	int			exit_y;
-
 	//colori del soffitto e del muro in formato intero
 	int			c_color;
 	int			f_color;
+	int			num_players;
 
 
 }	t_map;
@@ -233,6 +231,8 @@ typedef struct s_game
 	t_img	frame;
 
 	t_img   fps;/**************************** */
+
+	int mouse_pos;
 
 }	t_game;
 

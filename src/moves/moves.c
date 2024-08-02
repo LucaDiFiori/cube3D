@@ -61,12 +61,63 @@ static int toggle_door(t_game *g, int x, int y)
 }
 
 
+
+
+// Questa funzione serve a gestire la posizione del mouse per evitare che esca 
+// fuori dallo schermo del gioco. Quando il mouse si avvicina troppo al bordo destro 
+// o sinistro dello schermo, la posizione del mouse viene "avvolta" (wrapped) all'altro lato.
+//
+// - Controllo del bordo destro: Se il cursore del mouse supera RES_X - 20, 
+//                               viene riportato a RES_X - 20 pixel dal bordo.
+// - Controllo del bordo sinistro: Se il cursore del mouse è meno di 20 pixel dal 
+//                                bordo sinistro, viene riportato a 20 
+//                                pixel dal bordo .
+// - mlx_mouse_move: Questa funzione della libreria MLX sposta il cursore 
+//                   del mouse alla posizione specificata.
+
+static void	check_mouse_pos(t_game *g, int x, int y)
+{
+	if (x > RES_X - 20)
+	{
+		x = RES_X - 20;
+		mlx_mouse_move(g->mlx.mlx_ptr, g->mlx.win_ptr, x, y);
+	}
+	if (x < 20)
+	{
+		x = 20;
+		mlx_mouse_move(g->mlx.mlx_ptr, g->mlx.win_ptr, x, y);
+	}
+}
+
+static int	mouse(int x, int y, t_game *g)
+{
+	check_mouse_pos(g, x, y);
+	if (x == g->mouse_pos)
+		return (0);
+	else if (x < g->mouse_pos)
+		rotate_player(g, -1);
+	else if (x > g->mouse_pos)
+		rotate_player(g, 1);
+	g->mouse_pos = x;
+	return (0);
+}
+
+
+
+
+
 void handle_input(t_game *g)
 {
 	mlx_hook(g->mlx.win_ptr, 17, 0, *ft_close_x, g);
 	mlx_hook(g->mlx.win_ptr, 2, 1L<<0, key_press, g);
 	mlx_hook(g->mlx.win_ptr, 3, 1L<<1, key_release, g);
+    mlx_hook(g->mlx.win_ptr, MotionNotify, PointerMotionMask,
+			mouse, g);
 }
+
+
+
+
 
 
 
