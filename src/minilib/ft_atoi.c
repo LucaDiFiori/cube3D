@@ -23,7 +23,7 @@ static int	handle_initial_chars(const char **nptr, int *sign)
     }
     else if (**nptr == '+')
         (*nptr)++;
-    return 0;
+    return (0);
 }
 
 static int	convert_to_int(const char *nptr, int sign)

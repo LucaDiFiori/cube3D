@@ -86,7 +86,7 @@ scorro la matrice contenente la mappa e al suo interno chiamo valid_chars(), che
 
 static int valid_chars(t_game *game, char c, int x, int y)
 {
-	if ((c != '0' && c != '1' && c != ' ' && c != 'N' && c != 'S' && c != 'E' && c != 'W' && c != 'D' && c != 'U'))
+	if ((c != '0' && c != '1' && c != ' ' && c != 'N' && c != 'S' && c != 'E' && c != 'W' && c != 'D' && c != 'd'))
 		return (0);
 	if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
@@ -125,6 +125,67 @@ static int	check_characters(t_game *game)
 		return (1);
 	return (0);
 }
+
+/** QUESTA E LA MIA
+ * Function: check_characters
+ * ---------------------------
+ * Validates the characters present in the game map to ensure they are all 
+ * recognized and that there is exactly one starting position character. 
+ * This function scans through the map matrix to check for valid characters 
+ * and ensure that only one of the starting position characters ('N', 'S', 
+ * 'E', 'W') is present.
+ * 
+ * Parameters:
+ *  - game: A copy of the game structure containing the map data to be validated.
+ *
+ * Returns:
+ *  - An integer indicating the result of the validation:
+ *    - Returns 1 if any invalid characters are found or if more than one 
+ *      starting position character is present.
+ *    - Returns 0 if all characters are valid and exactly one starting position 
+ *      character is found.
+ *
+ * Process:
+ *  - Iterates over each row (`i`) and each column (`j`) of the map matrix.
+ *  - Checks each character (`c`) in the map matrix:
+ *    - Validates that the character is one of '0', '1', ' ', 'N', 'S', 'E', 'W'.
+ *    - If any character is invalid, returns 1 to indicate an error.
+ *    - Counts the occurrences of starting position characters ('N', 'S', 'E', 'W').
+ *    - If more than one starting position character is found, returns 1.
+ *  - If all characters are valid and only one starting position character is found, 
+ *    returns 0.
+ * 
+ * Note: The function ensures that the map contains only valid characters and that 
+ *       there is a single starting position, which is essential for correct game initialization.
+ 
+static int	check_characters(t_game game)
+{
+	int		i;
+	int		j;
+	int		k;
+	char	c;
+	
+	i = 0;
+	k = 0;
+	while (game.map.map_mat[i])
+	{
+		j = 0;
+		while (game.map.map_mat[i][j])
+		{
+			c = game.map.map_mat[i][j];
+			if (c != '0' && c != '1' && c != ' ' && c != 'N' 
+				&& c != 'S' && c != 'E' && c != 'W')
+				return (1);
+			if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
+				k++;
+			if (k > 1)
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}*/
 
 /*
 la funzione CHECK MAP

@@ -20,9 +20,11 @@ ascii_art:
 
 SRCS = cube3d.c \
 	   src/cub_file_parsing/extract_rgb.c \
+	   src/cub_file_parsing/extract_rgb_utils.c\
 	   src/cub_file_parsing/extract_info_utils.c \
 	   src/cub_file_parsing/extract_info.c \
 	   src/cub_file_parsing/extract_map.c \
+	   src/cub_file_parsing/extract_map_utils.c \
 	   src/map_checks/check_map_utils.c \
 	   src/map_checks/check_map.c \
 	   src/map_checks/check_walls.c \
@@ -36,10 +38,12 @@ SRCS = cube3d.c \
 	   src/utils/fps.c \
 	   src/printf/ft_printf.c \
 	   src/init/init_struct.c \
+	   src/init/init_struct_2.c \
 	   src/init/init_img.c \
 	   src/init/init_textures.c \
 	   src/minimap/minimap.c \
 	   src/minimap/minimap_utils.c \
+	   src/moves/input.c \
 	   src/moves/moves.c \
 	   src/moves/moves_utils.c \
 	   src/moves/rotate_utils.c \

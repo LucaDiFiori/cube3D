@@ -58,7 +58,11 @@ int		ft_atoi(const char *nptr);
 /*CUBE_FILE_PARSING*/
 /*extract_rgb*/
 int		extract_rgb(t_rgb *color, char *line);
+/*extract_rgb_utils*/
+int parse_rgb_value(char *temp_ptr, int *value);
+int process_single_rgb_value(char *temp_ptr, int index, t_rgb *color);
 /*extract_info_utils*/
+int		check_missing_info(t_game *g_s);
 void	check_extension(char *map_path, t_game *game_struct);
 int		is_map_line(char *line);
 char	*remove_space_strcpy(char *to_copy);
@@ -67,6 +71,9 @@ void	cleanup(char **line, char ***split_line, int flag);
 int		extract_info(t_game *g_s, int map_fd);
 /*extract_map*/
 int		extract_map(t_game *g_s, int map_fd);
+/*extract_map_utils*/
+char *join_lines(int map_fd, char *first_line);
+char  *find_map( int map_fd);
 
 /*MAP_CHECKS*/
 int		check_map(t_game *game);
@@ -96,8 +103,15 @@ void draw_fps_counter(t_game *g);
 /*INIT*/
 /*init_struct.c*/
 void	init_game_struct(t_game *game_struct);
+
+/*init_struct_2*/
 void    init_player_dir(t_game *g);
 void    init_ray(t_game *g);
+void	init_player_data(t_game *g);
+
+
+
+
 /*init_img.c*/
 int		init_engine(t_game *g_s);
 void    init_img(t_img *img);
@@ -119,23 +133,23 @@ int move_right(t_game *g);
 int rotate_player(t_game *g, double rotdir); 
 
 /*moves*/
-int key_press(int keycode, t_game *g);
-int key_release(int keycode, t_game *g);
-void handle_input(t_game *g);
 int handle_movement(t_game *g);
 //int handle_movement(int keycode, t_game *g);
+
+/*input.c*/
+void handle_input(t_game *g);
+int key_press(int keycode, t_game *g);
+int key_release(int keycode, t_game *g);
+int	mouse_input(int x, int y, t_game *g);
 
 
 /*MINIMAP*/
 /*utils*/
-void my_pixel_put(t_game *g, t_img *data, int x, int y, int color);
-void fill_background(t_game *g, t_img *data, int width, int height, int background_color);
-void draw_square(t_game *g, double start_x, double start_y, double size_x,
-    double size_y);
-void draw_door(t_game *g, double start_x, double start_y,
-    double size_x, double size_y);
-void draw_circle(t_game *g, t_img *data, double center_x, double center_y,
-    double radius, int color);
+void my_pixel_put(t_game *g, int x, int y, int color);
+void fill_background(t_game *g, int width, int height, int background_color);
+void draw_square(t_game *g, double start_x, double start_y);
+void draw_door(t_game *g, double start_x, double start_y);
+void draw_circle(t_game *g, double center_x, double center_y, int color);
 
 /*ray_casting*/
 void init_minimap(t_game *g);

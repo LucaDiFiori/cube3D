@@ -92,17 +92,28 @@ static void	validator(t_game *game_struct, char **argv)
 /*                      	   GAME LOOP	  		                          */
 /**************************************************************************** */
 
+
 static int ft_cube (t_game *g)
 {
-	static unsigned long last_frame_time = 0;
-	unsigned long current_time = get_time_in_milliseconds();
-	unsigned long frame_time = current_time - last_frame_time;
+	static unsigned long last_frame_time;
+	//unsigned long current_time;
+	//unsigned long frame_time;
+
+	if (g->frame_time_init_flag == 0)
+	{
+		last_frame_time = 0;
+		g->frame_time_init_flag = 1;
+	}
+	
+	g->current_time = get_time_in_milliseconds();
+	g->frame_time = g->current_time - last_frame_time;
+	
 	
 	// Verifica se è il momento di eseguire il rendering
-	if (frame_time >= FPS_LIMIT)
+	if (g->frame_time >= FPS_LIMIT)
 	{
 		// Aggiorna il tempo di frame
-		g->frametime_sec = frame_time / 1000.0; // Converti millisecondi in secondi
+		g->frametime_sec = g->frame_time / 1000.0; // Converti millisecondi in secondi
 		
 		// Aggiorna la velocità in base al framerate
 		g->player.move_speed = g->frametime_sec * MOVESPEED;
@@ -119,13 +130,12 @@ static int ft_cube (t_game *g)
 		draw_fps_counter(g);
 		
 		// Aggiorna il tempo dell'ultimo frame
-		last_frame_time = current_time;
+		last_frame_time = g->current_time;
 	}
-return 0;
+return (0);
 }
 
 	
-
 
 
 

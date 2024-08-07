@@ -3,8 +3,6 @@
 
 #include "cubemacro.h"
 
-/************************************** */
-
 enum e_wall_side
 {
 	NORTH = 0,
@@ -33,6 +31,7 @@ typedef struct	s_minimap
 	int		minimap_height;
 	double	cell_width;
 	double 	cell_height;
+	double  player_radius;
 }				t_minimap;
 /************************************** */
 
@@ -45,7 +44,7 @@ typedef struct s_mov
 	bool right;
 } t_mov;
 
-typedef struct s_asset
+typedef struct s_asset //ok data
 {
 	/*direzione iniziale personaggio*/
 	char	start_dir;	// N, S, E, W
@@ -210,13 +209,13 @@ typedef struct ray
 
 typedef struct s_game
 {
-	t_map	map;
-	t_mlx	mlx;
-	t_asset player;
+	t_map	map; //ok
+	t_mlx	mlx; //ok 
+	t_asset player; // ok data, 
 	t_minimap minimap;
 	//t_key	key;
-	double time; //time of current frame
-	double old_time; //time of previous frame
+	//unsigned long current_time; //time of current frame
+	//unsigned long old_time; //time of previous frame
 	//valore utilizzato per il calcolo del tempo di un frame (lo userò per il framerate)
 	//e aggiornare la velocità di movimento  
 	double frametime_sec;
@@ -229,10 +228,11 @@ typedef struct s_game
 
 	/*struct contenente il puntatore e le info del frame*/
 	t_img	frame;
-
-	t_img   fps;/**************************** */
-
-	int mouse_pos;
+	t_img			fps;
+	int				mouse_pos;
+	int				frame_time_init_flag;
+	unsigned long	current_time;
+	unsigned long	frame_time;
 
 }	t_game;
 

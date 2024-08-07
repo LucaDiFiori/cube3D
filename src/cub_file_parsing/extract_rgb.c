@@ -11,10 +11,32 @@
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
+/************************PRIMO PASSAGGIO DI NORMINETTATURA******************* */
 
-/*split function use to split the rgb values from the cub file
-  RETURN: - 1 if success
-		  - 0 if fail */
+/**
+ * Function: split_and_validate_line
+ * ---------------------------------
+ * Splits a given line of text into an array of strings based on the comma delimiter 
+ * and validates the split operation.
+ * 
+ * Parameters:
+ *  - line: A string containing the line to be split. This line is expected to contain 
+ *          RGB values separated by commas.
+ *  - split_line: A pointer to an array of strings that will be allocated and populated 
+ *                 by splitting the `line` at each comma.
+ * 
+ * Returns:
+ *  - An integer indicating the success or failure of the split operation:
+ *    - Returns 1 if the line is successfully split into an array of strings.
+ *    - Returns 0 if the split operation fails (e.g., due to memory allocation issues).
+ * 
+ * Process:
+ *  - Calls `ft_split` to split the `line` into an array of strings using commas as delimiters.
+ *  - Checks if the result of `ft_split` is NULL, indicating a failure in the split operation.
+ *  - Returns 1 if the splitting was successful and `*split_line` is not NULL.
+ *  - Returns 0 if `ft_split` fails and `*split_line` is NULL.
+
+ */
 int	split_and_validate_line(char *line, char ***split_line) 
 {
     *split_line = ft_split(line, ',');
@@ -23,60 +45,58 @@ int	split_and_validate_line(char *line, char ***split_line)
     return (1);
 }
 
-/*Funtion to extract (convert to int) the rgb values from the cub file
-  RETURN: - 1 if success
-		  - 0 if fail
-
-  NOTE: I'm using a temp_ptr because otherwise I should modify the pointer
-		split_line (for example doing split_line++) and this causes problems
-		when I call the free() function:
-		This is because being an array of pointers, by doing split_line++ I am
-		pointing to the next string and no longer to the first element.
-
-  44: for each string in the split_line array
-  46: copy the i-th string of the split_line array in temp_ptr
-  47: while the character pointed by temp_ptr is not a digit, increment temp_ptr
-  48: if the character pointed by temp_ptr is '\0' return 0 (error: invalid string)
-  54 - 58: if i is 0, 1 or 2, convert the string pointed by temp_ptr to an integer
-           and assign it to the corresponding field of the color struct
-  60: if i is different from 0, 1 or 2, return 0 (error: too many values)
-  66-70: check if the number of values is extactly 3 and return 1 if true, 0 otherwise
-*/
+/**
+ * Function: process_rgb_values
+ * -----------------------------
+ * Extracts and converts RGB values from the provided array of strings into 
+ * integer values for the `t_rgb` structure. Each string in the array corresponds 
+ * to one of the RGB components (red, green, or blue). The function processes 
+ * these values and assigns them to the appropriate fields in the `t_rgb` structure.
+ * 
+ * Parameters:
+ *  - split_line: An array of strings where each string represents a part of the 
+ *                 RGB value. Each element of the array corresponds to one RGB 
+ *                 component: red, green, or blue.
+ *  - color: A pointer to the `t_rgb` structure where the extracted RGB values 
+ *           will be stored.
+ * 
+ * Returns:
+ *  - An integer indicating the success or failure of the RGB value extraction:
+ *    - Returns 1 if all three RGB components are successfully processed.
+ *    - Returns 0 if any of the components fails to be processed.
+ * 
+ * Process:
+ *  - Iterates over the `split_line` array and processes each string to extract 
+ *    the RGB value.
+ *  - Uses `temp_ptr` to temporarily hold each string from `split_line` while 
+ *    skipping leading spaces and tabs.
+ *  - Calls `process_single_rgb_value` to parse and assign each RGB component based 
+ *    on its index.
+ *  - Returns 1 if all three RGB components (red, green, blue) are successfully 
+ *    processed (i.e., the array has exactly three elements).
+ *  - Returns 0 if the processing fails or if the array does not contain exactly 
+ *    three elements.
+ */
 static int process_rgb_values(char **split_line, t_rgb *color) 
 {
-    char *temp_ptr;
-    int j; 
-    int i;
+    char	*temp_ptr;
+    int		i;
 
     i = 0;
     while (split_line[i] != NULL) 
-	{
+    {
         temp_ptr = split_line[i];
         while (*temp_ptr && (*temp_ptr == ' ' || *temp_ptr == '\t'))
             temp_ptr++;
-        j = 0;
-        while (temp_ptr[j] && temp_ptr[j] != '\n')
-        {
-            if (!ft_isdigit(temp_ptr[j]))
-                return (0);
-            j++;
-        }
-        if (!*temp_ptr)
-            return (0);
-        if (i == 0)
-            color->r = ft_atoi(temp_ptr);
-        else if (i == 1)
-            color->g = ft_atoi(temp_ptr);
-        else if (i == 2)
-            color->b = ft_atoi(temp_ptr);
-        else
+
+        if (!process_single_rgb_value(temp_ptr, i, color))
             return (0);
         i++;
     }
     if (i == 3)
-		return 1;
-	else
-    	return 0;
+        return (1);
+    else
+        return (0);
 }
 
 
@@ -93,34 +113,49 @@ static int validate_rgb_range(t_rgb color)
 }
 
 
-/******************************************************************************/
-/*                        		EXTRACT_RGB                                   */
-/**************************************************************************** */
-/*
-** Function: extract_rgb
-   RETURN: - 1 if success
-		   - 0 if fail
-
-   96: split the rgb values from the line
-   99: extract the rgb values from the split_line array and convert them to int
-   100: check if the values are in the range 0-255
-   103: free the split_line array
-*/
+/**
+ * Function: extract_rgb
+ * ----------------------
+ * Extracts and validates RGB color values from a given line of text.
+ * The function splits the line into individual RGB values, converts these values 
+ * to integers, and checks if they fall within the valid RGB range (0-255). 
+ * It updates the `color` structure with the extracted RGB values if successful.
+ * 
+ * Parameters:
+ *  - color: A pointer to a `t_rgb` structure where the extracted RGB values will be stored.
+ *  - line: A string containing the line from which the RGB values should be extracted.
+ * 
+ * Returns:
+ *  - An integer indicating the success or failure of the RGB extraction and validation:
+ *    - Returns 1 if the RGB values are successfully extracted, converted, and validated.
+ *    - Returns 0 if any of the following occur:
+ *      - The line cannot be split into RGB values.
+ *      - The RGB values cannot be processed or are out of the valid range.
+ * 
+ * Process:
+ *  - Calls `split_and_validate_line` to split the line into RGB values based on commas.
+ *  - If splitting fails, returns 0.
+ *  - Uses `process_rgb_values` to convert the split values to integers and populate the `color` structure.
+ *  - If processing fails, frees the allocated memory and returns 0.
+ *  - Calls `validate_rgb_range` to ensure the RGB values fall within the valid range (0-255).
+ *  - If validation fails, frees the allocated memory and returns 0.
+ *  - Frees the allocated memory for the split line and returns 1 if all steps are successful.
+ */
 int extract_rgb(t_rgb *color, char *line) 
 {
-    char **split_line;
+    char	**split_line;
 
     if (!split_and_validate_line(line, &split_line))
-        return (0); // Fallimento nell'allocazione
+        return (0);
     if (!process_rgb_values(split_line, color)) 
     {
         free_matrix((void **)split_line);
-        return (0); // Errore nell'elaborazione dei valori
+        return (0);
     }
     if (!validate_rgb_range(*color)) 
     {
         free_matrix((void **)split_line);
-        return (0); // Valori fuori range
+        return (0);
     }
     free_matrix((void **)split_line);
     return (1);
