@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
-/************************PRIMO PASSAGGIO DI NORMINETTATURA******************* */
+
 
 static void set_player_direction(t_game *g, int dir_x, int dir_y)
 {
@@ -88,7 +88,7 @@ void init_ray(t_game *g)
 
 void init_player_data(t_game *g)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	g->player.x = 0.0;

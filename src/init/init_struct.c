@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
-/************************PRIMO PASSAGGIO DI NORMINETTATURA******************* */
+
 
 static void init_text(t_game *g)
 {

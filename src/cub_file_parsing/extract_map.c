@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
-/************************PRIMO PASSAGGIO DI NORMINETTATURA******************* */
+
 /*
 	IDEA:
 	1: Find the first line of the map

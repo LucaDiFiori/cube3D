@@ -11,26 +11,24 @@
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
-
-void	print_error(char *error)
-{
-	ft_printf("Error: %s\n", error);
-}
-
-int free_matrix(void **ptr_matric)
-{
-    int i;
-
-    i = 0;
-    while (ptr_matric[i] != NULL)
-    {
-        free(ptr_matric[i]);
-        i++;
-    }
-    free(ptr_matric);
-    return (0);
-}
-
+/**
+ * Function: ft_destroy_engine
+ * ----------------------------
+ * Cleans up and frees resources allocated for the graphical engine. This function 
+ * handles the destruction of the window and display, and deallocates the memory used 
+ * by the MLX (MiniLibX) library.
+ * 
+ * Parameters:
+ *  - g: A pointer to the game structure containing the MLX-related data.
+ *
+ * Process:
+ *  - Checks if both the MLX pointer and window pointer are valid:
+ *    - If so, it destroys the window using `mlx_destroy_window`.
+ *  - If the MLX pointer is still valid:
+ *    - Calls `mlx_destroy_display` to close and clean up the display connection.
+ *    - Ends the MLX event loop with `mlx_loop_end`.
+ *    - Frees the memory allocated for the MLX pointer.
+ */
 static void ft_destroy_engine(t_game *g)
 {
 	if (g->mlx.mlx_ptr && g->mlx.win_ptr)
@@ -42,9 +40,6 @@ static void ft_destroy_engine(t_game *g)
 		free(g->mlx.mlx_ptr);
 	}
 }
-
-
-//void ft_destroy(t_game *g)
 
 static void destroy_struct(t_game *g)
 {		
@@ -74,15 +69,10 @@ static void destroy_img(t_game *g)
 		mlx_destroy_image(g->mlx.mlx_ptr, g->fps.img);
 }
 
-int	ft_close_x(t_game *ptr_game)
-{
-	quit_and_free("See U <3", 0, ptr_game);
-	return (0);
-}
-
 void clear_matrix(int **matrix)
 {
-    int i, j;
+    int	i;
+	int	j;
 
     i = 0;
     while (i < RES_Y)
@@ -97,10 +87,6 @@ void clear_matrix(int **matrix)
     }
 }
 
-
-
-
-/*POI FARE UN ENUM PER IL TIèPE_ERR E RIORDINARE*/
 int quit_and_free(char *error, int err_type, t_game *g)
 {
 	if (err_type == 0)

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
-/************************PRIMO PASSAGGIO DI NORMINETTATURA******************* */
+
 
 /**
  * Function: extract_pixels_from_xpm

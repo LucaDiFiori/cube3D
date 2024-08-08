@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "../../inc/cube3d.h"
-/************************PRIMO PASSAGGIO DI NORMINETTATURA******************* */
+
 
 /**
  * Function: split_and_validate_line

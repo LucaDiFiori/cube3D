@@ -36,6 +36,7 @@ SRCS = cube3d.c \
 	   src/minilib/ft_atoi.c \
 	   src/utils/quit_and_free.c \
 	   src/utils/fps.c \
+	   src/utils/quit_utils.c \
 	   src/printf/ft_printf.c \
 	   src/init/init_struct.c \
 	   src/init/init_struct_2.c \
