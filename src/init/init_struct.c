@@ -39,6 +39,8 @@ static void init_text(t_game *g)
 static void	init_map_struct(t_game *g)
 {
 	init_text(g);
+	g->frame.img = NULL;
+	g->fps.img = NULL;
 	g->map.map_path = NULL;
 	g->map.map_mat = NULL;
 	g->map.map_x = 0;
@@ -76,6 +78,7 @@ static void init_screen_pixels(t_game *g)
 
 static void set_minimap(t_game *g)
 {
+	g->minimap.img_bg.img = NULL;
 	g->minimap.cell_width = 0;
 	g->minimap.cell_height = 0;
 	g->minimap.player_radius = 0;
@@ -86,12 +89,12 @@ static void set_minimap(t_game *g)
 void init_game_struct(t_game *g)
 {
 	init_map_struct(g);
+	set_minimap(g);
 	g->screen_pixels = NULL;
 	init_screen_pixels(g);
 	g->mlx.mlx_ptr = NULL;
 	g->mlx.win_ptr = NULL;
 	init_player_data(g);
-	set_minimap(g);
 	g->frametime_sec = 0;
 	g->mouse_pos = RES_X/2;
 	g->frame_time_init_flag = 0;

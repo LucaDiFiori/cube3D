@@ -61,16 +61,16 @@ static void	validator(t_game *game_struct, char **argv)
 
 	//passo l'fd della mappa alla funzione econtrollo gli elementi del file .cub
 	if (!extract_info(game_struct, map_fd))
-		quit_and_free(DATA_ERR, 3, game_struct);
+		quit_and_free(DATA_ERR, 2, game_struct);
 
 
 	if (!extract_map(game_struct, map_fd))
-		quit_and_free(MAP_ERR, 3, game_struct);
+		quit_and_free(MAP_ERR, 2, game_struct);
 
 	
 	if (!check_map(game_struct))
 	{
-		quit_and_free(MAP_ERR, 3, game_struct);
+		quit_and_free(MAP_ERR, 2, game_struct);
 	}
 
 	//alla fine chiudo l'fd
@@ -147,7 +147,7 @@ int	main(int argc, char **argv)
 	t_game	game_struct;
 
 	if (argc != 2)
-		quit_and_free(ARG_ERR,1, &game_struct);
+		quit_and_free(ARG_ERR, 1, &game_struct);
 
 
 	// funzione che inizializza la struct del gioco 

@@ -64,16 +64,15 @@ static void destroy_struct(t_game *g)
 		free_matrix((void **)g->map.text.wall_pixels);
 }
 
-/*static void destroy_img(t_game *g)
+static void destroy_img(t_game *g)
 {
-	//questa aiuta ma non risolve
 	if (g->frame.img)
 		mlx_destroy_image(g->mlx.mlx_ptr, g->frame.img);
 	if (g->minimap.img_bg.img)
 		mlx_destroy_image(g->mlx.mlx_ptr, g->minimap.img_bg.img);
 	if (g->fps.img)
 		mlx_destroy_image(g->mlx.mlx_ptr, g->fps.img);
-}*/
+}
 
 int	ft_close_x(t_game *ptr_game)
 {
@@ -108,39 +107,17 @@ int quit_and_free(char *error, int err_type, t_game *g)
 	{
 		ft_printf("%s\n", error);
 		destroy_struct(g);
-		if (g->fps.img)
-			free(g->fps.img);
-		if (g->minimap.img_bg.img)
-			free(g->minimap.img_bg.img);
-		if (g->frame.img)
-			free(g->frame.img);
+		destroy_img(g);
 		ft_destroy_engine(g);
-
-		//destroy_img(g); /*capire se togliere*/
 	}
-	else if (err_type == 1)
+	else if (err_type == 1) 
 		print_error(error);
 	else if (err_type == 2)
 	{
 		print_error(error);
 		destroy_struct(g);
+		destroy_img(g);
 		ft_destroy_engine(g);
-		if (g->fps.img)
-			free(g->fps.img);
-		if (g->minimap.img_bg.img)
-			free(g->minimap.img_bg.img);
-		if (g->frame.img)
-			free(g->frame.img);
-		ft_destroy_engine(g);
-		//destroy_img(g); /*capire se togliere*/
-	}
-	/*questa la uso quando non ho immagini allocate altrimenti le libera comunque e va in seg*/
-	else if (err_type == 3) // questa la uso nel validator, 
-	{
-		print_error(error);
-		destroy_struct(g);
-		ft_destroy_engine(g);
-		//destroy_img(g);  //qui non va in seg
 	}
 	exit (0);
 }
