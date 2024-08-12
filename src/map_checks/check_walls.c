@@ -12,33 +12,6 @@
 
 #include "../../inc/cube3d.h"
 
-/**
- * Function: check_rows
- * ----------------------
- * Validates the boundary rows of the game map to ensure they contain only
- * '1' or ' ' characters. This function checks the first and last rows of the 
- * map matrix to confirm that they consist solely of wall ('1') or space (' ') 
- * characters, as required by the game's map rules.
- * 
- * Parameters:
- *  - game: A copy of the game structure containing the map data to be validated.
- *
- * Returns:
- *  - An integer indicating the result of the validation:
- *    - Returns 0 if any character in the first or last row is not '1' or ' ' (error).
- *    - Returns 1 if all characters in the first and last rows are valid (success).
- *
- * Process:
- *  - Checks the first row of the map:
- *    - Iterates through each character in the first row.
- *    - Returns 0 if any character is not '1' or ' '.
- *  - Finds the index of the last row (`k`):
- *    - Iterates to count the total number of rows and sets `k` to the index of the last row.
- *  - Checks the last row of the map:
- *    - Iterates through each character in the last row.
- *    - Returns 0 if any character is not '1' or ' '.
- *  - Returns 1 if both boundary rows are valid.
- */
 static int	check_rows(t_game game)
 {
 	int	i;
@@ -66,30 +39,6 @@ static int	check_rows(t_game game)
 	return (1);
 }
 
-/**
- * Function: check_columns
- * -------------------------
- * Validates the boundary columns of the game map to ensure they contain only
- * '1' characters. This function checks the first and last non-space characters 
- * in each row of the map matrix to confirm that they are all '1', which is required 
- * for enclosing the map properly.
- * 
- * Parameters:
- *  - game: A copy of the game structure containing the map data to be validated.
- *
- * Returns:
- *  - An integer indicating the result of the validation:
- *    - Returns 0 if any boundary column character is not '1' (error).
- *    - Returns 1 if all boundary column characters are valid (success).
- *
- * Process:
- *  - Iterates through each row of the map:
- *    - Finds the first non-space character in the row (`j`).
- *    - Returns 0 if the first non-space character is not '1'.
- *    - Finds the last non-space character in the row (`j`).
- *    - Returns 0 if the last non-space character is not '1'.
- *  - Returns 1 if all boundary columns are valid.
- */
 static int	check_columns(t_game game)
 {
 	int	i;

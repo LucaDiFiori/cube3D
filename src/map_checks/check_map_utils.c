@@ -12,9 +12,6 @@
 
 #include "../../inc/cube3d.h"
 
-/*
-funzione per determinare il numero di righe e colonne della mappa. se trovo una riga con un numero maggiore di colonne rispetto alla precedente, aggiorno il numero di map_cols.
-*/
 void	find_rows_and_cols(t_map *map)
 {
 	int	x;
@@ -34,8 +31,6 @@ void	find_rows_and_cols(t_map *map)
 	}
 }
 
-/* si occupa di copiare riga per riga la mappa in map_copy, aggiungendo spazi (' ') per arrivare alla lunghezza della riga più lunga ed avere così una mappa quadrata.
-*/
 char	*duplicate_row(char *row, int current_cols, int cols)
 {
 	char *row_copy;
@@ -57,7 +52,6 @@ char	*duplicate_row(char *row, int current_cols, int cols)
 	return (row_copy);
 }
 
-/* creo una copia della mappa da passare al flood_fill, su ogni riga della copia viene chiamata duplicate_row() */
 char	**duplicate_map(char **map, int rows, int cols)
 {
 	char	**map_copy;
@@ -99,22 +93,3 @@ void	free_mapcopy(char **map, int rows)
 	}
 	free(map);
 }
-
-/*
-void	print_map_copy(char **map_copy, int rows)
-{
-    int i = 0;
-    int j;
-
-    printf("\nMAP COPY\n");
-    while (i < rows) {
-        j = 0;
-        while (map_copy[i][j]) {
-            printf("%c", map_copy[i][j]);
-            j++;
-        }
-        printf("\n");
-        i++;
-    }
-}
-*/

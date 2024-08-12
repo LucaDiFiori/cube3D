@@ -91,10 +91,10 @@ int				key_press(int keycode, t_game *g);
 int				key_release(int keycode, t_game *g);
 int				mouse_input(int x, int y, t_game *g);
 void			my_pixel_put(t_game *g, int x, int y, int color);
-void			fill_background(t_game *g, int width, int height, int background_color);
+void			fill_background(t_game *g, int width, int height, int bg_color);
 void			draw_square(t_game *g, double start_x, double start_y);
 void			draw_door(t_game *g, double start_x, double start_y);
-void			draw_circle(t_game *g, double center_x, double center_y, int color);
+void			draw_circle(t_game *g, double c_x, double c_y, int color);
 void			init_minimap(t_game *g);
 void			draw_map(t_game *g_s);
 void			draw_minimap(t_game *g_s);
@@ -103,5 +103,6 @@ void			render(t_game *g);
 void			raycasting(t_game *g);
 void			find_wall_side(t_game *g);
 void			draw_screen_pixels(t_game *g, int x);
+int				is_reachable(t_game *game, char **map, int x, int y);
 
 #endif
